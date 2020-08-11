@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import safe from "../images/safe.png";
 
+import NumberFormatter from "../NumberFormatter";
+
 export default class AccountInfo extends Component {
 
 // Konstruktor ///////////////////////////////////////////////////////////////
@@ -23,7 +25,7 @@ export default class AccountInfo extends Component {
                 accountNumber: "",
             },
 
-            // Aktuální kurzy
+            // Seznam aktuálních kurzů
             currencies: {
                 CZK: 0,
                 EUR: 0,
@@ -31,13 +33,13 @@ export default class AccountInfo extends Component {
                 USD: 0,
             },
 
-            // Aktivovaný kurz
+            // Aktivní měna
             activeCurrency: {
                 CZK: true,
                 EUR: false,
                 JPY: false,
                 USD: false,
-            }
+            },
         }
 
         this.changeActiveCurrency = this.changeActiveCurrency.bind(this);
@@ -66,7 +68,7 @@ export default class AccountInfo extends Component {
             })));
     }
 
-// Změna stavu kurzu ////////////////////////////////////////////////////////////////
+// Změna stavu měny ////////////////////////////////////////////////////////////////
 
     changeActiveCurrency(event) {
 
@@ -74,15 +76,25 @@ export default class AccountInfo extends Component {
             activeCurrency: {
                 [event.target.value]: true,
             },
+        }, () => {
+
+            // Nastavení kurzu a názvu měny
+            const activeCurrency = this.state.activeCurrency;
+            for (let key in activeCurrency) {
+                
+                if (activeCurrency[key]) {
+
+                    // Vybraná měna
+                    const currency = {
+                        exchangeRate: this.state.currencies[key],
+                        name: key,
+                    }
+                    
+                    // Nastavení měny (předek)
+                    this.props.setCurrency(currency);
+                }
+            }
         });
-    }
-
-// Naformátování čísla //////////////////////////////////////////////////////////////
-
-    numberFormatter(balance) {
-        
-        return balance.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, " ")
-            .replace(".", ",");
     }
 
 // Vykreslení ////////////////////////////////////////////////////////////////////////
@@ -95,21 +107,8 @@ export default class AccountInfo extends Component {
         let isJPY = (this.state.activeCurrency.JPY ? "active" : "");
         let isUSD = (this.state.activeCurrency.USD ? "active" : "");
 
-        // Zůstatek
-        let balance = parseFloat(this.state.user.balance);
-
-        // Měna
-        let currency;
-
-        const activeCurrency = this.state.activeCurrency;
-        for (let key in activeCurrency) {
-
-            // Změna na aktivní měnu
-            if (activeCurrency[key]) {
-                balance = balance * this.state.currencies[key];
-                currency = key;
-            }
-        };
+        // Zůstatek * hodnota kurzu
+        let balance = parseFloat(this.state.user.balance) * this.props.currency.exchangeRate;
 
         return(
             <div id="account">
@@ -120,7 +119,7 @@ export default class AccountInfo extends Component {
                 <div id="accountNumber">{this.state.user.accountNumber}</div>
 
                 <div>Aktuální zůstatek:
-                    <div id="balance">{this.numberFormatter(balance.toFixed(2))} {currency}</div>
+                    <div id="balance">{NumberFormatter(balance.toFixed(2))} {this.props.currency.name}</div>
                 </div>
 
                 <div id="buttonPanel">

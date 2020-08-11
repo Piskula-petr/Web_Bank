@@ -4,6 +4,6 @@ import cz.web_bank.entity.CreditCard;
 
 public interface CreditCardServise {
 
-	public CreditCard getCreditCardByUserID(long userID);
+	public CreditCard getCreditCardByUserID(Long userID);
 	
 }

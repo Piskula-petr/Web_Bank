@@ -14,30 +14,30 @@ public class User {
 	@Id
 	@GeneratedValue()
 	@Column(name = "id")
-	private long id;
+	private Long id;
 	
-	@Column(name = "name")
+	@Column(name = "name", length = 100)
 	private String name;
 	
-	@Column(name = "surname")
+	@Column(name = "surname", length = 100)
 	private String surname;
 	
-	@Column(name = "email")
+	@Column(name = "email", length = 100)
 	private String email;
 	
 	@Column(name = "client_number")
-	private long clientNumber;
+	private Long clientNumber;
 	
-	@Column(name = "password")
+	@Column(name = "password", length = 100)
 	private String password;
 	
 	@Column(name = "balance")
 	private BigDecimal balance;
 	
-	@Column(name = "currency")
+	@Column(name = "currency", length = 3)
 	private Currency currency; 
 	
-	@Column(name = "account_number")
+	@Column(name = "account_number", length = 15)
 	private String accountNumber;
 	
 // Konstruktor ///////////////////////////////////////////////////////////////////////////////////////
@@ -48,11 +48,11 @@ public class User {
 	
 // Gettery + Settery /////////////////////////////////////////////////////////////////////////////////
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -80,11 +80,11 @@ public class User {
 		this.email = email;
 	}
 	
-	public long getClientNumber() {
+	public Long getClientNumber() {
 		return clientNumber;
 	}
 	
-	public void setClientNumber(long clientNumber) {
+	public void setClientNumber(Long clientNumber) {
 		this.clientNumber = clientNumber;
 	}
 	
@@ -97,7 +97,6 @@ public class User {
 	}
 	
 	public BigDecimal getBalance() {
-		
 		return balance;
 	}
 	

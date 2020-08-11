@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 
+import DateFormatter from "../DateFormatter";
+
 export default class DetailTable extends Component {
 
     render() {
@@ -8,6 +10,17 @@ export default class DetailTable extends Component {
             <div id="detail">
                 <table>
                     <tbody>
+                        <tr className={(this.props.item.accountNumber === "0" ? "hide" : "")}>
+                            <td id="column1"></td>
+                            <td id="column2">
+                                <b>Číslo účtu:</b>
+                            </td>
+
+                            <td id="column3">
+                                {this.props.item.accountNumber}
+                            </td>
+                        </tr>
+
                         <tr className={(this.props.item.variableSymbol === 0 ? "hide" : "")}>
                             <td id="column1"></td>
                             <td id="column2">
@@ -59,7 +72,7 @@ export default class DetailTable extends Component {
                             </td>
 
                             <td id="column3">
-                                {this.props.item.paymentDate}
+                                {DateFormatter(this.props.item.paymentDate)}
                             </td>
                         </tr>
                     </tbody>

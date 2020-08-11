@@ -1,44 +1,54 @@
 package cz.web_bank.entity;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Currency;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity(name = "payments")
 public class Payment {
-
+	
 	@Id
 	@GeneratedValue()
 	@Column(name = "id")
-	private long id;
+	private Long id;
 	
+	@Column(name = "user_id")
+	private Long userID;
+	
+	@NotBlank(message = "Název platby nesmí být prázdné")
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "mark")
+	@Column(name = "mark", length = 1)
 	private String mark;
 	
+	@Min(value = 1, message = "Částka platby nesmí být prázdná")
 	@Column(name = "amount")
 	private BigDecimal amount;
 	
-	@Column(name = "currency")
+	@Column(name = "currency", length = 3)
 	private Currency currency;
 	
-	@Column(name = "variable_symbol")
-	private long variableSymbol;
+	@Max(value = 9999999999L, message = "Variabilní symbol může mýt maximálně 10 znaků")
+	@Column(name = "variable_symbol", length = 10)
+	private Long variableSymbol;
 	
-	@Column(name = "constant_symbol")
-	private int constantSymbol;
+	@Max(value = 9999999999L, message = "Konstantní symbol může mýt maximálně 10 znaky")
+	@Column(name = "constant_symbol", length = 10)
+	private Long constantSymbol;
 	
-	@Column(name = "specific_symbol")
-	private long specificSymbol;
+	@Max(value = 9999999999L, message = "Specifický symbol může mýt maximálně 10 znaků")
+	@Column(name = "specific_symbol", length = 10)
+	private Long specificSymbol;
 	
 	@Column(name = "payment_date")
 	private LocalDate paymentDate;
@@ -46,6 +56,11 @@ public class Payment {
 	@Column(name = "payment_type")
 	private String paymentType;
 
+	@NotBlank(message = "Číslo účtu nesmí být prázdné")
+	@Size(min = 15, max = 15, message = "Číslo účtu musí mýt 10 znaků")
+	@Column(name = "account_number", length = 15)
+	private String accountNumber;
+	
 // Konstruktor /////////////////////////////////////////////////////////////////////////////////////
 	
 	public Payment() {
@@ -54,12 +69,20 @@ public class Payment {
 	
 // Gettery + Settery ///////////////////////////////////////////////////////////////////////////////
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public Long getUserID() {
+		return userID;
+	}
+
+	public void setUserID(Long userID) {
+		this.userID = userID;
 	}
 
 	public String getName() {
@@ -78,11 +101,9 @@ public class Payment {
 		this.mark = mark;
 	}
 
-	public String getAmount() {
+	public BigDecimal getAmount() {
 		
-		DecimalFormat decimalFormat = new DecimalFormat("##,###.00");
-		
-		return decimalFormat.format(amount);
+		return amount;
 	}
 
 	public void setAmount(BigDecimal amount) {
@@ -97,19 +118,19 @@ public class Payment {
 		this.currency = currency;
 	}
 
-	public long getVariableSymbol() {
+	public Long getVariableSymbol() {
 		return variableSymbol;
 	}
 
-	public void setVariableSymbol(long variableSymbol) {
+	public void setVariableSymbol(Long variableSymbol) {
 		this.variableSymbol = variableSymbol;
 	}
 
-	public int getConstantSymbol() {
+	public Long getConstantSymbol() {
 		return constantSymbol;
 	}
 
-	public void setConstantSymbol(int constantSymbol) {
+	public void setConstantSymbol(Long constantSymbol) {
 		this.constantSymbol = constantSymbol;
 	}
 
@@ -117,12 +138,12 @@ public class Payment {
 		return specificSymbol;
 	}
 
-	public void setSpecificSymbol(long specificSymbol) {
+	public void setSpecificSymbol(Long specificSymbol) {
 		this.specificSymbol = specificSymbol;
 	}
 
-	public String getPaymentDate() {
-		return paymentDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+	public LocalDate getPaymentDate() {
+		return paymentDate;
 	}
 
 	public void setPaymentDate(LocalDate paymentDate) {
@@ -135,6 +156,14 @@ public class Payment {
 
 	public void setPaymentType(String paymentType) {
 		this.paymentType = paymentType;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 	
 }

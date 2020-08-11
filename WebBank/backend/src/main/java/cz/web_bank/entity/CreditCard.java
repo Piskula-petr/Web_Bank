@@ -16,7 +16,7 @@ public class CreditCard {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "card_number")
+	@Column(name = "card_number", length = 16)
 	private String cardNumber;
 	
 	@Column(name = "valid_from")

@@ -66,7 +66,6 @@ public class LoginPageController {
 		}
 		
 		body.put("timestamp", new Date());
-		body.put("status", status);
 		
 		return new ResponseEntity<Object>(body, status);
 	}

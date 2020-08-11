@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 
-import Months from "./Months"
+import Months from "../Months"
 
 export default class BalanceGraphs extends Component {
 

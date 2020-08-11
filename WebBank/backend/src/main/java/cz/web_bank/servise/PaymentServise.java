@@ -8,12 +8,13 @@ import cz.web_bank.entity.Payment;
 
 public interface PaymentServise {
 
-	public long getPaymentsCount(long userID);
+	public Long getPaymentsCount(Long userID);
 	
-	public List<Payment> getPaymentsByUserID(long userID, LocalDate startOfMonth,
+	public List<Payment> getPaymentsByUserID(Long userID, LocalDate startOfMonth,
 											 LocalDate endOfMonth);
 	
-	public BigDecimal getPaymentsSum(long userID, String mark, LocalDate startOfMonth,
+	public BigDecimal getPaymentsSum(Long userID, String mark, LocalDate startOfMonth,
 			 					     LocalDate endOfMonth);
 	
+	public void savePayment(Payment senderPayment);
 }

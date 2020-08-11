@@ -125,8 +125,8 @@ body {
 	margin: 4px 0px;
 }
 
-/*__________________________________ nová platba __________________________*/
-#newPayment {
+/*__________________________________ nová platba - link__________________________*/
+#newPaymentLink {
 	display: block;
 	color: #394359;
 	border-top: 8px solid #02AAE9;
@@ -141,7 +141,7 @@ body {
 	text-decoration: none;
 }
 
-#newPayment:hover {
+#newPaymentLink:hover {
 	text-decoration: underline;
 }
 
@@ -180,7 +180,7 @@ body {
 }
 
 #history details summary::-webkit-details-marker {
-	display:none;
+	display: none;
 }
 
 #history details summary:focus {

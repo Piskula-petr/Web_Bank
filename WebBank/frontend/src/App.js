@@ -46,7 +46,7 @@ export default class App extends Component {
           <OverviewIndex userID={this.state.userID} />
         </Route>
 
-        <Route path="/nová-platba">
+        <Route path="/nova-platba">
           <NewPayment userID={this.state.userID} />
         </Route>
 

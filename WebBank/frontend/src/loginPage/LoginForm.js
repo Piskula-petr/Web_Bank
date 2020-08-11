@@ -51,7 +51,11 @@ export default class LoginForm extends Component {
 
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(this.state)
+            
+            body: JSON.stringify({
+                "clientNumber": this.state.clientNumber,
+                "password": this.state.password,
+            }),
             
         }).then(response => response.json().then(data => {
 

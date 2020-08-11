@@ -73,7 +73,6 @@ body {
 #loginForm input:-webkit-autofill, #loginForm input:-webkit-autofill:hover,
 #loginForm input:-webkit-autofill:focus, #loginForm input:-webkit-autofill:active {
 	-webkit-text-fill-color: black;
-	-webkit-transition-delay: 99999s;
 }
 
 #loginForm input:-webkit-autofill::first-line {

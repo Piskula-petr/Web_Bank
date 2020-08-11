@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 
 import DetailTable from "./DetailTable.js";
+import NumberFormatter from "../NumberFormatter";
+import DateFormatter from "../DateFormatter";
 
 export default class PaymentHistory extends Component {
 
@@ -47,11 +49,14 @@ export default class PaymentHistory extends Component {
 
         const length = this.state.payments.length;
 
-        // Datum poslední zobrazené platby [01], [01], [2020];
-        const lastPaymentDate = this.state.payments[length - 1].paymentDate.split(".");
+        // Datum poslední zobrazené platby
+        const lastPaymentDate = this.state.payments[length - 1].paymentDate;
 
-        const month = parseInt(lastPaymentDate[1]) - 1;
-        const year = lastPaymentDate[2];
+        // Rozložení datumu [01], [01], [2020];
+        const lastPaymentDateArray = DateFormatter(lastPaymentDate).split(".");
+
+        const month = parseInt(lastPaymentDateArray[1]) - 1;
+        const year = lastPaymentDateArray[2];
 
         let payments = this.state.payments;
 
@@ -85,7 +90,9 @@ export default class PaymentHistory extends Component {
                                 <tbody>
                                     <tr>
                                         <td id="column1" rowSpan="2">
-                                            <div id="paymentDate">{item.paymentDate.replace(year, "")}</div>
+                                            <div id="paymentDate">
+                                                {DateFormatter(item.paymentDate).replace(year, "")}
+                                            </div>
                                         </td>
 
                                         <td id="column2">
@@ -94,7 +101,11 @@ export default class PaymentHistory extends Component {
 
                                         <td id="column3" rowSpan="2">
                                             <div id="amount" className={(item.mark.includes("+") ? "plus" : "minus")}>
-                                                {item.mark}{item.amount} {item.currency}
+                                                {item.mark}
+
+                                                {NumberFormatter((item.amount * this.props.currency.exchangeRate).toFixed(2))}&nbsp;
+                                                
+                                                {this.props.currency.name}
                                             </div>
                                         </td>  
                                     </tr>

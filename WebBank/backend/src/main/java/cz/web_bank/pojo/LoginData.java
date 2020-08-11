@@ -6,13 +6,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 public class LoginData {
-
-	private final String LENGHT_ERROR_MESSAGE = "Klientské číslo musí mýt 10 znaků";
 	
 	@NotNull(message = "Klientské číslo nesmí být prázdné")
-	@Min(value = 1000000000L, message = LENGHT_ERROR_MESSAGE)
-	@Max(value = 9999999999L, message = LENGHT_ERROR_MESSAGE)
-	private long clientNumber;
+	@Min(value = 1000000000L, message = "Klientské číslo musí mýt 10 znaků")
+	@Max(value = 9999999999L, message = "Klientské číslo musí mýt 10 znaků")
+	private Long clientNumber;
 	
 	@NotBlank(message = "Heslo nesmí být prázdné")
 	private String password;
@@ -25,11 +23,11 @@ public class LoginData {
 	
 // Gettery + Settery ////////////////////////////////////////////////////////////////////////////////////////
 	
-	public long getClientNumber() {
+	public Long getClientNumber() {
 		return clientNumber;
 	}
 
-	public void setClientNumber(long clientNumber) {
+	public void setClientNumber(Long clientNumber) {
 		this.clientNumber = clientNumber;
 	}
 
