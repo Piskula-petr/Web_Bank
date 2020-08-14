@@ -7,17 +7,23 @@ body {
 	display: none;
 }
 
-#newPaymentContainer {
-	width: 1240px;
-	margin: 50px auto;
+.toCenter {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 16px 0px 0px;
+}
+
+#content {
+	width: 1280px;
+	margin: 0px auto;
 }
 
 /*__________________________________ nová platba __________________________*/
 #newPayment {
+	width: 1200px;
 	color: #394359;
 	border-top: 8px solid #02AAE9;
 	border-radius: 3px;
-	margin: 0px 12px 0px -12px;
+	margin: 15px 15px 15px 15px;
 	background: #EEE;
 	padding: 10px 20px;
 }

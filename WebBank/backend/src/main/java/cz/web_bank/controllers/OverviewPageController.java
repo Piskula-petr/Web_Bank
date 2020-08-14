@@ -37,6 +37,13 @@ public class OverviewPageController {
 	@Autowired
 	private PaymentServise paymentServise;
 	
+	/**
+	 * 	Získání uživatele podle ID
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 
+	 * 	@return - vrací požadovaného uživatele
+	 */
 	@GetMapping("/user/{userID}")
 	public @ResponseBody User getUser(@PathVariable("userID") long userID) {
 		
@@ -45,6 +52,13 @@ public class OverviewPageController {
 		return user;
 	}
 	
+	/**
+	 * 	Získání kreditní karty podle uživatelského ID
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 
+	 * 	@return - vrací požadovanou kreditní kartu
+	 */
 	@GetMapping("/credit-card/{userID}")
 	public @ResponseBody CreditCard getCreditCard(@PathVariable("userID") long userID) {
 		
@@ -53,6 +67,13 @@ public class OverviewPageController {
 		return creditCard;
 	}
 	
+	/**
+	 * 	Získání celkového počtu plateb uživatele
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 
+	 * 	@return - vrací Mapu s počtem plateb
+	 */
 	@GetMapping("/payments/count/{userID}")
 	public @ResponseBody Map<String, Long> getPaymentCount(@PathVariable("userID") long userID) {
 		
@@ -64,6 +85,15 @@ public class OverviewPageController {
 		return paymentsCount;
 	}
 	
+	/**
+	 * 	Získání plateb uživatele v požadovaném měsíci
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 	@param year - aktuální rok
+	 * 	@param month - požadovaný měsíc (číselná forma 1 - 12)
+	 * 
+	 * 	@return - vrací List plateb
+	 */
 	@GetMapping("/payments/{userID}/year={year}&month={month}")
 	public @ResponseBody List<Payment> getPayments(@PathVariable("userID") long userID,
 												   @PathVariable("year") int year,
@@ -91,6 +121,15 @@ public class OverviewPageController {
 		return payments;
 	}
 	
+	/**
+	 * 	Získání příjmů a výdajů uživatele v požadovaném měsíci
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 	@param year - aktuální rok
+	 * 	@param month - požadovaný měsíc (číselná forma 1 - 12)
+	 * 
+	 * 	@return - vrací List příjmů a výdajů
+	 */
 	@GetMapping("/payments/sum/{userID}/year={year}&month={month}")
 	public @ResponseBody Map<String, BigDecimal> getMonnthSum(@PathVariable("userID") long userID,
 											       			  @PathVariable("year") int year,
@@ -116,6 +155,13 @@ public class OverviewPageController {
 		return paymentsSum;
 	}
 	
+	/**
+	 * 	Získání příjmů a výdajů uživatele z posledních 3 měsíců
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 
+	 * 	@return - vrací List měsíčních příjmů a výdajů
+	 */
 	@GetMapping("/payments/sum/{userID}")
 	public @ResponseBody List<MonthSum> getMonthsSum(@PathVariable("userID") long userID) {
 		

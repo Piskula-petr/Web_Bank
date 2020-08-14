@@ -17,6 +17,14 @@ public class UserServiseImpl implements UserServise {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	/**
+	 * 	Uživatelské ID
+	 * 
+	 * 	@param clientNumber - klientské číslo
+	 * 	@param password - heslo
+	 * 
+	 * 	@return - vrací uživatelské ID
+	 */
 	@Override
 	@Transactional
 	public Long getUserIDByLoginData(Long clientNumber, String password) {
@@ -34,6 +42,13 @@ public class UserServiseImpl implements UserServise {
 		return (Long) query.uniqueResult();
 	}
 
+	/**
+	 * 	Detaily o uživatelei podle ID
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 
+	 * 	@return - vrací uživatele
+	 */
 	@Override
 	@Transactional
 	public User getUserByID(Long userID) {

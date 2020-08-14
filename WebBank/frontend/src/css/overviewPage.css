@@ -18,7 +18,7 @@ body {
 /*__________________________________ obsah __________________________*/
 #content {
 	width: 1280px;
-	margin: 20px auto;
+	margin: 0px auto;
 }
 
 #firstColumn {
@@ -32,7 +32,7 @@ body {
 	border-top: 8px solid #EE842C;
 	border-radius: 3px;
 	width: 340px;
-	margin: 30px 15px;
+	margin: 15px 15px 15px 15px;
 	background: #EEE;
 	padding: 10px 20px;
 }
@@ -152,7 +152,7 @@ body {
 	border-top: 8px solid #F3E82E;
 	border-radius: 3px;
 	width: 800px;
-	margin: 30px 15px;
+	margin: 15px 15px 15px 15px;
 	background: #EEE;
 	padding: 0px 10px 0px 20px;
 }

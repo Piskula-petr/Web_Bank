@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import "../css/overviewPage.css";
 
 // Komponenty
+import NavigationPanel from "../NavigationPanel";
 import AccountInfo from "./AccountInfo";
 import CreditCardInfo from "./CreditCardInfo";
 import PaymentReport from "./PaymentReport";
@@ -46,8 +47,15 @@ export default class OverviewIndex extends Component {
 
     render() {
 
+        // Přesměrování na přihlašovací stránku
+        if (this.props.userID === 0) {
+            return <Redirect to="/prihlaseni" />;
+        }
+
         return (
             <div id="content">
+
+                <NavigationPanel {...this.props} />
 
                 <div id="firstColumn">
 

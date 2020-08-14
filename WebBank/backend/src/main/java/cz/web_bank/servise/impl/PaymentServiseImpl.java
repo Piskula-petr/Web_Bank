@@ -21,6 +21,13 @@ public class PaymentServiseImpl implements PaymentServise {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	/**
+	 * 	Celkový počet plateb uřivatele
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 	
+	 * 	@return - vrací celkový počet plateb
+	 */
 	@Override
 	@Transactional
 	public Long getPaymentsCount(Long userID) {
@@ -39,6 +46,15 @@ public class PaymentServiseImpl implements PaymentServise {
 		return paymentsCount;
 	}
 	
+	/**
+	 * 	Seznam plateb uživatele v zadaném měsíci
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 	@param startOfMonth - první den v měsíci
+	 * 	@param endOfMonth - poslední den v měsíci
+	 * 
+	 * 	@return - vrací List plateb v měsíci
+	 */
 	@Override
 	@Transactional
 	public List<Payment> getPaymentsByUserID(Long userID, LocalDate startOfMonth,
@@ -61,6 +77,16 @@ public class PaymentServiseImpl implements PaymentServise {
 		return payments;
 	}
 	
+	/**
+	 * 	Součet plateb uživatele v zadaném měsíci
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 	@param mark - "+", "-"
+	 * 	@param startOfMonth - první den v měsíci
+	 * 	@param endOfMonth - poslední den v měsíci
+	 * 	
+	 * 	@return - vrací součet plateb
+	 */
 	@Override
 	@Transactional
 	public BigDecimal getPaymentsSum(Long userID, String mark, LocalDate startOfMonth, 
@@ -82,6 +108,11 @@ public class PaymentServiseImpl implements PaymentServise {
 		return (BigDecimal) query.uniqueResult();
 	}
 	
+	/**
+	 * 	Uložení nové platby
+	 * 
+	 * 	@param senderPayment - platba odesilatele
+	 */
 	@Override
 	@Transactional
 	public void savePayment(Payment senderPayment) {
@@ -160,7 +191,7 @@ public class PaymentServiseImpl implements PaymentServise {
 			recipientPayment.setSpecificSymbol(senderPayment.getSpecificSymbol());
 			recipientPayment.setPaymentDate(senderPayment.getPaymentDate());
 			recipientPayment.setPaymentType(senderPayment.getPaymentType());
-			recipientPayment.setAccountNumber(senderPayment.getAccountNumber());
+			recipientPayment.setAccountNumber(senderAccountNumber);
 			
 			session.save(recipientPayment);
 		}

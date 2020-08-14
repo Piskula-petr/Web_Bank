@@ -19,6 +19,11 @@ public class CurrenciesServiseImpl implements CurrenciesServise {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	/**
+	 * 	Seznam měn
+	 * 
+	 * 	@return - vrací List měn
+	 */
 	@Override
 	@Transactional
 	public List<Currency> getCurrencies() {

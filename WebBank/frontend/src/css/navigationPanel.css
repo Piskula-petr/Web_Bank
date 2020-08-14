@@ -1,0 +1,38 @@
+#navigationContainer {
+    margin: 0px auto;
+    padding: 0px 8px 0px 0px;
+    width: 1240px;
+    height: 42px;
+}
+
+/*__________________________________ odhlášení __________________________*/
+
+#navigationContainer #logout {
+    float: right;
+    display: block;
+    margin: 0px 0px 0px 0px;
+	padding: 7px 15px;
+    font-size: 1.3em;
+    text-decoration: none;
+	font-weight: bold;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	background: transparent;
+	border: 2px solid #B22222;
+	border-radius: 3px;
+	cursor: pointer;
+    color: white;
+    transition: background 0.5s ease-in-out;
+}
+
+#navigationContainer #logout:hover {
+    background: #B22222;
+	outline: none;
+}
+
+#logout img {
+    float: left;
+    height: 24px;
+    margin: 0px 10px 0px 0px;
+}

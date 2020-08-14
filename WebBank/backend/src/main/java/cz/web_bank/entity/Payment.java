@@ -24,7 +24,7 @@ public class Payment {
 	@Column(name = "user_id")
 	private Long userID;
 	
-	@NotBlank(message = "Název platby nesmí být prázdné")
+	@NotBlank(message = "Název platby nesmí být prázdný")
 	@Column(name = "name")
 	private String name;
 	
@@ -61,7 +61,7 @@ public class Payment {
 	@Column(name = "account_number", length = 15)
 	private String accountNumber;
 	
-// Konstruktor /////////////////////////////////////////////////////////////////////////////////////
+// Bezparametrový konstruktor //////////////////////////////////////////////////////////////////////
 	
 	public Payment() {
 		

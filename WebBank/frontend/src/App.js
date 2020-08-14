@@ -39,15 +39,15 @@ export default class App extends Component {
       <Router>
 
         <Route path="/prihlaseni">
-          <LoginForm setUser={this.setUser} />
+          <LoginForm setUser={this.setUser} isLogin={this.state.isLogin} />
         </Route>
 
         <Route path="/prehled">
-          <OverviewIndex userID={this.state.userID} />
+          <OverviewIndex setUser={this.setUser} userID={this.state.userID} />
         </Route>
 
         <Route path="/nova-platba">
-          <NewPayment userID={this.state.userID} />
+          <NewPayment setUser={this.setUser} userID={this.state.userID} />
         </Route>
 
         <Redirect from="/" to="/prihlaseni" />

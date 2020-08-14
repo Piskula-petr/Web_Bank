@@ -41,6 +41,11 @@ public class NewPaymentController {
 	@Autowired
 	private PaymentServise paymentServise;
 	
+	/**
+	 * 	Získání seznamu bankovních kódů
+	 * 
+	 * 	@return - vrací List bankovních kódů
+	 */
 	@GetMapping("/bank-codes")
 	public @ResponseBody List<BankCode> getBankCodes() {
 		
@@ -49,6 +54,11 @@ public class NewPaymentController {
 		return bankCodes;
 	}
 	
+	/**
+	 * 	Získání seznamu měn
+	 * 
+	 * 	@return - vrací List měn
+	 */
 	@GetMapping("/currencies")
 	public @ResponseBody List<Currency> getCurrencies() {
 		
@@ -57,6 +67,14 @@ public class NewPaymentController {
 		return currencies;
 	}
 	
+	/**
+	 * 	Uložení nové platby
+	 * 
+	 * 	@param payment - platba pro uložení
+	 * 	@param result - BindingResult
+	 * 
+	 * 	@return - vrací chybové zprávy
+	 */
 	@PostMapping("/new-payment")
 	public ResponseEntity<Object> newPayment(@Valid @RequestBody Payment payment, BindingResult result) {
 		

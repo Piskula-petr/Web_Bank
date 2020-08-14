@@ -34,6 +34,8 @@ public class LoginPageController {
 	 * 
 	 * 	@param loginData - přihlašovací údaje
 	 * 	@param result - BindingResult
+	 * 
+	 * 	@return - vrací chybové zprávy
 	 */
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@Valid @RequestBody LoginData loginData, BindingResult result) {

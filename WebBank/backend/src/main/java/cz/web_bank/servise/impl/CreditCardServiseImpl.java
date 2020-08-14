@@ -16,6 +16,13 @@ public class CreditCardServiseImpl implements CreditCardServise {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	/**
+	 * 	Kreditní karta podle uživatelského ID
+	 * 
+	 * 	@param userID - uživatelské ID
+	 * 	
+	 * 	@return - vrací kreditní kartu
+	 */
 	@Override
 	@Transactional
 	public CreditCard getCreditCardByUserID(Long userID) {

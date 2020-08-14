@@ -3,6 +3,8 @@ import {Redirect} from "react-router-dom";
 import "../css/newPayment.css";
 import payment from "../images/payment.png";
 
+// Komponenty
+import NavigationPanel from "../NavigationPanel";
 import TableSeparator from "./TableSeparator";
 import InputPanel from "./InputPanel";
 import InputPanelWithCurrencies from "./InputPanelWithCurrencies";
@@ -226,13 +228,20 @@ handleChange(event) {
 
     render() {
 
+        // Přesměrování na přihlašovací stránku
+        if (this.props.userID === 0) {
+            return <Redirect to="/prihlaseni" />;
+        }
+
         // Přesměrování na stránku přehledu
         if ( this.state.successfulPayment) {
             return <Redirect to="/prehled" />;
         }
 
         return(
-            <div id="newPaymentContainer">
+            <div id="content" className="toCenter">
+
+               <NavigationPanel {...this.props} />
 
                 <form id="newPayment" onSubmit={this.handleSubmit}>
 

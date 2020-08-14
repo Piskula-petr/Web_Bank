@@ -19,6 +19,11 @@ public class BankCodesServiseImpl implements BankCodesServise {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	/**
+	 * 	Seznam bankovních kódů
+	 * 
+	 * 	@return - vrací List bankovních kódů
+	 */
 	@Override
 	@Transactional
 	public List<BankCode> getBankCodes() {
