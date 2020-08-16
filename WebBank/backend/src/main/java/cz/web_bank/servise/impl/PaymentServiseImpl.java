@@ -105,7 +105,15 @@ public class PaymentServiseImpl implements PaymentServise {
 		query.setParameter("startOfMonth", startOfMonth);
 		query.setParameter("endOfMonth", endOfMonth);
 		
-		return (BigDecimal) query.uniqueResult();
+		BigDecimal resultSum = (BigDecimal) query.uniqueResult();
+		
+		// Natsavení 0, při žádném výsledku
+		if (resultSum == null) {
+			
+			resultSum = resultSum.ZERO;
+		}
+		
+		return resultSum;
 	}
 	
 	/**
