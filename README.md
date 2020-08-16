@@ -2,7 +2,7 @@
 
 <div>
   <img src="web_bank1.jpg" width="49%">
-  <img src="web_bank2.jpg" width="49.1%">
+  <img src="web_bank2.jpg" width="49.5%">
 </div> <br>
 
 ## Description
