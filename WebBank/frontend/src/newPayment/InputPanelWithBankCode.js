@@ -22,8 +22,12 @@ export default class InputPanelWithBankCode extends Component {
     componentDidMount() {
 
         // Request - vrací kódy bank
-        fetch("http://localhost:8080/api/bank-codes").then(response => response.json()
-        .then(data => this.setState({
+        fetch("http://localhost:8080/api/bank-codes", {
+
+            method: "POST",
+
+        }).then(response => response.json().then(data => this.setState({
+            
             bankCodes: data,
         })));
     }

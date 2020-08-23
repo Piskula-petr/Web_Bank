@@ -30,16 +30,31 @@ export default class PaymentHistory extends Component {
         let currentDate = new Date();
 
         // Request - vrací platby ze zadaného měsíce
-        fetch("http://localhost:8080/api/payments/" + this.props.userID 
-            + "/year=" + currentDate.getFullYear() + "&month=" + (currentDate.getMonth() + 1))
-            .then(response => response.json().then(data => this.setState({
-                payments: data,
+        fetch("http://localhost:8080/api/payments/month", {
+
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+
+            body: JSON.stringify({
+                "userID": this.props.userID,
+                "month": currentDate.getMonth() + 1,
+                "year": currentDate.getFullYear(),
+            }),
+
+        }).then(response => response.json().then(data => this.setState({
+            payments: data,
         })));
 
         // Request - vrací celkový počat plateb
-        fetch("http://localhost:8080/api/payments/count/" + this.props.userID)
-            .then(response => response.json().then(data => this.setState({
-                paymentsCount: data.paymentsCount,
+        fetch("http://localhost:8080/api/payments/count", {
+
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+
+            body: this.props.userID,
+
+        }).then(response => response.json().then(data => this.setState({
+            paymentsCount: data.paymentsCount,
         })));
     }
 
@@ -61,9 +76,18 @@ export default class PaymentHistory extends Component {
         let payments = this.state.payments;
 
         // Request - vrací platby ze zadaného měsíce
-        fetch("http://localhost:8080/api/payments/" + this.props.userID
-            + "/year=" + year + "&month=" + month)
-            .then(response => response.json().then(data => {
+        fetch("http://localhost:8080/api/payments/month", {
+
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+
+            body: JSON.stringify({
+                "userID": this.props.userID,
+                "month": month,
+                "year": year,
+            }),
+
+        }).then(response => response.json().then(data => {
 
             payments.push(...data);
 

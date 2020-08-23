@@ -9,8 +9,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +19,7 @@ import cz.web_bank.entity.CreditCard;
 import cz.web_bank.entity.Payment;
 import cz.web_bank.entity.User;
 import cz.web_bank.pojo.MonthSum;
+import cz.web_bank.pojo.SelectedTerm;
 import cz.web_bank.servise.CreditCardServise;
 import cz.web_bank.servise.PaymentServise;
 import cz.web_bank.servise.UserServise;
@@ -44,8 +45,8 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací požadovaného uživatele
 	 */
-	@GetMapping("/user/{userID}")
-	public @ResponseBody User getUser(@PathVariable("userID") long userID) {
+	@PostMapping("/user")
+	public @ResponseBody User getUser(@RequestBody long userID) {
 		
 		User user = userServise.getUserByID(userID);
 		
@@ -59,8 +60,8 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací požadovanou kreditní kartu
 	 */
-	@GetMapping("/credit-card/{userID}")
-	public @ResponseBody CreditCard getCreditCard(@PathVariable("userID") long userID) {
+	@PostMapping("/credit-card")
+	public @ResponseBody CreditCard getCreditCard(@RequestBody long userID) {
 		
 		CreditCard creditCard = creditCardServise.getCreditCardByUserID(userID);
 	
@@ -74,8 +75,8 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací Mapu s počtem plateb
 	 */
-	@GetMapping("/payments/count/{userID}")
-	public @ResponseBody Map<String, Long> getPaymentCount(@PathVariable("userID") long userID) {
+	@PostMapping("/payments/count")
+	public @ResponseBody Map<String, Long> getPaymentCount(@RequestBody long userID) {
 		
 		long count = paymentServise.getPaymentsCount(userID);
 		
@@ -88,33 +89,29 @@ public class OverviewPageController {
 	/**
 	 * 	Získání plateb uživatele v požadovaném měsíci
 	 * 
-	 * 	@param userID - uživatelské ID
-	 * 	@param year - aktuální rok
-	 * 	@param month - požadovaný měsíc (číselná forma 1 - 12)
+	 * 	@param selectedTerm - zadané období (userID, month, year)
 	 * 
 	 * 	@return - vrací List plateb
 	 */
-	@GetMapping("/payments/{userID}/year={year}&month={month}")
-	public @ResponseBody List<Payment> getPayments(@PathVariable("userID") long userID,
-												   @PathVariable("year") int year,
-												   @PathVariable("month") int month) {
+	@PostMapping("/payments/month")
+	public @ResponseBody List<Payment> getPayments(@RequestBody SelectedTerm selectedTerm) {
 		
 		// Začátek měsíce "2020-01-01"
-		LocalDate startOfMonth = LocalDate.of(year, month, 1);
+		LocalDate startOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), 1);
 		
 		// Konec měsíce "2020-01-31"
-		LocalDate endOfMonth = LocalDate.of(year, month, startOfMonth.lengthOfMonth());
+		LocalDate endOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), startOfMonth.lengthOfMonth());
 		
-		List<Payment> payments = paymentServise.getPaymentsByUserID(userID, startOfMonth, endOfMonth);
+		List<Payment> payments = paymentServise.getPaymentsByUserID(selectedTerm.getUserID(), startOfMonth, endOfMonth);
 		
 		// Načtení plateb z pozdějšího měsíce 
 		// Pouze při nízkém počtu plateb a v aktuálním měsíci
-		if (payments.size() < 10 && LocalDate.now().getMonthValue() == month) {
+		if (payments.size() < 10 && LocalDate.now().getMonthValue() == selectedTerm.getMonth()) {
 			
-			startOfMonth = LocalDate.of(year, month - 1, 1);
-			endOfMonth = LocalDate.of(year, month - 1, startOfMonth.lengthOfMonth());
+			startOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth() - 1, 1);
+			endOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth() - 1, startOfMonth.lengthOfMonth());
 			
-			List<Payment> olderPayments = paymentServise.getPaymentsByUserID(userID, startOfMonth, endOfMonth);
+			List<Payment> olderPayments = paymentServise.getPaymentsByUserID(selectedTerm.getUserID(), startOfMonth, endOfMonth);
 			payments.addAll(olderPayments);
 		}
 		
@@ -124,27 +121,23 @@ public class OverviewPageController {
 	/**
 	 * 	Získání příjmů a výdajů uživatele v požadovaném měsíci
 	 * 
-	 * 	@param userID - uživatelské ID
-	 * 	@param year - aktuální rok
-	 * 	@param month - požadovaný měsíc (číselná forma 1 - 12)
+	 * 	@param selectedTerm - zadané období (userID, month, year)
 	 * 
 	 * 	@return - vrací List příjmů a výdajů
 	 */
-	@GetMapping("/payments/sum/{userID}/year={year}&month={month}")
-	public @ResponseBody Map<String, BigDecimal> getMonnthSum(@PathVariable("userID") long userID,
-											       			  @PathVariable("year") int year,
-										       				  @PathVariable("month") int month) {
+	@PostMapping("/payments/sum/month")
+	public @ResponseBody Map<String, BigDecimal> getMonnthSum(@RequestBody SelectedTerm selectedTerm) {
 		
 		// Začátek měsíce "2020-01-01"
-		LocalDate startOfMonth = LocalDate.of(year, month, 1);
+		LocalDate startOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), 1);
 		
 		// Konec měsíce "2020-01-31"
-		LocalDate endOfMonth = LocalDate.of(year, month, startOfMonth.lengthOfMonth());
+		LocalDate endOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), startOfMonth.lengthOfMonth());
 		
 		Map <String, BigDecimal> paymentsSum = new HashMap<>();
 		
-		BigDecimal income = paymentServise.getPaymentsSum(userID, "+", startOfMonth, endOfMonth);
-		BigDecimal costs = paymentServise.getPaymentsSum(userID, "-", startOfMonth, endOfMonth);
+		BigDecimal income = paymentServise.getPaymentsSum(selectedTerm.getUserID(), "+", startOfMonth, endOfMonth);
+		BigDecimal costs = paymentServise.getPaymentsSum(selectedTerm.getUserID(), "-", startOfMonth, endOfMonth);
 		
 		BigDecimal balance = new BigDecimal(income.doubleValue() - costs.doubleValue());
 		
@@ -162,8 +155,8 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací List měsíčních příjmů a výdajů
 	 */
-	@GetMapping("/payments/sum/{userID}")
-	public @ResponseBody List<MonthSum> getMonthsSum(@PathVariable("userID") long userID) {
+	@PostMapping("/payments/sum/graphs")
+	public @ResponseBody List<MonthSum> getMonthsSum(@RequestBody long userID) {
 		
 		List<MonthSum> monthsSum = new ArrayList<>();
 		

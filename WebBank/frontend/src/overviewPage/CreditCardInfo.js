@@ -30,17 +30,29 @@ export default class CreditCardInfo extends Component {
     componentDidMount() {
 
         // Request - vrací kreditní kartu, podle ID uživatele
-        fetch("http://localhost:8080/api/credit-card/" + this.props.userID)
-            .then(response => response.json().then(data => this.setState({
-                creditCard: data,
-            })));
+        fetch("http://localhost:8080/api/credit-card", {
+
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+
+            body: this.props.userID,
+
+        }).then(response => response.json().then(data => this.setState({
+            creditCard: data,
+        })));
 
         // Request - vrací uživatele, podle ID
-        fetch("http://localhost:8080/api/user/" + this.props.userID)
-            .then(response => response.json().then(data => this.setState({
-                name: data.name,
-                surname: data.surname,
-            })));
+        fetch("http://localhost:8080/api/user", {
+
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+
+            body: this.props.userID,
+
+        }).then(response => response.json().then(data => this.setState({
+            name: data.name,
+            surname: data.surname,
+        })));
     }
 
 // Vykreslení ////////////////////////////////////////////////////////////////

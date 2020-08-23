@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,7 +45,7 @@ public class NewPaymentController {
 	 * 
 	 * 	@return - vrací List bankovních kódů
 	 */
-	@GetMapping("/bank-codes")
+	@PostMapping("/bank-codes")
 	public @ResponseBody List<BankCode> getBankCodes() {
 		
 		List<BankCode> bankCodes = bankCodesServise.getBankCodes();
@@ -59,7 +58,7 @@ public class NewPaymentController {
 	 * 
 	 * 	@return - vrací List měn
 	 */
-	@GetMapping("/currencies")
+	@PostMapping("/currencies")
 	public @ResponseBody List<Currency> getCurrencies() {
 		
 		List<Currency> currencies = currenciesServise.getCurrencies();

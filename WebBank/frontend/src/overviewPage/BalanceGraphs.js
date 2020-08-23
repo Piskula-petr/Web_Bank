@@ -29,11 +29,17 @@ export default class BalanceGraphs extends Component {
 
     componentDidMount() {
 
-        fetch("http://localhost:8080/api/payments/sum/" + this.props.userID)
-            .then(response => response.json().then(data => this.setState({
+        fetch("http://localhost:8080/api/payments/sum/graphs", {
 
-                monthsSum: data,
-                currentMonth: new Date().getMonth() + 1,
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+
+            body: this.props.userID,
+
+        }).then(response => response.json().then(data => this.setState({
+
+            monthsSum: data,
+            currentMonth: new Date().getMonth() + 1,
 
             }, () => this.drawGraphs()
         )));
@@ -43,6 +49,7 @@ export default class BalanceGraphs extends Component {
 
     drawGraphs() {
 
+        // Maximální hodnota
         let maxValue = 0;
 
         // Nastavení nejvýšší hodnoty

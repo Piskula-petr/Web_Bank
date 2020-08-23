@@ -47,16 +47,25 @@ export default class MonthReport extends Component {
         });
 
         // Request - vrací součet plateb za zadaného měsíce
-        fetch("http://localhost:8080/api/payments/sum/" + this.props.userID + 
-            "/year=" + date.getFullYear() + "&month=" + (date.getMonth() + 1))
-            .then(response => response.json().then(data => this.setState({
+        fetch("http://localhost:8080/api/payments/sum/month", {
 
-                selectedMonth: {
-                        ...this.state.selectedMonth,
-                        income: data.income,
-                        costs: data.costs,
-                        balance: data.balance,
-                },
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+
+            body: JSON.stringify({
+                "userID": this.props.userID,
+                "month": date.getMonth() + 1,
+                "year": date.getFullYear(),
+            }), 
+
+        }).then(response => response.json().then(data => this.setState({
+
+            selectedMonth: {
+                    ...this.state.selectedMonth,
+                    income: data.income,
+                    costs: data.costs,
+                    balance: data.balance,
+            },
         })));
     }
 
@@ -64,26 +73,44 @@ export default class MonthReport extends Component {
 
     nextMonth() {
 
-        const nextMonth = this.state.selectedMonth.number + 1;
+        let nextMonth = this.state.selectedMonth.number + 1;
+        let year = this.state.selectedMonth.year;
+
+        // Přechod na novější rok
+        if (nextMonth > 12) {
+
+            nextMonth = 1;
+            year = year + 1;
+        }
 
         // Request - vrací součet plateb za zadaného měsíce
-        fetch("http://localhost:8080/api/payments/sum/" + this.props.userID + 
-            "/year=" + this.state.selectedMonth.year + "&month=" + nextMonth)
-            .then(response => response.json().then(data => {
+        fetch("http://localhost:8080/api/payments/sum/month", {
 
-                if (response.ok) {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
 
-                    this.setState({
-                        selectedMonth: {
-                            ...this.state.selectedMonth,
-                            name: Months[nextMonth],
-                            number: nextMonth,
-                            income: data.income,
-                            costs: data.costs,
-                            balance: data.balance,
-                        }
-                    });
-                }
+        body: JSON.stringify({
+            "userID": this.props.userID,
+            "month": nextMonth,
+            "year": this.state.selectedMonth.year,
+        }),
+
+        }).then(response => response.json().then(data => {
+
+            if (response.ok) {
+
+                this.setState({
+                    selectedMonth: {
+                        ...this.state.selectedMonth,
+                        name: Months[nextMonth],
+                        number: nextMonth,
+                        year: year,
+                        income: data.income,
+                        costs: data.costs,
+                        balance: data.balance,
+                    }
+                });
+            }
         }));
     }
 
@@ -91,26 +118,44 @@ export default class MonthReport extends Component {
 
     previousMonth () {
 
-        const previousMonth = this.state.selectedMonth.number - 1;
+        let previousMonth = this.state.selectedMonth.number - 1;
+        let year = this.state.selectedMonth.year;
+
+        // Přechod na starší rok
+        if (previousMonth < 1) {
+
+            previousMonth = 12;
+            year = year - 1;
+        } 
 
         // Request - vrací součet plateb za zadaného měsíce
-        fetch("http://localhost:8080/api/payments/sum/" + this.props.userID + 
-            "/year=" + this.state.selectedMonth.year + "&month=" + previousMonth)
-            .then(response => response.json().then(data => {
+        fetch("http://localhost:8080/api/payments/sum/month", {
 
-                if (response.ok) {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
 
-                    this.setState({
-                        selectedMonth: {
-                            ...this.state.selectedMonth,
-                            name: Months[previousMonth],
-                            number: previousMonth,
-                            income: data.income,
-                            costs: data.costs,
-                            balance: data.balance,
-                        }
-                    });
-                }
+            body: JSON.stringify({
+                "userID": this.props.userID,
+                "month": previousMonth,
+                "year": year,
+            }),
+
+        }).then(response => response.json().then(data => {
+
+            if (response.ok) {
+
+                this.setState({
+                    selectedMonth: {
+                        ...this.state.selectedMonth,
+                        name: Months[previousMonth],
+                        number: previousMonth,
+                        year: year,
+                        income: data.income,
+                        costs: data.costs,
+                        balance: data.balance,
+                    }
+                });
+            }
         }));
     }
 

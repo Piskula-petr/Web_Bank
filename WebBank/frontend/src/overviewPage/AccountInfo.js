@@ -53,19 +53,25 @@ export default class AccountInfo extends Component {
         fetch("https://api.exchangeratesapi.io/latest?base=CZK")
             .then(response => response.json().then(data => this.setState({
                 
-                currencies: {
-                    CZK: data.rates.CZK,
-                    EUR: data.rates.EUR,
-                    JPY: data.rates.JPY,
-                    USD: data.rates.USD,
-                } 
-            })));
+            currencies: {
+                CZK: data.rates.CZK,
+                EUR: data.rates.EUR,
+                JPY: data.rates.JPY,
+                USD: data.rates.USD,
+            } 
+        })));
 
         // Request - vrací uživatele, podle ID
-        fetch("http://localhost:8080/api/user/" + this.props.userID)
-            .then(response => response.json().then(data => this.setState({
-                user: data,
-            })));
+        fetch("http://localhost:8080/api/user", {
+
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+
+            body: this.props.userID,
+
+        }).then(response => response.json().then(data => this.setState({
+            user: data,
+        })));
     }
 
 // Změna stavu měny ////////////////////////////////////////////////////////////////

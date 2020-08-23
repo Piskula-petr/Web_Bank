@@ -63,6 +63,7 @@ export default class OverviewIndex extends Component {
                                  setCurrency={this.setCurrency} 
                                  currency={this.state.currency}
                     />
+                    
                     <CreditCardInfo userID={this.props.userID} />
                         
                     <Link id="newPaymentLink" to="/nova-platba">Nová platba</Link>

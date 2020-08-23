@@ -19,9 +19,13 @@ export default class InputPanelWithCurrencies extends Component {
     componentDidMount() {
 
         // Request - vrací seznam měn
-        fetch("http://localhost:8080/api/currencies").then(response => response.json()
-            .then(data => this.setState({
-                currencies: data.sort((a, b) => {return a.id - b.id}),
+        fetch("http://localhost:8080/api/currencies", {
+
+            method: "POST",
+
+        }).then(response => response.json().then(data => this.setState({
+
+            currencies: data.sort((a, b) => {return a.id - b.id}),
         })));
     }
 
