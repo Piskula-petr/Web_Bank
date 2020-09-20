@@ -1,4 +1,4 @@
-package cz.web_bank.entity;
+package cz.web_bank.entities;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

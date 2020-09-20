@@ -1,4 +1,4 @@
-package cz.web_bank.servise.impl;
+package cz.web_bank.services.impl;
 
 import javax.transaction.Transactional;
 
@@ -8,11 +8,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cz.web_bank.entity.User;
-import cz.web_bank.servise.UserServise;
+import cz.web_bank.entities.User;
+import cz.web_bank.services.UserService;
 
 @Service
-public class UserServiseImpl implements UserServise {
+public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private SessionFactory sessionFactory;

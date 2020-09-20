@@ -1,4 +1,4 @@
-package cz.web_bank.entity;
+package cz.web_bank.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,12 +1,12 @@
-package cz.web_bank.servise;
+package cz.web_bank.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import cz.web_bank.entity.Payment;
+import cz.web_bank.entities.Payment;
 
-public interface PaymentServise {
+public interface PaymentService {
 
 	/**
 	 * 	Celkový počet plateb uřivatele

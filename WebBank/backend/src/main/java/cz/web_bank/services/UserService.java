@@ -1,8 +1,8 @@
-package cz.web_bank.servise;
+package cz.web_bank.services;
 
-import cz.web_bank.entity.User;
+import cz.web_bank.entities.User;
 
-public interface UserServise {
+public interface UserService {
 	
 	/**
 	 * 	Uživatelské ID

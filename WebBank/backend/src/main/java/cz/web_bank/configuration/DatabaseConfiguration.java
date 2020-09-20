@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @PropertySource("classpath:database.properties")
 @EnableTransactionManagement
-@ComponentScan(basePackages = "cz.web_bank.servise")
+@ComponentScan(basePackages = "cz.web_bank.services")
 public class DatabaseConfiguration {
 
 	@Autowired
@@ -29,7 +29,7 @@ public class DatabaseConfiguration {
 		
 		LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
 		sessionFactory.setDataSource(dataSource());
-		sessionFactory.setPackagesToScan(new String [] {"cz.web_bank.entity"});
+		sessionFactory.setPackagesToScan(new String [] {"cz.web_bank.entities"});
 		sessionFactory.setHibernateProperties(hibernateProperties());
 		
 		return sessionFactory;

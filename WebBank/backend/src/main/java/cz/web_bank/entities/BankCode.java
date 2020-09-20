@@ -1,4 +1,4 @@
-package cz.web_bank.entity;
+package cz.web_bank.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

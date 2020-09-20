@@ -1,8 +1,8 @@
-package cz.web_bank.servise;
+package cz.web_bank.services;
 
-import cz.web_bank.entity.CreditCard;
+import cz.web_bank.entities.CreditCard;
 
-public interface CreditCardServise {
+public interface CreditCardService {
 
 	/**
 	 * 	Kreditní karta podle uživatelského ID

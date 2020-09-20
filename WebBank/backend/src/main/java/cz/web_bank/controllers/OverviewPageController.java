@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import cz.web_bank.entity.CreditCard;
-import cz.web_bank.entity.Payment;
-import cz.web_bank.entity.User;
+import cz.web_bank.entities.CreditCard;
+import cz.web_bank.entities.Payment;
+import cz.web_bank.entities.User;
 import cz.web_bank.pojo.MonthSum;
 import cz.web_bank.pojo.SelectedTerm;
-import cz.web_bank.servise.CreditCardServise;
-import cz.web_bank.servise.PaymentServise;
-import cz.web_bank.servise.UserServise;
+import cz.web_bank.services.CreditCardService;
+import cz.web_bank.services.PaymentService;
+import cz.web_bank.services.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -30,13 +30,13 @@ import cz.web_bank.servise.UserServise;
 public class OverviewPageController {
 
 	@Autowired
-	private UserServise userServise;
+	private UserService userServise;
 	
 	@Autowired
-	private CreditCardServise creditCardServise;
+	private CreditCardService creditCardServise;
 	
 	@Autowired
-	private PaymentServise paymentServise;
+	private PaymentService paymentServise;
 	
 	/**
 	 * 	Získání uživatele podle ID

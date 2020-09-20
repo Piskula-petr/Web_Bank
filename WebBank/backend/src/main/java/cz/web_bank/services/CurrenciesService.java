@@ -1,10 +1,10 @@
-package cz.web_bank.servise;
+package cz.web_bank.services;
 
 import java.util.List;
 
-import cz.web_bank.entity.Currency;
+import cz.web_bank.entities.Currency;
 
-public interface CurrenciesServise {
+public interface CurrenciesService {
 
 	/**
 	 * 	Seznam měn

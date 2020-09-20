@@ -1,4 +1,4 @@
-package cz.web_bank.servise.impl;
+package cz.web_bank.services.impl;
 
 import java.util.List;
 
@@ -10,11 +10,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cz.web_bank.entity.Currency;
-import cz.web_bank.servise.CurrenciesServise;
+import cz.web_bank.entities.Currency;
+import cz.web_bank.services.CurrenciesService;
 
 @Service
-public class CurrenciesServiseImpl implements CurrenciesServise {
+public class CurrenciesServiceImpl implements CurrenciesService {
 
 	@Autowired
 	private SessionFactory sessionFactory;

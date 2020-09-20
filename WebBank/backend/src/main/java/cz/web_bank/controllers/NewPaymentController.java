@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import cz.web_bank.entity.BankCode;
-import cz.web_bank.entity.Currency;
-import cz.web_bank.entity.Payment;
-import cz.web_bank.servise.BankCodesServise;
-import cz.web_bank.servise.CurrenciesServise;
-import cz.web_bank.servise.PaymentServise;
+import cz.web_bank.entities.BankCode;
+import cz.web_bank.entities.Currency;
+import cz.web_bank.entities.Payment;
+import cz.web_bank.services.BankCodesService;
+import cz.web_bank.services.CurrenciesService;
+import cz.web_bank.services.PaymentService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -32,13 +32,13 @@ import cz.web_bank.servise.PaymentServise;
 public class NewPaymentController {
 
 	@Autowired
-	private BankCodesServise bankCodesServise;
+	private BankCodesService bankCodesServise;
 	
 	@Autowired
-	private CurrenciesServise currenciesServise;
+	private CurrenciesService currenciesServise;
 	
 	@Autowired
-	private PaymentServise paymentServise;
+	private PaymentService paymentServise;
 	
 	/**
 	 * 	Získání seznamu bankovních kódů

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cz.web_bank.pojo.LoginData;
-import cz.web_bank.servise.UserServise;
+import cz.web_bank.services.UserService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -27,7 +27,7 @@ import cz.web_bank.servise.UserServise;
 public class LoginPageController {
 
 	@Autowired
-	private UserServise userServise;
+	private UserService userServise;
 	
 	/**
 	 * 	Ověření přihlašovacích údajů

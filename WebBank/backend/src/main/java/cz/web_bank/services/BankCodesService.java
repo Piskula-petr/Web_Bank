@@ -1,10 +1,10 @@
-package cz.web_bank.servise;
+package cz.web_bank.services;
 
 import java.util.List;
 
-import cz.web_bank.entity.BankCode;
+import cz.web_bank.entities.BankCode;
 
-public interface BankCodesServise {
+public interface BankCodesService {
 
 	/**
 	 * 	Seznam bankovních kódů

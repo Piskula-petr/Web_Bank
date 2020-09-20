@@ -1,4 +1,4 @@
-package cz.web_bank.servise.impl;
+package cz.web_bank.services.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,11 +12,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cz.web_bank.entity.Payment;
-import cz.web_bank.servise.PaymentServise;
+import cz.web_bank.entities.Payment;
+import cz.web_bank.services.PaymentService;
 
 @Service
-public class PaymentServiseImpl implements PaymentServise {
+public class PaymentServiceImpl implements PaymentService {
 
 	@Autowired
 	private SessionFactory sessionFactory;
@@ -131,7 +131,7 @@ public class PaymentServiseImpl implements PaymentServise {
 		
 		Query query = session.createQuery(
 				
-		"Select accountNumber "
+		"SELECT accountNumber "
 	  + "FROM users "
 	  + "WHERE id = :senderID");
 		
