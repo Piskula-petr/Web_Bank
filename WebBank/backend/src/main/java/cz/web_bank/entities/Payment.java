@@ -13,6 +13,11 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 @Entity(name = "payments")
 public class Payment {
 	
@@ -50,6 +55,8 @@ public class Payment {
 	@Column(name = "specific_symbol", length = 10)
 	private Long specificSymbol;
 	
+	@JsonDeserialize(using = LocalDateDeserializer.class)  
+	@JsonSerialize(using = LocalDateSerializer.class) 
 	@Column(name = "payment_date")
 	private LocalDate paymentDate;
 	
@@ -134,7 +141,7 @@ public class Payment {
 		this.constantSymbol = constantSymbol;
 	}
 
-	public long getSpecificSymbol() {
+	public Long getSpecificSymbol() {
 		return specificSymbol;
 	}
 
