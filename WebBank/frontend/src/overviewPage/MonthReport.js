@@ -92,7 +92,7 @@ export default class MonthReport extends Component {
         body: JSON.stringify({
             "userID": this.props.userID,
             "month": nextMonth,
-            "year": this.state.selectedMonth.year,
+            "year": year,
         }),
 
         }).then(response => response.json().then(data => {

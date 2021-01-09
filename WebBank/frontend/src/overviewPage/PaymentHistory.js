@@ -62,18 +62,19 @@ export default class PaymentHistory extends Component {
 
     showMorepayments() {
 
+        let payments = this.state.payments;
+
         const length = this.state.payments.length;
 
         // Datum poslední zobrazené platby
         const lastPaymentDate = this.state.payments[length - 1].paymentDate;
 
-        // Rozložení datumu [01], [01], [2020];
-        const lastPaymentDateArray = DateFormatter(lastPaymentDate).split(".");
+        // Datum předchozího měsíce
+        let date = new Date(lastPaymentDate);
+        date.setMonth(date.getMonth() - 1);
 
-        const month = parseInt(lastPaymentDateArray[1]) - 1;
-        const year = lastPaymentDateArray[2];
-
-        let payments = this.state.payments;
+        const previousMonth = date.getMonth() + 1;  // [0-11] - > [1-12]
+        const year = date.getFullYear();
 
         // Request - vrací platby ze zadaného měsíce
         fetch("http://localhost:8080/api/payments/month", {
@@ -83,7 +84,7 @@ export default class PaymentHistory extends Component {
 
             body: JSON.stringify({
                 "userID": this.props.userID,
-                "month": month,
+                "month": previousMonth,
                 "year": year,
             }),
 
@@ -101,8 +102,6 @@ export default class PaymentHistory extends Component {
 
     render() {
 
-        let year = new Date().getFullYear();
-
         return(
             <div id="history">
 
@@ -115,7 +114,7 @@ export default class PaymentHistory extends Component {
                                     <tr>
                                         <td id="column1" rowSpan="2">
                                             <div id="paymentDate">
-                                                {DateFormatter(item.paymentDate).replace(year, "")}
+                                                {DateFormatter(item.paymentDate).substring(0, 6)}
                                             </div>
                                         </td>
 
