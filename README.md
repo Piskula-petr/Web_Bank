@@ -14,3 +14,4 @@ Hibernate <br>
 Hibernate Validator <br>
 React <br>
 PostgreSQL <br>
+JUnit / Mockito
