@@ -108,10 +108,8 @@ public class OverviewPageController {
 		// Pouze při nízkém počtu plateb a v aktuálním měsíci
 		if (payments.size() < 10 && LocalDate.now().getMonthValue() == selectedTerm.getMonth()) {
 			
-			startOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), 1);
+			// Dekrementace o jeden měsíc
 			startOfMonth = startOfMonth.minusMonths(1);
-			
-			endOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), startOfMonth.lengthOfMonth());
 			endOfMonth = endOfMonth.minusMonths(1);
 			
 			List<Payment> olderPayments = paymentServise.getPaymentsByUserID(selectedTerm.getUserID(), startOfMonth, endOfMonth);
