@@ -15,3 +15,6 @@ Hibernate Validator <br>
 React <br>
 PostgreSQL <br>
 JUnit / Mockito
+
+## SQL Diagram
+<img src="sql.png">
