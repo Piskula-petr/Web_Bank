@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
+import "./App.css";
 
-// Komponenty
-import LoginForm from "./loginPage/LoginForm";
+import LoginForm from "./components/loginPage/LoginForm";
 import OverviewIndex from "./overviewPage/OverviewIndex";
 import NewPayment from "./newPayment/NewPayment";
 

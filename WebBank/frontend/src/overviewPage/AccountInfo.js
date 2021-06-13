@@ -50,7 +50,7 @@ export default class AccountInfo extends Component {
     componentDidMount() {
 
         // Request - vrací seznam aktuálních kurzů
-        fetch("https://api.exchangeratesapi.io/latest?base=CZK")
+        fetch("https://api.exchangerate.host/latest?base=CZK&symbols=EUR,JPY,USD")
             .then(response => response.json().then(data => this.setState({
                 
             currencies: {

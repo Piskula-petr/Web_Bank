@@ -21,6 +21,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	
 	/**
 	 * 	Celkový počet plateb uřivatele
 	 * 
@@ -45,6 +46,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		return paymentsCount;
 	}
+	
 	
 	/**
 	 * 	Seznam plateb uživatele v zadaném měsíci
@@ -76,6 +78,7 @@ public class PaymentServiceImpl implements PaymentService {
  		
 		return payments;
 	}
+	
 	
 	/**
 	 * 	Součet plateb uživatele v zadaném měsíci
@@ -115,6 +118,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		return resultSum;
 	}
+	
 	
 	/**
 	 * 	Uložení nové platby

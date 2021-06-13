@@ -17,6 +17,7 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	
 	/**
 	 * 	Uživatelské ID
 	 * 
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
 		return (Long) query.uniqueResult();
 	}
 
+	
 	/**
 	 * 	Detaily o uživatelei podle ID
 	 * 

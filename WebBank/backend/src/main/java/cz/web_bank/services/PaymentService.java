@@ -8,6 +8,7 @@ import cz.web_bank.entities.Payment;
 
 public interface PaymentService {
 
+	
 	/**
 	 * 	Celkový počet plateb uřivatele
 	 * 
@@ -16,6 +17,7 @@ public interface PaymentService {
 	 * 	@return - vrací celkový počet plateb
 	 */
 	public Long getPaymentsCount(Long userID);
+	
 	
 	/**
 	 * 	Seznam plateb uživatele v zadaném měsíci
@@ -28,6 +30,7 @@ public interface PaymentService {
 	 */
 	public List<Payment> getPaymentsByUserID(Long userID, LocalDate startOfMonth,
 											 LocalDate endOfMonth);
+	
 	
 	/**
 	 * 	Součet plateb uživatele v zadaném měsíci
@@ -42,10 +45,12 @@ public interface PaymentService {
 	public BigDecimal getPaymentsSum(Long userID, String mark, LocalDate startOfMonth,
 			 					     LocalDate endOfMonth);
 	
+	
 	/**
 	 * 	Uložení nové platby
 	 * 
 	 * 	@param senderPayment - platba odesilatele
 	 */
 	public void savePayment(Payment senderPayment);
+	
 }

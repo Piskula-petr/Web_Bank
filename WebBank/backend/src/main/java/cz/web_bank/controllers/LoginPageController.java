@@ -29,6 +29,7 @@ public class LoginPageController {
 	@Autowired
 	private UserService userServise;
 	
+	
 	/**
 	 * 	Ověření přihlašovacích údajů
 	 * 

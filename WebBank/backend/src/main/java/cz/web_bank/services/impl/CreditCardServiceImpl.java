@@ -16,6 +16,7 @@ public class CreditCardServiceImpl implements CreditCardService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	
 	/**
 	 * 	Kreditní karta podle uživatelského ID
 	 * 

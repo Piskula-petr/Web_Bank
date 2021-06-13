@@ -19,6 +19,7 @@ public class CurrenciesServiceImpl implements CurrenciesService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	
 	/**
 	 * 	Seznam měn
 	 * 

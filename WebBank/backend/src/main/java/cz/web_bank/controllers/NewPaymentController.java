@@ -40,6 +40,7 @@ public class NewPaymentController {
 	@Autowired
 	private PaymentService paymentServise;
 	
+	
 	/**
 	 * 	Získání seznamu bankovních kódů
 	 * 
@@ -53,6 +54,7 @@ public class NewPaymentController {
 		return bankCodes;
 	}
 	
+	
 	/**
 	 * 	Získání seznamu měn
 	 * 
@@ -65,6 +67,7 @@ public class NewPaymentController {
 		
 		return currencies;
 	}
+	
 	
 	/**
 	 * 	Uložení nové platby

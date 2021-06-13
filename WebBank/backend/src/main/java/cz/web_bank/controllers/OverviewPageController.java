@@ -38,6 +38,7 @@ public class OverviewPageController {
 	@Autowired
 	private PaymentService paymentServise;
 	
+	
 	/**
 	 * 	Získání uživatele podle ID
 	 * 
@@ -53,6 +54,7 @@ public class OverviewPageController {
 		return user;
 	}
 	
+	
 	/**
 	 * 	Získání kreditní karty podle uživatelského ID
 	 * 
@@ -67,6 +69,7 @@ public class OverviewPageController {
 	
 		return creditCard;
 	}
+	
 	
 	/**
 	 * 	Získání celkového počtu plateb uživatele
@@ -85,6 +88,7 @@ public class OverviewPageController {
 		
 		return paymentsCount;
 	}
+	
 	
 	/**
 	 * 	Získání plateb uživatele v požadovaném měsíci
@@ -119,6 +123,7 @@ public class OverviewPageController {
 		return payments;
 	}
 	
+	
 	/**
 	 * 	Získání příjmů a výdajů uživatele v požadovaném měsíci
 	 * 
@@ -148,6 +153,7 @@ public class OverviewPageController {
 		
 		return paymentsSum;
 	}
+	
 	
 	/**
 	 * 	Získání příjmů a výdajů uživatele z posledních 3 měsíců

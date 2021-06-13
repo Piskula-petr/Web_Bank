@@ -6,6 +6,7 @@ import cz.web_bank.entities.BankCode;
 
 public interface BankCodesService {
 
+	
 	/**
 	 * 	Seznam bankovních kódů
 	 * 
