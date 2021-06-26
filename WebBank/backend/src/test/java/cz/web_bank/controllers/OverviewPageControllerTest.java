@@ -7,7 +7,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,15 +23,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
+import cz.web_bank.ApplicationMain;
 import cz.web_bank.entities.CreditCard;
 import cz.web_bank.entities.Payment;
 import cz.web_bank.entities.User;
-import cz.web_bank.pojo.SelectedTerm;
 import cz.web_bank.services.CreditCardService;
 import cz.web_bank.services.PaymentService;
 import cz.web_bank.services.UserService;
@@ -53,6 +50,9 @@ public class OverviewPageControllerTest {
 	
 	@MockBean
 	private PaymentService paymentService;
+	
+	@MockBean
+	private ApplicationMain applicationMain;
 	
 	
 	/**
@@ -94,9 +94,7 @@ public class OverviewPageControllerTest {
 		long userID = random.nextLong();
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform(post("/api/user")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(new ObjectMapper().writeValueAsString(userID)))
+		mockMvc.perform(get("/api/user/userID=" + userID))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id").value(user.getId()))
 			.andExpect(jsonPath("$.name").value(user.getName()))
@@ -134,9 +132,7 @@ public class OverviewPageControllerTest {
 		long userID = random.nextLong();
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform(post("/api/credit-card")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(new ObjectMapper().writeValueAsString(userID)))
+		mockMvc.perform(get("/api/creditCard/userID=" + userID))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.id").value(creditCard.getId()))
 			.andExpect(jsonPath("$.cardNumber").value(creditCard.getCardNumber()))
@@ -164,9 +160,7 @@ public class OverviewPageControllerTest {
 		// ID uživatele
 		long userID = random.nextLong();
 		
-		mockMvc.perform(post("/api/payments/count")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(new ObjectMapper().writeValueAsString(userID)))
+		mockMvc.perform(get("/api/payments/count/userID=" + userID))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.paymentsCount").value(paymentCount));
 		
@@ -202,13 +196,13 @@ public class OverviewPageControllerTest {
 		
 		when(paymentService.getPaymentsByUserID(anyLong(), any(LocalDate.class), any(LocalDate.class))).thenReturn(payments);
 		
-		// Zvolené období
-		SelectedTerm selectedTerm = getSelectedTerm();
+		// URL parametry
+		long userID = random.nextLong();
+		int month = localDate.getMonthValue();
+		int year = localDate.getYear();
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform(post("/api/payments/month")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(new ObjectMapper().writeValueAsString(selectedTerm)))
+		mockMvc.perform(get("/api/payments/month/userID=" + userID + "&month=" + month + "&year=" + year))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.length()").value(payments.size()))
 			.andExpect(jsonPath("$[0].id").value(payment.getId()))
@@ -244,13 +238,13 @@ public class OverviewPageControllerTest {
 		when(paymentService.getPaymentsSum(anyLong(), eq("+"), any(LocalDate.class), any(LocalDate.class))).thenReturn(income);
 		when(paymentService.getPaymentsSum(anyLong(), eq("-"), any(LocalDate.class), any(LocalDate.class))).thenReturn(costs);
 		
-		// Zvolené období
-		SelectedTerm selectedTerm = getSelectedTerm();
+		// URL parametry
+		long userID = random.nextLong();
+		int month = localDate.getMonthValue();
+		int year = localDate.getYear();
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform(post("/api/payments/sum/month")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(new ObjectMapper().writeValueAsString(selectedTerm)))
+		mockMvc.perform(get("/api/payments/sum/month/userID=" + userID + "&month=" + month + "&year=" + year))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.length()").value(3))
 			.andExpect(jsonPath("$.income").value(income))
@@ -280,31 +274,13 @@ public class OverviewPageControllerTest {
 		long userID = random.nextLong();
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform(post("/api/payments/sum/graphs")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(new ObjectMapper().writeValueAsString(userID)))
+		mockMvc.perform(get("/api/payments/sum/graphs/userID=" + userID))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.length()").value(3))
 			.andExpect(jsonPath("$[0].income").value(income))
 			.andExpect(jsonPath("$[0].costs").value(costs));
 		
 		verify(paymentService, times(6)).getPaymentsSum(anyLong(), anyString(), any(LocalDate.class), any(LocalDate.class));
-	}
-	
-	
-	/**
-	 * Vytvoření testovacího objektu
-	 * 
-	 * @return - vrací testovací objekt
-	 */
-	private SelectedTerm getSelectedTerm() {
-		
-		SelectedTerm selectedTerm = new SelectedTerm();
-		selectedTerm.setUserID(random.nextLong());
-		selectedTerm.setMonth(localDate.getMonthValue());
-		selectedTerm.setYear(localDate.getYear());
-		
-		return selectedTerm;
 	}
 	
 }

@@ -1,0 +1,57 @@
+.account {
+	text-align: right;
+	color: #394359;
+	border-top: 8px solid #EE842C;
+	border-radius: 3px;
+	width: 340px;
+	margin: 15px 15px 15px 15px;
+	background: #EEE;
+	padding: 10px 20px;
+}
+
+.previewImage {
+	float: left;
+	height: 45px;
+	margin: 8px 0px 0px 0px;
+}
+
+.user {
+	font-weight: bold;
+	font-size: 1.3em;
+}
+
+.accountNumber {
+	font-size: 1.1em;
+	margin: 6px 0px 15px 0px;
+}
+
+.balance {
+	color: #0f862f;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin: 4px 0px;
+}
+
+.account input {
+	color: #394359;
+	padding: 7px 5px;
+	margin: 10px 0px 0px 10px;
+	font-weight: bold;
+	background: #EEE;
+	border: 2px solid #B22222;
+	border-radius: 3px;
+	font-size: 0.9em;
+	cursor: pointer;
+}
+
+.account input:hover, .account input:focus {
+	background: #B22222;
+	color: #EEE;
+	outline: none;
+}
+
+.account .active {
+	background: #B22222;
+	color: #EEE;
+	outline: none;
+}

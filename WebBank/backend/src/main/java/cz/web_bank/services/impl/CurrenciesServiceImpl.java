@@ -30,7 +30,7 @@ public class CurrenciesServiceImpl implements CurrenciesService {
 	public List<Currency> getCurrencies() {
 
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("FROM currencies");
+		Query query = session.createQuery("FROM Currency", Currency.class);
 		
 		List<Currency> currencies = query.list();
 		 

@@ -13,10 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cz.web_bank.entities.BankCode;
@@ -46,8 +46,8 @@ public class NewPaymentController {
 	 * 
 	 * 	@return - vrací List bankovních kódů
 	 */
-	@PostMapping("/bank-codes")
-	public @ResponseBody List<BankCode> getBankCodes() {
+	@GetMapping("/bankCodes")
+	public List<BankCode> getBankCodes() {
 		
 		List<BankCode> bankCodes = bankCodesServise.getBankCodes();
 		
@@ -60,8 +60,8 @@ public class NewPaymentController {
 	 * 
 	 * 	@return - vrací List měn
 	 */
-	@PostMapping("/currencies")
-	public @ResponseBody List<Currency> getCurrencies() {
+	@GetMapping("/currencies")
+	public List<Currency> getCurrencies() {
 		
 		List<Currency> currencies = currenciesServise.getCurrencies();
 		
@@ -77,7 +77,7 @@ public class NewPaymentController {
 	 * 
 	 * 	@return - vrací chybové zprávy
 	 */
-	@PostMapping("/new-payment")
+	@PostMapping("/newPayment")
 	public ResponseEntity<Object> newPayment(@Valid @RequestBody Payment payment, BindingResult result) {
 		
 		HttpStatus status = HttpStatus.OK;

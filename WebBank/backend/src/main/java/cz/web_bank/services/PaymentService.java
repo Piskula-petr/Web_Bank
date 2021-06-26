@@ -53,4 +53,32 @@ public interface PaymentService {
 	 */
 	public void savePayment(Payment senderPayment);
 	
+	
+	/**
+	 * 	Získání datumu poslední platby
+	 * 
+	 * 	@return - vrací datum poslední platby
+	 */
+	public LocalDate getLastPaymentDate();
+	
+	
+	/**
+	 * 	Získání plateb v měsící
+	 * 
+	 * 	@param startOfMonth - první den v měsíci
+	 * 	@param endOfMonth - poslední den v měsíci
+	 * 
+	 * 	@return - vrací List plateb v měsíci
+	 */
+	public List<Payment> getPaymentsOfMonth(LocalDate startOfMonth, LocalDate endOfMonth);
+	
+	
+	/**
+	 * Změna datumu platby
+	 * 
+	 * @param paymentID - ID platby
+	 * @param newPaymentDate - nový datum platby
+	 */
+	public void updatePaymentDate(long paymentID, LocalDate newPaymentDate);
+	
 }

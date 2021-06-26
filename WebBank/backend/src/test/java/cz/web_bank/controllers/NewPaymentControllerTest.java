@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import cz.web_bank.ApplicationMain;
 import cz.web_bank.entities.BankCode;
 import cz.web_bank.entities.Currency;
 import cz.web_bank.entities.Payment;
@@ -47,6 +48,9 @@ public class NewPaymentControllerTest {
 	
 	@MockBean
 	private PaymentService paymentServise;
+	
+	@MockBean
+	private ApplicationMain applicationMain;
 	
 	
 	/**

@@ -32,9 +32,9 @@ public class UserServiceImpl implements UserService {
 		
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(
-				
+			
 		"SELECT id "
-	  + "FROM users "
+	  + "FROM User "
 	  + "WHERE client_number = :clientNumber AND password = :password");
 		
 		query.setParameter("clientNumber", clientNumber);

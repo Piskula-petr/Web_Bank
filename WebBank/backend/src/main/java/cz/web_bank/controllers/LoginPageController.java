@@ -41,7 +41,7 @@ public class LoginPageController {
 	@PostMapping("/login")
 	public ResponseEntity<Object> login(@Valid @RequestBody LoginData loginData, BindingResult result) {
 		
-		HttpStatus status = HttpStatus.BAD_REQUEST;
+		HttpStatus status = HttpStatus.FORBIDDEN;
 		Map<String, Object> body = new LinkedHashMap<>();
 		
 		// Chyba při validaci

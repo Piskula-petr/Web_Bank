@@ -1,0 +1,96 @@
+.paymentReport {
+	text-align: right;
+	color: #394359;
+	border-top: 8px solid #EB1C22;
+	border-radius: 3px;
+	width: 340px;
+	margin: 30px 15px;
+	background: #EEE;
+	padding: 10px 20px;
+}
+
+.hide {
+	display: none;
+}
+
+.plus {
+	color: #0f862f;
+}
+
+.minus {
+	color: #B22222;
+}
+
+.previewImage {
+	float: left;
+	height: 45px;
+	margin: 8px 0px 0px 0px;
+}
+
+/*__________________________________ Měsíční souhrn - příjmy, výdeje, součet  __________________________*/
+.month {
+	font-size: 1.3em;
+	font-weight: bold;
+	margin: 0px 0px 0px 0px;
+}
+
+.leftArrow {
+	height: 16px;
+	padding: 4px 0px 0px 0px;
+	margin: 0px 15px 0px 0px;
+	float: none;
+}
+
+.rightArrow {
+	height: 16px;
+	padding: 4px 0px 0px 0px;
+	margin: 0px 0px 0px 15px;
+	float: none;
+}
+
+.leftArrow:hover, .rightArrow:hover {
+	cursor: pointer;
+}
+
+.income {
+	font-weight: bold;
+	color: #0f862f;
+	font-size: 1.2em;
+	margin: 9px 0px 0px 0px;
+}
+
+.costs {
+	font-weight: bold;
+	color: #B22222;
+	font-size: 1.2em;
+	margin: 2px 0px 9px 0px;
+}
+
+.balance {
+	font-weight: bold;
+	font-size: 1.2em;
+	border-top: 2px solid #394359;
+	padding: 10px 0px 0px 0px;
+}
+
+/*__________________________________ Grafy  __________________________*/
+.canvas {
+	background: #EEE;
+	border: 2px solid #394359;
+	border-radius: 5px;
+	margin: 20px 0px 0px 0px;
+}
+
+.months {
+	display: flex;
+	justify-content: space-between;
+	width: 355px;
+	margin: 0px 0px 0px -7px;
+}
+
+.months > div {
+	text-align: center;
+	width: 100px;
+	font-size: 1.2em;
+	font-weight: bold;
+}

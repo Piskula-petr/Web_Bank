@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import cz.web_bank.ApplicationMain;
 import cz.web_bank.pojo.LoginData;
 import cz.web_bank.services.UserService;
 
@@ -37,6 +38,9 @@ public class LoginPageControllerTest {
 	@MockBean
 	private UserService userService;
 	
+	@MockBean
+	private ApplicationMain applicationMain;
+	
 	
 	/**
 	 * Inicializace parametrů
@@ -47,7 +51,6 @@ public class LoginPageControllerTest {
 	public void setUp() throws Exception {
 
 		random = new Random();
-		
 		loginData = new LoginData();
 	}
 	
@@ -101,7 +104,7 @@ public class LoginPageControllerTest {
 		mockMvc.perform(post("/api/login")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(new ObjectMapper().writeValueAsString(loginData)))
-			.andExpect(status().isBadRequest())
+			.andExpect(status().isForbidden())
 			.andExpect(jsonPath("$.clientNumber").value("Přihlašovací údaje jsou nesprávné"))
 			.andExpect(jsonPath("$.timestamp").exists());
 		
@@ -122,7 +125,7 @@ public class LoginPageControllerTest {
 		mockMvc.perform(post("/api/login")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(new ObjectMapper().writeValueAsString(loginData)))
-			.andExpect(status().isBadRequest())
+			.andExpect(status().isForbidden())
 			.andExpect(jsonPath("$.clientNumber").value("Klientské číslo nesmí být prázdné"))
 			.andExpect(jsonPath("$.password").value("Heslo nesmí být prázdné"));
 			
@@ -145,7 +148,7 @@ public class LoginPageControllerTest {
 		mockMvc.perform(post("/api/login")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(new ObjectMapper().writeValueAsString(loginData)))
-			.andExpect(status().isBadRequest())
+			.andExpect(status().isForbidden())
 			.andExpect(jsonPath("$.clientNumber").value("Klientské číslo musí mýt 10 znaků"))
 			.andExpect(jsonPath("$.password").value("Heslo nesmí být prázdné"));
 	
@@ -169,7 +172,7 @@ public class LoginPageControllerTest {
 		mockMvc.perform(post("/api/login")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(new ObjectMapper().writeValueAsString(loginData)))
-			.andExpect(status().isBadRequest())
+			.andExpect(status().isForbidden())
 			.andExpect(jsonPath("$.clientNumber").value("Klientské číslo musí mýt 10 znaků"))
 			.andExpect(jsonPath("$.password").doesNotExist());
 		
