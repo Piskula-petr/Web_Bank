@@ -84,7 +84,7 @@ export default class OverviewPage extends Component {
                         <CreditCardInfo userID={this.props.userID} />
                             
                         {/* Přesměrování na novou platbu */}
-                        <Link className={styles.newPaymentLink} to="/nova-platba">
+                        <Link id="newPayment" className={styles.newPaymentLink} to="/nova-platba">
                             Nová platba
                         </Link>
 

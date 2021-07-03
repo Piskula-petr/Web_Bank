@@ -1,23 +1,48 @@
 .navigationContainer {
     margin: 0px auto;
+    display: flex;
+    justify-content: flex-end;
     padding: 0px 8px 0px 0px;
     width: 1240px;
     height: 42px;
 }
 
-/*__________________________________ odhlášení __________________________*/
+.hide {
+    display: none;
+}
 
-.navigationContainer a {
-    float: right;
-    display: block;
+/*__________________________________ Zpět __________________________*/
+.back {
+    display: flex;
+    font-size: 1.2em;
+    color: #eee;
+    text-decoration: none;
+    margin: 0px auto 0px 0px;
+}
+
+.back:hover {
+    text-decoration: underline;
+	outline: none;
+}
+
+.back > div {
+    display: inline-flex;
+    align-self: center;
+}
+
+.backLogo {
+    height: 22px;
+    margin: auto 10px;
+}
+
+/*__________________________________ Odhlášení __________________________*/
+
+.logout {
     margin: 0px 0px 0px 0px;
 	padding: 7px 15px;
     font-size: 1.2em;
     text-decoration: none;
 	font-weight: bold;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
 	background: transparent;
 	border: 2px solid #B22222;
 	border-radius: 3px;
@@ -26,16 +51,16 @@
     transition: background 0.5s ease-in-out;
 }
 
-.navigationContainer a:hover {
+.logout:hover {
     background: #B22222;
 	outline: none;
 }
 
-.navigationContainer a > div {
+.logout > div {
     display: inline-flex;
 }
 
-.logout {
+.logoutLogo {
     float: left;
     height: 24px;
     margin: 0px 10px 0px 0px;

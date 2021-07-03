@@ -3,8 +3,8 @@ import axios from "axios";
 
 import styles from "components/overview-page/payment-history/paymentHistory.module.css";
 import DetailTable from "components/overview-page/payment-history/DetailTable";
-import NumberFormatter from "modules/NumberFormatter";
-import DateFormatter from "modules/DateFormatter";
+import numberFormatter from "modules/numberFormatter";
+import dateFormatter from "modules/dateFormatter";
 
 export default class PaymentHistory extends Component {
 
@@ -38,8 +38,7 @@ export default class PaymentHistory extends Component {
         const year = date.getFullYear();
 
         // Request - vrací platby ze zadaného měsíce
-        axios.get("http://localhost:8080/api/payments/month/"
-            + "userID=" + this.props.userID + "&month=" + month + "&year=" + year)
+        axios.get(`http://localhost:8080/api/payments/month/userID=${this.props.userID}&month=${month}&year=${year}`)
             .then(({ data }) => this.setState({
 
             payments: data
@@ -48,7 +47,7 @@ export default class PaymentHistory extends Component {
 
 
         // Request - vrací celkový počat plateb
-        axios.get("http://localhost:8080/api/payments/count/userID=" + this.props.userID)
+        axios.get(`http://localhost:8080/api/payments/count/userID=${this.props.userID}`)
             .then(({ data }) => this.setState({
 
             paymentsCount: data.paymentsCount   
@@ -76,8 +75,7 @@ export default class PaymentHistory extends Component {
         const year = date.getFullYear();
 
         // Request - vrací platby ze zadaného měsíce
-        axios.get("http://localhost:8080/api/payments/month/"
-            + "userID=" + this.props.userID + "&month=" + previousMonth + "&year=" + year)
+        axios.get(`http://localhost:8080/api/payments/month/userID=${this.props.userID}&month=${previousMonth}&year=${year}`)
             .then(({ data }) => {
 
             payments.push(...data);
@@ -107,7 +105,7 @@ export default class PaymentHistory extends Component {
 
                             {/* Datum platby */}
                             <div className={styles.paymentDate}>
-                                {DateFormatter(item.paymentDate).substring(0, 6)}
+                                {dateFormatter(item.paymentDate).substring(0, 6)}
                             </div>
 
                             {/* Název + typ platby */}
@@ -126,7 +124,7 @@ export default class PaymentHistory extends Component {
                             <div className={`${styles.amount} ${(item.mark.includes("+") ? styles.plus : styles.minus)}`}>
                                 {item.mark}
 
-                                {NumberFormatter((item.amount * this.props.currency.exchangeRate).toFixed(2))}&nbsp;
+                                {numberFormatter((item.amount * this.props.currency.exchangeRate).toFixed(2))}&nbsp;
                                 
                                 {this.props.currency.name}
                             </div>

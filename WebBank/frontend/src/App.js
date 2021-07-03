@@ -64,6 +64,7 @@ export default class App extends Component {
                 <Route path="/nova-platba">
 
                     <NewPayment 
+                        setUserID={this.setUserID} 
                         userID={this.state.userID} />
 
                 </Route>

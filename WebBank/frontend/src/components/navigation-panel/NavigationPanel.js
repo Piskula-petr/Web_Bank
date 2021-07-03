@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 
 import styles from "components/navigation-panel/navigation-panel.module.css";
+import back from "images/back.png";
 import logout from "images/logout.png";
 
 export default class NavigationPanel extends Component {
@@ -50,17 +51,23 @@ export default class NavigationPanel extends Component {
     componentWillUnmount() {
         
         clearInterval(this.interval);
+
+        // Odebrání click eventu
+        document.removeEventListener("click", this.handleClick);
     }
 
 
     /**
      * Resetování odpočtu
      */
-    handleClick = () => {
+    handleClick = (event) => {
 
-        this.setState({
-            secondsLeft: this.props.timeInterval
-        });
+        if (event.target.id !== "newPayment") {
+
+            this.setState({
+                secondsLeft: this.props.timeInterval
+            });
+        }
     }
 
 
@@ -88,13 +95,23 @@ export default class NavigationPanel extends Component {
         return(
             <div className={styles.navigationContainer}>
 
-                <Link to="/prihlaseni" onClick={this.logout}>
+                {/* Návrat na přehled */}
+                <Link className={styles.back} to="/prehled">
 
-                    <img className={styles.logout} src={logout} alt="Logout" />
-                    
-                    <div>Odhlášení za {minutes}:{zero}{seconds}</div>
+                    <img className={`${styles.backLogo} ${(this.props.backLabel === undefined ? styles.hide : "")}`} src={back} alt="Back" /> 
+
+                    <div>{this.props.backLabel}</div>
+
                 </Link>
-                
+
+                {/* Odhlášení */}
+                <Link className={styles.logout} to="/prihlaseni" onClick={this.logout}>
+
+                    <img className={styles.logoutLogo} src={logout} alt="Logout" />
+
+                    <div>Odhlášení za {minutes}:{zero}{seconds}</div>
+
+                </Link>
             </div>
         )
     }

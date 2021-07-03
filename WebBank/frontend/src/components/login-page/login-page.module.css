@@ -74,17 +74,14 @@
 }
 
 .clientNumberContainer input:-webkit-autofill::first-line {
-  	font-size: 22px;
+  	font-size: 21px;
 }
 
 .buttonContainer button {
-	margin: 50px 0px 0px 0px;
+	margin: 50px auto 0px auto;
 	padding: 10px 20px;
 	font-size: 1.5em;
 	font-weight: bold;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
 	background: transparent;
 	border: 2px solid #B22222;
 	border-radius: 3px;
@@ -96,4 +93,5 @@
 .buttonContainer button:hover, .buttonContainer button:focus {
 	background: #B22222;
 	outline: none;
+	text-decoration: none;
 }

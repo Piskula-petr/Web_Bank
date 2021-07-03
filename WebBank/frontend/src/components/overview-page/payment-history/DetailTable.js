@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 
 import styles from "components/overview-page/payment-history/paymentHistory.module.css";
-import DateFormatter from "modules/DateFormatter";
+import dateFormatter from "modules/dateFormatter";
 
 export default class DetailTable extends Component {
 
@@ -56,7 +56,7 @@ export default class DetailTable extends Component {
                 <div className={styles.date}>
                     
                     <div>Datum platby:</div>
-                    <div>{DateFormatter(this.props.item.paymentDate)}</div>
+                    <div>{dateFormatter(this.props.item.paymentDate)}</div>
 
                 </div>
             </div>

@@ -4,7 +4,7 @@ import axios from "axios";
 
 import styles from "components/overview-page/account-info/account-info.module.css";
 import safe from "images/safe.png";
-import NumberFormatter from "modules/NumberFormatter";
+import numberFormatter from "modules/numberFormatter";
 
 export default class AccountInfo extends Component {
 
@@ -67,7 +67,7 @@ export default class AccountInfo extends Component {
         })).catch((error) => console.log(error));
 
         // Request - vrací uživatele, podle ID
-        axios.get("http://localhost:8080/api/user/userID=" + this.props.userID)
+        axios.get(`http://localhost:8080/api/user/userID=${this.props.userID}`)
             .then(({ data }) => this.setState({
 
             user: data,
@@ -147,7 +147,7 @@ export default class AccountInfo extends Component {
                 {/* Aktuální zůstatek */}
                 <div>Aktuální zůstatek:
                     <div className={styles.balance}>
-                        {NumberFormatter(balance.toFixed(2))} {this.props.currency.name}
+                        {numberFormatter(balance.toFixed(2))} {this.props.currency.name}
                     </div>
                 </div>
 

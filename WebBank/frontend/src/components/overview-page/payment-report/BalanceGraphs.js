@@ -2,7 +2,7 @@ import React, {Component, createRef} from "react";
 import axios from "axios";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
-import Months from "modules/Months"
+import months from "modules/months"
 
 export default class BalanceGraphs extends Component {
 
@@ -38,7 +38,7 @@ export default class BalanceGraphs extends Component {
     componentDidMount() {
 
         // Request - vrací součet plateb za 3 mesíce
-        axios.get("http://localhost:8080/api/payments/sum/graphs/userID=" + this.props.userID)
+        axios.get(`http://localhost:8080/api/payments/sum/graphs/userID=${this.props.userID}`)
             .then(({ data }) => this.setState({
 
             monthsSum: data,
@@ -85,9 +85,11 @@ export default class BalanceGraphs extends Component {
             let costs = ((this.state.monthsSum[i].costs / maxValue) * HEIGHT).toFixed(1);
             let income = ((this.state.monthsSum[i].income / maxValue) * HEIGHT).toFixed(1);
 
-            this.graphAnimation(WIDTH - GRAPH_WIDTH, HEIGHT, HEIGHT - costs, "#B22222", GRAPH_WIDTH);
+            // Animace grafu nákladů
+            if (costs > 0) this.graphAnimation(WIDTH - GRAPH_WIDTH, HEIGHT, HEIGHT - costs, "#B22222", GRAPH_WIDTH);
 
-            this.graphAnimation(WIDTH - (2 * GRAPH_WIDTH) - 3, HEIGHT, HEIGHT - income, "#0f862f", GRAPH_WIDTH);
+            // Animace grafu příjmů
+            if (income > 0) this.graphAnimation(WIDTH - (2 * GRAPH_WIDTH) - 3, HEIGHT, HEIGHT - income, "#0f862f", GRAPH_WIDTH);
 
             // Snížení šířky 
             WIDTH = WIDTH - 123; // -123 => Šířka sloupce grafu (příjmy / náklady)
@@ -109,8 +111,8 @@ export default class BalanceGraphs extends Component {
         const context = this.canvas.current.getContext("2d");
 
         // Odsazení grafů od okraje
-        const BOTTOM_MARGIN = 1;
-        const TOP_MARGIN = 2
+        const BOTTOM_MARGIN = 4;
+        const TOP_MARGIN = 8;
 
         requestAnimationFrame(function loop() {
 
@@ -142,15 +144,15 @@ export default class BalanceGraphs extends Component {
                 <div className={styles.months}>
 
                     <div>
-                        {Months[this.state.currentMonth - 2]}
+                        {months[this.state.currentMonth - 2]}
                     </div>
 
                     <div>
-                        {Months[this.state.currentMonth - 1]}
+                        {months[this.state.currentMonth - 1]}
                     </div>
 
                     <div>
-                        {Months[this.state.currentMonth]}
+                        {months[this.state.currentMonth]}
                     </div>
 
                 </div>

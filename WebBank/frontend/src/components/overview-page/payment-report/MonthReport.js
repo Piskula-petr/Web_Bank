@@ -5,8 +5,8 @@ import styles from "components/overview-page/payment-report/payment-report.modul
 import graph from "images/graph.png";
 import leftArrow from "images/left_arrow.png";
 import rightArrow from "images/right_arrow.png";
-import Months from "modules/Months";
-import NumberFormatter from "modules/NumberFormatter";
+import months from "modules/months";
+import numberFormatter from "modules/numberFormatter";
 
 export default class MonthReport extends Component {
 
@@ -58,12 +58,11 @@ export default class MonthReport extends Component {
     setMonthSum = (month, year) => {
 
         // Request - vrací součet plateb za měsíc
-        axios.get("http://localhost:8080/api/payments/sum/month/"
-            + "userID=" + this.props.userID + "&month=" + month + "&year=" + year)
+        axios.get(`http://localhost:8080/api/payments/sum/month/userID=${this.props.userID}&month=${month}&year=${year}`)
             .then(({ data }) => this.setState({
 
             selectedMonth: {
-                name: Months[month],
+                name: months[month],
                 number: month,
                 year: year,
                 income: data.income,
@@ -147,19 +146,19 @@ export default class MonthReport extends Component {
 
                 {/* Měsíční příjem */}
                 <div className={styles.income}>
-                    &#43;{NumberFormatter(income.toFixed(2))}&nbsp;
+                    &#43;{numberFormatter(income.toFixed(2))}&nbsp;
                     {this.props.currency.name}
                 </div>
 
                 {/* Měsíční výdaje */}
                 <div className={styles.costs}>
-                    &#45;{NumberFormatter(costs.toFixed(2))}&nbsp;
+                    &#45;{numberFormatter(costs.toFixed(2))}&nbsp;
                     {this.props.currency.name}
                 </div>
 
                 {/* Měsíční zůstatek */}
                 <div className={`${styles.balance} ${(this.state.selectedMonth.balance > 0 ? styles.plus : styles.minus)}`}>
-                    {mark}{NumberFormatter(balance.toFixed(2))}&nbsp;
+                    {mark}{numberFormatter(balance.toFixed(2))}&nbsp;
                     {this.props.currency.name}
                 </div>
             </div>

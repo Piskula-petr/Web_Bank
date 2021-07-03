@@ -32,7 +32,7 @@ public class Payment {
 	@Column(name = "user_id")
 	private Long userID;
 	
-	@NotBlank(message = "Název platby nesmí být prázdný")
+	@NotBlank(message = "Název platby nesmí být prázdné")
 	@Column(name = "name")
 	private String name;
 	

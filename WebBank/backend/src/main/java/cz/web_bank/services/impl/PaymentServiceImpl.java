@@ -133,7 +133,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-// Získání čísla účtu odesilatele //////////////////////////////////////////////////////////
+// Získání čísla účtu odesilatele ////////////////////////////////////////////////////////
 		
 		Query query = session.createQuery(
 				
@@ -145,7 +145,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		String senderAccountNumber = (String) query.uniqueResult();
 		
-// Odečtení částky z účtu odesilatele //////////////////////////////////////////////////////
+// Odečtení částky z účtu odesilatele ////////////////////////////////////////////////////
 		
 		query = session.createQuery(
 				
@@ -158,42 +158,39 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		query.executeUpdate();
 
-// Přičtení částky na účet příjemce ////////////////////////////////////////////////////////
-		
-		query = session.createQuery(
-		
-		"UPDATE User "
-	  + "SET balance = balance + :amount "
-	  + "WHERE account_number = :recipientAccountNumber");
-		
-		query.setParameter("amount", senderPayment.getAmount());
-		query.setParameter("recipientAccountNumber", senderPayment.getAccountNumber());
-		
-		query.executeUpdate();
-		
-// Uložení nové platby odesilatele /////////////////////////////////////////////////////////
-			
+// Uložení nové platby odesilatele ///////////////////////////////////////////////////////
+
 		session.save(senderPayment);
-			
-// Uložení nové platby příjemce ////////////////////////////////////////////////////////////
-			
-		String senderBankCode = senderAccountNumber.split("/")[1];
-		String recipientBankCode = senderPayment.getAccountNumber().split("/")[1];
 		
-		// Vytvoření nové platby příjemce, při shodném bankovním kódu
-		if (senderBankCode.equals(recipientBankCode)) {
+// Získání ID příjemce ///////////////////////////////////////////////////////////////////		
+
+		query = session.createQuery(
+				
+		"SELECT id "
+	  + "FROM User "
+	  + "WHERE account_number = :accountNumber");
+		
+		query.setParameter("accountNumber", senderPayment.getAccountNumber());
+		
+		Long recipientID = (Long) query.uniqueResult();
+		
+// Přičtení částky na účet příjemce //////////////////////////////////////////////////////		
+		
+		if (recipientID != null) {
 			
 			query = session.createQuery(
 					
-			"SELECT id "
-		  + "FROM User "
-		  + "WHERE account_number = :accountNumber");
+			"UPDATE User "
+		  + "SET balance = balance + :amount "
+		  + "WHERE account_number = :recipientAccountNumber");
 			
-			query.setParameter("accountNumber", senderPayment.getAccountNumber());
+			query.setParameter("amount", senderPayment.getAmount());
+			query.setParameter("recipientAccountNumber", senderPayment.getAccountNumber());
 			
-			Long recipientID = (Long) query.uniqueResult();
+			query.executeUpdate();
 			
-			// Vytvoření platby příjemce
+// Uložení nové platby příjemce ////////////////////////////////////////////////////////////
+
 			Payment recipientPayment = new Payment();
 			recipientPayment.setUserID(recipientID);
 			recipientPayment.setName(senderPayment.getName());

@@ -33,6 +33,15 @@ export default class LoginForm extends Component {
 
 
     /**
+     * Změna názvu stránky
+     */
+    componentDidMount() {
+
+        document.title = "Přihlášení | Web Bank"
+    }
+
+
+    /**
      * Změna přihlašovacích údajů
      * 
      * @param event 

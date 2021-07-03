@@ -65,6 +65,7 @@ details summary:focus {
 	border: none;
 	cursor: pointer;
 	color: #394359;
+	background: transparent;
 }
 
 .buttonContainer button:hover  {

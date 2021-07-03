@@ -1,19 +1,9 @@
-.hide {
-	display: none;
-}
-
-.toCenter {
-	margin: 0px 0px 0px 0px;
-	padding: 0px 16px 0px 0px;
-}
-
-#content {
+.content {
 	width: 1280px;
 	margin: 0px auto;
 }
 
-/*__________________________________ nová platba __________________________*/
-#newPayment {
+.container {
 	width: 1200px;
 	color: #394359;
 	border-top: 8px solid #02AAE9;
@@ -23,22 +13,19 @@
 	padding: 10px 20px;
 }
 
-#newPayment h1 {
-	text-align: left;
+/*__________________________________ Nová platba __________________________*/
+.newPayment{
+	width: 740px;
+	margin: 0px auto;
 }
 
-#newPayment #payment {
+.logo {
 	float: right;
 	height: 70px;
 	margin: 0px 0px 0px 0px;
 }
 
-/*________________________ table ________________________*/
-#newPayment table {
-	margin: auto;
-}
-
-#newPayment table #error {
+.error {
 	height: 20px;
 	width: 455px;
 	margin: 0px 0px -9px 20px;
@@ -47,7 +34,7 @@
 	font-weight: bold;
 }
 
-#newPayment table #confirmationError {
+.confirmationError {
 	height: 20px;
 	width: 335px;
 	margin: 0px 0px -9px 140px;
@@ -56,17 +43,27 @@
 	font-weight: bold;
 }
 
-#newPayment label {
+.separator {
+	margin: 40px 0px 0px 0px;
+}
+
+.newPayment label {
 	font-size: 1.3em;
 	float: right;
 	padding: 10px 20px;
 	margin: 8px 0px 0px 0px;
 }
 
-/*________________________ input ________________________*/
-#newPayment input {
+/*________________________ Input ________________________*/
+.inputContainer {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.input {
 	height: 27px;
-	font-size: 1.4em;
+	font-size: 1.3em;
 	padding: 0px 5px;
 	border-radius: 3px;
 	border: 1px solid #394359;
@@ -74,60 +71,69 @@
 	margin: 10px 0px 10px 20px;
 }
 
-#newPayment input:focus {
+.input:focus {
 	outline: none;
 }
 
-#newPayment input:-webkit-autofill, #newPayment input:-webkit-autofill:hover,
-#newPayment input:-webkit-autofill:focus, #newPayment input:-webkit-autofill:active {
+.input:-webkit-autofill, .input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus, .input:-webkit-autofill:active {
 	-webkit-text-fill-color: black;
+	box-shadow: 0 0 0 30px white inset;
 }
 
-#newPayment input:-webkit-autofill::first-line {
-  font-size: 22px;
+.input:-webkit-autofill::first-line {
+  font-size: 21px;
 }
 
-#newPayment #accountNumberPrefix {
-	width: 371px;
+.accountNumberPrefix {
+	width: 372px;
 }
 
-#newPayment #amountInput {
-	width: 354px;
+.amountInput {
+	width: 368px;
 }
 
-#newPayment #confirmationInput {
+.confirmationInput {
 	width: 325px;
 }
 
-/*________________________ výběr kódu banky ________________________*/
-#newPayment #bankCodesSelect {
+/*________________________ Výběr kódu banky ________________________*/
+.bankCodesSelect {
 	border: 1px solid #394359;
 	float: right;
-	font-size: 1.4em;
+	font-size: 1.3em;
 	width: 57px;
 	height: 27px;
 	background: white;
 	padding: 0px 5px;
-	margin: 10px 0px 0px 0px;
+	margin: 10px 0px 0px 4px;
 	border-radius: 3px;
 }
 
-#newPayment #bankCodesSelect:hover {
+.hide {
+	display: none;
+}
+
+.show {
+	display: block;
+}
+
+.bankCodesSelect:hover {
 	cursor: pointer;
 }
 
-#newPayment #bankCodesSelect #caretDown {
+.caretDown {
 	float: right;
 	margin: 12px 0px 0px 0px;
 	width: 10px;
 }
 
-#newPayment #bankCodesSelect #bank {
+.bank {
 	width: 22px;
 	margin: 3px 0px 0px 12px;
 }
 
-#newPayment #bankCodesChoice {
+.bankCodesChoice {
 	background: white;
 	position: relative;
 	margin: 1px 0px 0px -6px;
@@ -138,34 +144,34 @@
 	width: 325px;
 }
 
-#newPayment #bankCodesChoice div:hover {
+.bankCodesChoice div:hover {
 	cursor: pointer;
 	opacity: 0.7;
 }
 
-/*________________________ select ________________________*/
-#newPayment select {
-	height: 30px;
-	font-size: 1.4em;
+/*________________________ Select ________________________*/
+.select {
+	height: 29px;
+	font-size: 1.3em;
 	border-radius: 3px;
-	margin: 0px 0px 0px 5px;
-	padding: 0px 5px;
+	margin: 10px 0px 0px 4px;
 }
 
-#newPayment select:hover {
+.select:hover {
 	cursor: pointer;
 }
 
-#newPayment select:focus {
+.select:focus {
 	outline: none;
 }
 
-#newPayment #exchangeRate {
-	padding: 0px 0px 0px 20px;
+.exchangeRate {
+	width: 457px;
+	margin: 0px 0px 0px auto;
 }
 
-/*________________________________________________*/
-#newPayment #confirmationValue {
+/*________________________ Ověření ________________________*/
+.confirmationValue {
 	float: left;
 	font-size: 1.5em;
 	font-weight: bold;
@@ -173,8 +179,8 @@
 	width: 100px;
 }
 
-/*________________________ submit ________________________*/
-#newPayment button {
+/*________________________ Submit ________________________*/
+button {
 	margin: 50px 0px 30px 0px;
 	padding: 10px 20px;
 	font-size: 1.5em;
@@ -189,10 +195,10 @@
 	color: #eee;
 }
 
-#newPayment button:hover {
+button:hover {
 	text-decoration: underline;
 }
 
-#newPayment button:focus {
+button:focus {
 	outline: none;
 }

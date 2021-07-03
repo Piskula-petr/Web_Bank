@@ -39,7 +39,7 @@ export default class CreditCardInfo extends Component {
     componentDidMount() {
 
         // Request - vrací kreditní kartu, podle ID uživatele
-        axios.get("http://localhost:8080/api/creditCard/userID=" + this.props.userID)
+        axios.get(`http://localhost:8080/api/creditCard/userID=${this.props.userID}`)
             .then(({ data }) => this.setState({
 
             creditCard: data,
@@ -47,7 +47,7 @@ export default class CreditCardInfo extends Component {
         })).catch((error) => console.log(error));
 
         // Request - vrací uživatele, podle ID
-        axios.get("http://localhost:8080/api/user/userID=" + this.props.userID)
+        axios.get(`http://localhost:8080/api/user/userID=${this.props.userID}`)
             .then(({ data }) => this.setState({
 
             name: data.name,
