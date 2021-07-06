@@ -1,5 +1,6 @@
 import React, {Component, createRef} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
 import months from "modules/months"
@@ -38,8 +39,13 @@ export default class BalanceGraphs extends Component {
     componentDidMount() {
 
         // Request - vrací součet plateb za 3 mesíce
-        axios.get(`http://localhost:8080/api/payments/sum/graphs/userID=${this.props.userID}`)
-            .then(({ data }) => this.setState({
+        axios.get(`http://localhost:8080/api/payments/sum/graphs/userID=${this.props.userID}`, {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => this.setState({
 
             monthsSum: data,
             currentMonth: new Date().getMonth() + 1,

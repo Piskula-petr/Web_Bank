@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import creditCard from "images/credit_card.png";
 import styles from "components/overview-page/credit-card-info/credit-card-info.module.css";
@@ -39,16 +40,26 @@ export default class CreditCardInfo extends Component {
     componentDidMount() {
 
         // Request - vrací kreditní kartu, podle ID uživatele
-        axios.get(`http://localhost:8080/api/creditCard/userID=${this.props.userID}`)
-            .then(({ data }) => this.setState({
+        axios.get(`http://localhost:8080/api/creditCard/userID=${this.props.userID}`, {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => this.setState({
 
             creditCard: data,
 
         })).catch((error) => console.log(error));
 
         // Request - vrací uživatele, podle ID
-        axios.get(`http://localhost:8080/api/user/userID=${this.props.userID}`)
-            .then(({ data }) => this.setState({
+        axios.get(`http://localhost:8080/api/user/userID=${this.props.userID}`, {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => this.setState({
 
             name: data.name,
             surname: data.surname,

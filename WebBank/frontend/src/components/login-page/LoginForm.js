@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import styles from "components/login-page/login-page.module.css";
 import logo from "images/logo.png";
@@ -69,10 +70,18 @@ export default class LoginForm extends Component {
             clientNumber: this.state.clientNumber,
             password: this.state.password
 
-        }).then(({ data }) => {
+        }).then(({ data: {token, expireTime, userID} }) => {
+
+            const jwt = {
+                token,
+                expireTime
+            };
+
+            // Vytvoření cookies
+            Cookies.set("jwt", jwt, {expires: new Date(expireTime), secure: true});
 
             // Nastavení ID uživatele (předek)
-            this.props.setUserID(data.userID);
+            this.props.setUserID(userID);
 
             this.setState({
                 successLogin: true,
@@ -80,9 +89,17 @@ export default class LoginForm extends Component {
 
         }).catch(({ response: { data } }) => {
 
+            let errorMessage = data.clientNumber;
+
+            // Chybová hláška při nesprávných přihlašovacích údajích
+            if (data.clientNumber === undefined && data.password === undefined) {
+                
+                errorMessage = "Přihlašovací údaje jsou nesprávné";
+            }
+
             // Nastavení chybových zpráv
             this.setState({
-                clientNumberError: data.clientNumber,
+                clientNumberError: errorMessage,
                 passwordError: data.password,
             });
         });

@@ -8,11 +8,10 @@ public interface UserService {
 	 * 	Uživatelské ID
 	 * 
 	 * 	@param clientNumber - klientské číslo
-	 * 	@param password - heslo
 	 * 
 	 * 	@return - vrací uživatelské ID
 	 */
-	public Long getUserIDByLoginData(Long clientNumber, String password);
+	public Long getUserIDByClientNumber(Long clientNumber);
 
 	/**
 	 * 	Detaily o uživatelei podle ID

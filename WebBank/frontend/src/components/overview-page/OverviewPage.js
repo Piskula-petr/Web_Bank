@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Link, Redirect} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 import styles from "components/overview-page/overviewPage.module.css";
 import NavigationPanel from "../navigation-panel/NavigationPanel";
@@ -56,11 +56,6 @@ export default class OverviewPage extends Component {
      * Vykreslení
      */
     render() {
-
-        // Přesměrování na přihlašovací stránku
-        if (this.props.userID === 0) {
-            return <Redirect to="/prihlaseni" />;
-        }
 
         return (
             <div className={styles.content}>

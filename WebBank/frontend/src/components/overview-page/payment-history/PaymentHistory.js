@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import styles from "components/overview-page/payment-history/paymentHistory.module.css";
 import DetailTable from "components/overview-page/payment-history/DetailTable";
@@ -27,7 +28,6 @@ export default class PaymentHistory extends Component {
         }
     }
 
-
     /**
      * Získání dat
      */
@@ -38,8 +38,13 @@ export default class PaymentHistory extends Component {
         const year = date.getFullYear();
 
         // Request - vrací platby ze zadaného měsíce
-        axios.get(`http://localhost:8080/api/payments/month/userID=${this.props.userID}&month=${month}&year=${year}`)
-            .then(({ data }) => this.setState({
+        axios.get(`http://localhost:8080/api/payments/month/userID=${this.props.userID}&month=${month}&year=${year}`, {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => this.setState({
 
             payments: data
 
@@ -47,8 +52,13 @@ export default class PaymentHistory extends Component {
 
 
         // Request - vrací celkový počat plateb
-        axios.get(`http://localhost:8080/api/payments/count/userID=${this.props.userID}`)
-            .then(({ data }) => this.setState({
+        axios.get(`http://localhost:8080/api/payments/count/userID=${this.props.userID}`, {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => this.setState({
 
             paymentsCount: data.paymentsCount   
 
@@ -75,8 +85,13 @@ export default class PaymentHistory extends Component {
         const year = date.getFullYear();
 
         // Request - vrací platby ze zadaného měsíce
-        axios.get(`http://localhost:8080/api/payments/month/userID=${this.props.userID}&month=${previousMonth}&year=${year}`)
-            .then(({ data }) => {
+        axios.get(`http://localhost:8080/api/payments/month/userID=${this.props.userID}&month=${previousMonth}&year=${year}`, {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => {
 
             payments.push(...data);
 

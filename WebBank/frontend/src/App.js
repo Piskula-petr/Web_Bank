@@ -28,12 +28,12 @@ export default class App extends Component {
     /**
      * Nastavení ID uživatele
      * 
-     * @param data 
+     * @param userID 
      */
-    setUserID = (data) => {
+    setUserID = (userID) => {
 
         this.setState({
-            userID: data,
+            userID
         });
     }
 
@@ -46,6 +46,7 @@ export default class App extends Component {
         return (
             <Router>
 
+                {/* Přihlašovací formulář */}
                 <Route path="/prihlaseni">
 
                     <LoginForm 
@@ -53,6 +54,7 @@ export default class App extends Component {
 
                 </Route>
 
+                {/* Přehled plateb */}
                 <Route path="/prehled">
 
                     <OverviewPage 
@@ -61,6 +63,7 @@ export default class App extends Component {
 
                 </Route>
 
+                {/* Nová platba */}
                 <Route path="/nova-platba">
 
                     <NewPayment 

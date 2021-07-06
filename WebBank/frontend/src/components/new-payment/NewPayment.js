@@ -1,6 +1,7 @@
 import React, {Component, createRef} from "react";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import styles from "components/new-payment/new-payment.module.css";
 import payment from "images/payment.png";
@@ -142,8 +143,13 @@ export default class NewPayment extends Component {
         }, () => {
 
             // Odeslání nové platby
-            axios.post("http://localhost:8080/api/newPayment", this.state.payment)
-                .then(() => {
+            axios.post("http://localhost:8080/api/newPayment", this.state.payment, {
+
+                headers: {
+                    "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                }
+
+            }).then(() => {
 
                 // Úspěšná platba + shodný ověřovací kód
                 if (confirmationGenerated === parseInt(confirmationInput)) {
@@ -239,11 +245,6 @@ export default class NewPayment extends Component {
      * Vykreslení
      */
     render() {
-
-        // Přesměrování na přihlašovací stránku
-        if (this.props.userID === 0) {
-            return <Redirect to="/prihlaseni" />;
-        }
 
         // Přesměrování na stránku přehledu, při úspěšně odeslané platbě
         if ( this.state.successfulPayment) {

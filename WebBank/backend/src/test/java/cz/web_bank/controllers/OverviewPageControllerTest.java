@@ -23,6 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import cz.web_bank.ApplicationMain;
@@ -33,7 +34,7 @@ import cz.web_bank.services.CreditCardService;
 import cz.web_bank.services.PaymentService;
 import cz.web_bank.services.UserService;
 
-@WebMvcTest
+@WebMvcTest(OverviewPageController.class)
 public class OverviewPageControllerTest {
 
 	private Random random;
@@ -74,6 +75,7 @@ public class OverviewPageControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void getUser() throws Exception {
 		
 		// Testovací uživatel
@@ -100,7 +102,7 @@ public class OverviewPageControllerTest {
 			.andExpect(jsonPath("$.name").value(user.getName()))
 			.andExpect(jsonPath("$.surname").value(user.getSurname()))
 			.andExpect(jsonPath("$.email").value(user.getEmail()))
-			.andExpect(jsonPath("$.clientNumber").value(user.getClientNumber()))
+			.andExpect(jsonPath("$.username").value(user.getUsername()))
 			.andExpect(jsonPath("$.password").value(user.getPassword()))
 			.andExpect(jsonPath("$.balance").value(user.getBalance()))
 			.andExpect(jsonPath("$.currency").value(user.getCurrency().toString()))
@@ -116,6 +118,7 @@ public class OverviewPageControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void getCreditCard() throws Exception {
 		
 		// Testovací kreditní karta
@@ -150,6 +153,7 @@ public class OverviewPageControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void getPaymentCount() throws Exception {
 		
 		// Počet plateb
@@ -174,6 +178,7 @@ public class OverviewPageControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void getPayments() throws Exception {
 		
 		List<Payment> payments = new ArrayList<>();
@@ -228,6 +233,7 @@ public class OverviewPageControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void getMonnthSum() throws Exception {
 		
 		// Testovací data
@@ -261,6 +267,7 @@ public class OverviewPageControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void getMonthsSum() throws Exception {
 		
 		// Testovací data

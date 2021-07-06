@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import styles from "components/new-payment/new-payment.module.css";
 import bank from "images/bank.png";
@@ -30,8 +31,13 @@ export default class InputPanelWithBankCode extends Component {
     componentDidMount() {
 
         // Request - vrací kódy bank
-        axios.get("http://localhost:8080/api/bankCodes")
-            .then(({ data }) => this.setState({
+        axios.get("http://localhost:8080/api/bankCodes", {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => this.setState({
 
             bankCodes: data
 

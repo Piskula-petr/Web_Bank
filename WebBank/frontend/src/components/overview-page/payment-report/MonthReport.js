@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
 import graph from "images/graph.png";
@@ -58,8 +59,13 @@ export default class MonthReport extends Component {
     setMonthSum = (month, year) => {
 
         // Request - vrací součet plateb za měsíc
-        axios.get(`http://localhost:8080/api/payments/sum/month/userID=${this.props.userID}&month=${month}&year=${year}`)
-            .then(({ data }) => this.setState({
+        axios.get(`http://localhost:8080/api/payments/sum/month/userID=${this.props.userID}&month=${month}&year=${year}`, {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => this.setState({
 
             selectedMonth: {
                 name: months[month],

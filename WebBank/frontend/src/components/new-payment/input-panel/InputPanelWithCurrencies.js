@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import styles from "components/new-payment/new-payment.module.css";
 
@@ -28,8 +29,13 @@ export default class InputPanelWithCurrencies extends Component {
     componentDidMount() {
 
         // Request - vrací seznam měn
-        axios.get("http://localhost:8080/api/currencies")
-            .then(({ data }) => this.setState({
+        axios.get("http://localhost:8080/api/currencies", {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => this.setState({
 
             // Setřízení podle ID
             currencies: data.sort((a, b) => {return a.id - b.id})

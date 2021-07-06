@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import {Link} from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 import styles from "components/navigation-panel/navigation-panel.module.css";
 import back from "images/back.png";
@@ -7,7 +9,7 @@ import logout from "images/logout.png";
 
 export default class NavigationPanel extends Component {
 
-
+    
     /**
      * Konstruktor
      * 
@@ -18,7 +20,11 @@ export default class NavigationPanel extends Component {
     
         this.state = {
 
+            // Zbývající vteřiny opočtu
             secondsLeft: this.props.timeInterval,
+
+            // Čas vypršení JWT
+            jwtExpireTime: new Date(),
         }
     }
 
@@ -27,7 +33,10 @@ export default class NavigationPanel extends Component {
      * Nasazení componenty
      */
     componentDidMount() {
-        
+
+        // Nastavení času vypršení JWT
+        this.setJwtExpireTime();
+
         // Přidání click eventu
         document.addEventListener("click", this.handleClick);
 
@@ -37,6 +46,31 @@ export default class NavigationPanel extends Component {
             this.setState({
                 secondsLeft: this.state.secondsLeft - 1, 
             });
+
+            if (new Date().getTime() > this.state.jwtExpireTime.getTime()) {
+
+                // Obnovení JWT
+                axios.get("http://localhost:8080/api/refresh", {
+
+                    headers: {
+                        "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                    }
+
+                }).then(({data: {token, expireTime}}) => {
+
+                    const jwt = {
+                        token,
+                        expireTime
+                    }
+
+                    // vytvoření nového cookies
+                    Cookies.set("jwt", jwt, {secure: true});
+
+                    // Nastavení času vypršení JWT
+                    this.setJwtExpireTime();
+
+                }).catch((error) => console.log(error))
+            }
 
             // Odhlášení, při uběhnutí odpočtu
             if (this.state.secondsLeft === 0) this.logout();
@@ -72,10 +106,29 @@ export default class NavigationPanel extends Component {
 
 
     /**
+     * Nastavení času vypršení JWT
+     */
+    setJwtExpireTime = () => {
+
+        let jwtExpireTime = new Date(Cookies.getJSON("jwt").expireTime);
+
+        // Odečtení 1 minuty, od vypršení JWT
+        jwtExpireTime.setTime(jwtExpireTime.getTime() - (1 * 60 * 1000));
+
+        this.setState({
+            jwtExpireTime
+        })
+    }
+
+
+    /**
      * Odhlášení
      */
     logout = () => {
         
+        // Odstranění cookies
+        Cookies.remove("jwt");
+
         this.props.setUserID(0);
     }
 

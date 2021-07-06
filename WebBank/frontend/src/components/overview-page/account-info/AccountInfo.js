@@ -1,6 +1,7 @@
 /* eslint-disable default-case */
 import React, {Component} from "react";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 import styles from "components/overview-page/account-info/account-info.module.css";
 import safe from "images/safe.png";
@@ -67,8 +68,13 @@ export default class AccountInfo extends Component {
         })).catch((error) => console.log(error));
 
         // Request - vrací uživatele, podle ID
-        axios.get(`http://localhost:8080/api/user/userID=${this.props.userID}`)
-            .then(({ data }) => this.setState({
+        axios.get(`http://localhost:8080/api/user/userID=${this.props.userID}`, {
+
+            headers: {
+                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+            }
+
+        }).then(({ data }) => this.setState({
 
             user: data,
 

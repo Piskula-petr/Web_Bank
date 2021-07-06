@@ -22,23 +22,21 @@ public class UserServiceImpl implements UserService {
 	 * 	Uživatelské ID
 	 * 
 	 * 	@param clientNumber - klientské číslo
-	 * 	@param password - heslo
 	 * 
 	 * 	@return - vrací uživatelské ID
 	 */
 	@Override
 	@Transactional
-	public Long getUserIDByLoginData(Long clientNumber, String password) {
+	public Long getUserIDByClientNumber(Long clientNumber) {
 		
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(
 			
 		"SELECT id "
 	  + "FROM User "
-	  + "WHERE client_number = :clientNumber AND password = :password");
+	  + "WHERE client_number = :clientNumber");
 		
 		query.setParameter("clientNumber", clientNumber);
-		query.setParameter("password", password);
 		
 		return (Long) query.uniqueResult();
 	}
