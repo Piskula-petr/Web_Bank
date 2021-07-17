@@ -19,6 +19,7 @@ public class BankCodesServiceImpl implements BankCodesService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	
 	/**
 	 * 	Seznam bankovních kódů
 	 * 
@@ -29,7 +30,7 @@ public class BankCodesServiceImpl implements BankCodesService {
 	public List<BankCode> getBankCodes() {
 
 		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery("FROM bank_codes");
+		Query query = session.createQuery("FROM BankCode", BankCode.class);
 		
 		List<BankCode> bankCodes = query.list();
 		 

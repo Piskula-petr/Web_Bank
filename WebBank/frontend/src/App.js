@@ -1,58 +1,42 @@
 import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 
-// Komponenty
-import LoginForm from "./loginPage/LoginForm";
-import OverviewIndex from "./overviewPage/OverviewIndex";
-import NewPayment from "./newPayment/NewPayment";
+import "App.css";
+import LoginForm from "./components/login-page/LoginForm";
+import OverviewPage from "./components/overview-page/OverviewPage";
+import NewPayment from "./components/new-payment/NewPayment";
 
-export default class App extends Component {
+class App extends Component {
 
-// Konstruktor ///////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Vykreslení
+     */
+    render() {
 
-  constructor(props) {
-    super(props);
+        return (
+            <Router>
 
-    this.state = {
+                {/* Přihlašovací formulář */}
+                <Route path="/prihlaseni">
+                    <LoginForm />
+                </Route>
 
-      // ID přihlášeného uživatele
-      userID: 0,
+                {/* Přehled plateb */}
+                <Route path="/prehled">
+                    <OverviewPage />
+                </Route>
+
+                {/* Nová platba */}
+                <Route path="/nova-platba">
+                    <NewPayment />
+                </Route>
+
+                <Redirect from="/" to="/prihlaseni" />
+                
+            </Router>
+        )
     }
-
-    this.setUser = this.setUser.bind(this);
-  }
-
-// Změna stavu ID uživatele //////////////////////////////////////////////////////////
-
-  setUser(data) {
-
-    this.setState({
-      userID: data,
-    });
-  }
-
-// Vykreslení ////////////////////////////////////////////////////////////////////////
-
-  render() {
-
-    return (
-      <Router>
-
-        <Route path="/prihlaseni">
-          <LoginForm setUser={this.setUser} isLogin={this.state.isLogin} />
-        </Route>
-
-        <Route path="/prehled">
-          <OverviewIndex setUser={this.setUser} userID={this.state.userID} />
-        </Route>
-
-        <Route path="/nova-platba">
-          <NewPayment setUser={this.setUser} userID={this.state.userID} />
-        </Route>
-
-        <Redirect from="/" to="/prihlaseni" />
-        
-      </Router>
-    )
-  }
 }
+
+export default App

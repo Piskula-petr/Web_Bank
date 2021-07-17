@@ -4,6 +4,7 @@ import cz.web_bank.entities.CreditCard;
 
 public interface CreditCardService {
 
+	
 	/**
 	 * 	Kreditní karta podle uživatelského ID
 	 * 

@@ -1,7 +1,9 @@
 package cz.web_bank.services.impl;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -21,6 +23,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	
 	/**
 	 * 	Celkový počet plateb uřivatele
 	 * 
@@ -36,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
 		Query query = session.createQuery(
 				
 		"SELECT COUNT(*) "
-	  + "FROM payments "
+	  + "FROM Payment "
 	  + "WHERE user_id = :userID");
 		
 		query.setParameter("userID", userID);
@@ -45,6 +48,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		return paymentsCount;
 	}
+	
 	
 	/**
 	 * 	Seznam plateb uživatele v zadaném měsíci
@@ -63,10 +67,10 @@ public class PaymentServiceImpl implements PaymentService {
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(	
 				
-		"FROM payments "
+		"FROM Payment "
 	  + "WHERE user_id = :userID "
 	  + "AND payment_date BETWEEN :startOfMonth AND :endOfMonth "
-	  + "ORDER BY payment_date DESC");
+	  + "ORDER BY payment_date DESC", Payment.class);
 		
 		query.setParameter("userID", userID);
 		query.setParameter("startOfMonth", startOfMonth);
@@ -76,6 +80,7 @@ public class PaymentServiceImpl implements PaymentService {
  		
 		return payments;
 	}
+	
 	
 	/**
 	 * 	Součet plateb uživatele v zadaném měsíci
@@ -96,7 +101,7 @@ public class PaymentServiceImpl implements PaymentService {
 		Query query = session.createQuery(
 		
 		"SELECT SUM(amount) "
-	  + "FROM payments "
+	  + "FROM Payment "
 	  + "WHERE user_id = :userID AND mark = :mark "
 	  + "AND payment_date BETWEEN :startOfMonth AND :endOfMonth");
 		
@@ -116,6 +121,7 @@ public class PaymentServiceImpl implements PaymentService {
 		return resultSum;
 	}
 	
+	
 	/**
 	 * 	Uložení nové platby
 	 * 
@@ -127,23 +133,23 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		Session session = sessionFactory.getCurrentSession();
 		
-// Získání čísla účtu odesilatele //////////////////////////////////////////////////////////
+// Získání čísla účtu odesilatele ////////////////////////////////////////////////////////
 		
 		Query query = session.createQuery(
 				
 		"SELECT accountNumber "
-	  + "FROM users "
+	  + "FROM User "
 	  + "WHERE id = :senderID");
 		
 		query.setParameter("senderID", senderPayment.getUserID());
 		
 		String senderAccountNumber = (String) query.uniqueResult();
 		
-// Odečtení částky z účtu odesilatele //////////////////////////////////////////////////////
+// Odečtení částky z účtu odesilatele ////////////////////////////////////////////////////
 		
 		query = session.createQuery(
 				
-		"UPDATE users "
+		"UPDATE User "
 	  + "SET balance = balance - :amount "
 	  + "WHERE account_number = :senderAccountNumber");
 		
@@ -152,42 +158,39 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		query.executeUpdate();
 
-// Přičtení částky na účet příjemce ////////////////////////////////////////////////////////
-		
-		query = session.createQuery(
-		
-		"UPDATE users "
-	  + "SET balance = balance + :amount "
-	  + "WHERE account_number = :recipientAccountNumber");
-		
-		query.setParameter("amount", senderPayment.getAmount());
-		query.setParameter("recipientAccountNumber", senderPayment.getAccountNumber());
-		
-		query.executeUpdate();
-		
-// Uložení nové platby odesilatele /////////////////////////////////////////////////////////
-			
+// Uložení nové platby odesilatele ///////////////////////////////////////////////////////
+
 		session.save(senderPayment);
-			
-// Uložení nové platby příjemce ////////////////////////////////////////////////////////////
-			
-		String senderBankCode = senderAccountNumber.split("/")[1];
-		String recipientBankCode = senderPayment.getAccountNumber().split("/")[1];
 		
-		// Vytvoření nové platby příjemce, při shodném bankovním kódu
-		if (senderBankCode.equals(recipientBankCode)) {
+// Získání ID příjemce ///////////////////////////////////////////////////////////////////		
+
+		query = session.createQuery(
+				
+		"SELECT id "
+	  + "FROM User "
+	  + "WHERE account_number = :accountNumber");
+		
+		query.setParameter("accountNumber", senderPayment.getAccountNumber());
+		
+		Long recipientID = (Long) query.uniqueResult();
+		
+// Přičtení částky na účet příjemce //////////////////////////////////////////////////////		
+		
+		if (recipientID != null) {
 			
 			query = session.createQuery(
 					
-			"SELECT id "
-		  + "FROM users "
-		  + "WHERE account_number = :accountNumber");
+			"UPDATE User "
+		  + "SET balance = balance + :amount "
+		  + "WHERE account_number = :recipientAccountNumber");
 			
-			query.setParameter("accountNumber", senderPayment.getAccountNumber());
+			query.setParameter("amount", senderPayment.getAmount());
+			query.setParameter("recipientAccountNumber", senderPayment.getAccountNumber());
 			
-			Long recipientID = (Long) query.uniqueResult();
+			query.executeUpdate();
 			
-			// Vytvoření platby příjemce
+// Uložení nové platby příjemce ////////////////////////////////////////////////////////////
+
 			Payment recipientPayment = new Payment();
 			recipientPayment.setUserID(recipientID);
 			recipientPayment.setName(senderPayment.getName());
@@ -203,6 +206,82 @@ public class PaymentServiceImpl implements PaymentService {
 			
 			session.save(recipientPayment);
 		}
+	}
+	
+	
+	/**
+	 * 	Získání datumu poslední platby
+	 * 
+	 * 	@return - vrací datum poslední platby
+	 */
+	@Override
+	@Transactional
+	public LocalDate getLastPaymentDate() {
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(
+				
+		"SELECT paymentDate "
+	  + "FROM Payment "
+	  + "ORDER BY id DESC");
+		
+		query.setMaxResults(1);
+		
+		LocalDate localDate = (LocalDate) query.uniqueResult();
+		
+		return localDate;
+	}
+	
+	
+	/**
+	 * 	Získání plateb v měsící
+	 * 
+	 * 	@param startOfMonth - první den v měsíci
+	 * 	@param endOfMonth - poslední den v měsíci
+	 * 
+	 * 	@return - vrací List plateb v měsíci
+	 */
+	@Override
+	@Transactional
+	public List<Payment> getPaymentsOfMonth(LocalDate startOfMonth, LocalDate endOfMonth) {
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(	
+				
+		"FROM Payment "
+	  + "WHERE payment_date BETWEEN :startOfMonth AND :endOfMonth "
+	  + "ORDER BY payment_date DESC", Payment.class);
+		
+		query.setParameter("startOfMonth", startOfMonth);
+		query.setParameter("endOfMonth", endOfMonth);
+		
+		List<Payment> payments = query.list();
+		
+		return payments;
+	}
+
+	
+	/**
+	 * Změna datumu platby
+	 * 
+	 * @param paymentID - ID platby
+	 * @param newPaymentDate - nový datum platby
+	 */
+	@Override
+	@Transactional
+	public void updatePaymentDate(long paymentID, LocalDate newPaymentDate) {
+		
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(
+				
+		"UPDATE Payment "
+	  + "SET payment_date = :newPaymentDate "
+	  + "WHERE id = :paymentID");
+		
+		query.setParameter("newPaymentDate", newPaymentDate);
+		query.setParameter("paymentID", paymentID);
+		
+		query.executeUpdate();
 	}
 	
 }

@@ -9,17 +9,15 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cz.web_bank.entities.CreditCard;
 import cz.web_bank.entities.Payment;
 import cz.web_bank.entities.User;
 import cz.web_bank.pojo.MonthSum;
-import cz.web_bank.pojo.SelectedTerm;
 import cz.web_bank.services.CreditCardService;
 import cz.web_bank.services.PaymentService;
 import cz.web_bank.services.UserService;
@@ -38,6 +36,7 @@ public class OverviewPageController {
 	@Autowired
 	private PaymentService paymentServise;
 	
+	
 	/**
 	 * 	Získání uživatele podle ID
 	 * 
@@ -45,13 +44,14 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací požadovaného uživatele
 	 */
-	@PostMapping("/user")
-	public @ResponseBody User getUser(@RequestBody long userID) {
+	@GetMapping("/user/userID={userID}")
+	public User getUser(@PathVariable("userID") long userID) {
 		
 		User user = userServise.getUserByID(userID);
 		
 		return user;
 	}
+	
 	
 	/**
 	 * 	Získání kreditní karty podle uživatelského ID
@@ -60,13 +60,14 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací požadovanou kreditní kartu
 	 */
-	@PostMapping("/credit-card")
-	public @ResponseBody CreditCard getCreditCard(@RequestBody long userID) {
+	@GetMapping("/creditCard/userID={userID}")
+	public CreditCard getCreditCard(@PathVariable("userID") long userID) {
 		
 		CreditCard creditCard = creditCardServise.getCreditCardByUserID(userID);
 	
 		return creditCard;
 	}
+	
 	
 	/**
 	 * 	Získání celkového počtu plateb uživatele
@@ -75,8 +76,8 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací Mapu s počtem plateb
 	 */
-	@PostMapping("/payments/count")
-	public @ResponseBody Map<String, Long> getPaymentCount(@RequestBody long userID) {
+	@GetMapping("/payments/count/userID={userID}")
+	public Map<String, Long> getPaymentCount(@PathVariable("userID") long userID) {
 		
 		long count = paymentServise.getPaymentsCount(userID);
 		
@@ -86,6 +87,7 @@ public class OverviewPageController {
 		return paymentsCount;
 	}
 	
+	
 	/**
 	 * 	Získání plateb uživatele v požadovaném měsíci
 	 * 
@@ -93,31 +95,34 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací List plateb
 	 */
-	@PostMapping("/payments/month")
-	public @ResponseBody List<Payment> getPayments(@RequestBody SelectedTerm selectedTerm) {
+	@GetMapping("/payments/month/userID={userID}&month={month}&year={year}")
+	public List<Payment> getPayments(@PathVariable("userID") long userID,
+									 @PathVariable("month") int month,
+									 @PathVariable("year") int year) {
 		
 		// Začátek měsíce "2020-01-01"
-		LocalDate startOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), 1);
+		LocalDate startOfMonth = LocalDate.of(year, month, 1);
 		
 		// Konec měsíce "2020-01-31"
-		LocalDate endOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), startOfMonth.lengthOfMonth());
+		LocalDate endOfMonth = LocalDate.of(year, month, startOfMonth.lengthOfMonth());
 		
-		List<Payment> payments = paymentServise.getPaymentsByUserID(selectedTerm.getUserID(), startOfMonth, endOfMonth);
+		List<Payment> payments = paymentServise.getPaymentsByUserID(userID, startOfMonth, endOfMonth);
 		
 		// Načtení plateb z pozdějšího měsíce 
 		// Pouze při nízkém počtu plateb a v aktuálním měsíci
-		if (payments.size() < 10 && LocalDate.now().getMonthValue() == selectedTerm.getMonth()) {
+		if (payments.size() < 10 && LocalDate.now().getMonthValue() == month) {
 			
 			// Dekrementace o jeden měsíc
 			startOfMonth = startOfMonth.minusMonths(1);
 			endOfMonth = endOfMonth.minusMonths(1);
 			
-			List<Payment> olderPayments = paymentServise.getPaymentsByUserID(selectedTerm.getUserID(), startOfMonth, endOfMonth);
+			List<Payment> olderPayments = paymentServise.getPaymentsByUserID(userID, startOfMonth, endOfMonth);
 			payments.addAll(olderPayments);
 		}
 		
 		return payments;
 	}
+	
 	
 	/**
 	 * 	Získání příjmů a výdajů uživatele v požadovaném měsíci
@@ -126,19 +131,21 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací List příjmů a výdajů
 	 */
-	@PostMapping("/payments/sum/month")
-	public @ResponseBody Map<String, BigDecimal> getMonnthSum(@RequestBody SelectedTerm selectedTerm) {
+	@GetMapping("/payments/sum/month/userID={userID}&month={month}&year={year}")
+	public Map<String, BigDecimal> getMonnthSum(@PathVariable("userID") long userID, 
+												@PathVariable("month") int month,
+												@PathVariable("year") int year) {
 		
 		// Začátek měsíce "2020-01-01"
-		LocalDate startOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), 1);
+		LocalDate startOfMonth = LocalDate.of(year, month, 1);
 		
 		// Konec měsíce "2020-01-31"
-		LocalDate endOfMonth = LocalDate.of(selectedTerm.getYear(), selectedTerm.getMonth(), startOfMonth.lengthOfMonth());
+		LocalDate endOfMonth = LocalDate.of(year, month, startOfMonth.lengthOfMonth());
 		
 		Map <String, BigDecimal> paymentsSum = new HashMap<>();
 		
-		BigDecimal income = paymentServise.getPaymentsSum(selectedTerm.getUserID(), "+", startOfMonth, endOfMonth);
-		BigDecimal costs = paymentServise.getPaymentsSum(selectedTerm.getUserID(), "-", startOfMonth, endOfMonth);
+		BigDecimal income = paymentServise.getPaymentsSum(userID, "+", startOfMonth, endOfMonth);
+		BigDecimal costs = paymentServise.getPaymentsSum(userID, "-", startOfMonth, endOfMonth);
 		
 		BigDecimal balance = new BigDecimal(income.doubleValue() - costs.doubleValue());
 		
@@ -149,6 +156,7 @@ public class OverviewPageController {
 		return paymentsSum;
 	}
 	
+	
 	/**
 	 * 	Získání příjmů a výdajů uživatele z posledních 3 měsíců
 	 * 
@@ -156,8 +164,8 @@ public class OverviewPageController {
 	 * 
 	 * 	@return - vrací List měsíčních příjmů a výdajů
 	 */
-	@PostMapping("/payments/sum/graphs")
-	public @ResponseBody List<MonthSum> getMonthsSum(@RequestBody long userID) {
+	@GetMapping("/payments/sum/graphs/userID={userID}")
+	public List<MonthSum> getMonthsSum(@PathVariable("userID") long userID) {
 		
 		List<MonthSum> monthsSum = new ArrayList<>();
 		

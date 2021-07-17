@@ -6,6 +6,7 @@ import cz.web_bank.entities.Currency;
 
 public interface CurrenciesService {
 
+	
 	/**
 	 * 	Seznam měn
 	 * 

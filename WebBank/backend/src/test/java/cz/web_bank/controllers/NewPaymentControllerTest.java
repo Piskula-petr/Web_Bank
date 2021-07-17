@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -20,10 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import cz.web_bank.ApplicationMain;
 import cz.web_bank.entities.BankCode;
 import cz.web_bank.entities.Currency;
 import cz.web_bank.entities.Payment;
@@ -31,7 +34,7 @@ import cz.web_bank.services.BankCodesService;
 import cz.web_bank.services.CurrenciesService;
 import cz.web_bank.services.PaymentService;
 
-@WebMvcTest
+@WebMvcTest(NewPaymentController.class)
 public class NewPaymentControllerTest {
 
 	private Random random;
@@ -47,6 +50,9 @@ public class NewPaymentControllerTest {
 	
 	@MockBean
 	private PaymentService paymentServise;
+	
+	@MockBean
+	private ApplicationMain applicationMain;
 	
 	
 	/**
@@ -67,6 +73,7 @@ public class NewPaymentControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void getBankCodes() throws Exception {
 		
 		List<BankCode> bankCodes = new ArrayList<>();
@@ -81,9 +88,7 @@ public class NewPaymentControllerTest {
 		when(bankCodesServise.getBankCodes()).thenReturn(bankCodes);
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform(post("/api/bank-codes")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(new ObjectMapper().writeValueAsString(bankCodes)))
+		mockMvc.perform(get("/api/bankCodes"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.length()").value(bankCodes.size()))
 			.andExpect(jsonPath("$[0].id").value(bankCode.getId()))
@@ -100,6 +105,7 @@ public class NewPaymentControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void getCurrencies() throws Exception {
 		
 		List<Currency> currencies = new ArrayList<>();
@@ -114,9 +120,7 @@ public class NewPaymentControllerTest {
 		when(currenciesServise.getCurrencies()).thenReturn(currencies);
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform(post("/api/currencies")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content(new ObjectMapper().writeValueAsString(currencies)))
+		mockMvc.perform(get("/api/currencies"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.length()").value(currencies.size()))
 			.andExpect(jsonPath("$[0].id").value(currency.getId()))
@@ -133,6 +137,7 @@ public class NewPaymentControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void newPaymentSuccess() throws Exception {
 		
 		// vytvoření testovací platby
@@ -140,8 +145,8 @@ public class NewPaymentControllerTest {
 		payment.setId(random.nextLong());
 		payment.setUserID(random.nextLong());
 		payment.setName("name");
-		payment.setMark("-");			// 1 - 2 147 483 647
-		payment.setAmount(new BigDecimal(random.nextInt(Integer.MAX_VALUE - 1 + 1) + 1));
+		payment.setMark("-");			
+		payment.setAmount(new BigDecimal(random.nextInt(Integer.MAX_VALUE - 1 + 1) + 1)); // Rozmezí od 1 - 2 147 483 647
 		payment.setCurrency(java.util.Currency.getInstance("CZK"));
 		payment.setVariableSymbol((long) random.nextInt());
 		payment.setConstantSymbol((long) random.nextInt());
@@ -151,7 +156,7 @@ public class NewPaymentControllerTest {
 		payment.setAccountNumber("1234567890/0000");
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform((post("/api/new-payment")
+		mockMvc.perform((post("/api/newPayment")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(new ObjectMapper().writeValueAsString(payment))))
 			.andExpect(status().isOk())
@@ -167,6 +172,7 @@ public class NewPaymentControllerTest {
 	 * @throws Exception
 	 */
 	@Test
+	@WithMockUser(authorities = {"user"})
 	public void newPaymentFailed() throws Exception {
 		
 		// vytvoření testovací platby
@@ -177,7 +183,7 @@ public class NewPaymentControllerTest {
 		payment.setSpecificSymbol(Long.MAX_VALUE);
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform((post("/api/new-payment")
+		mockMvc.perform((post("/api/newPayment")
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(new ObjectMapper().writeValueAsString(payment))))
 			.andExpect(status().isBadRequest())
