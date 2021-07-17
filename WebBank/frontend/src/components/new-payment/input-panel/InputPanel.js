@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 import styles from "components/new-payment/new-payment.module.css";
 
-export default class InputPanel extends Component {
+class InputPanel extends Component {
 
     
     /**
@@ -32,3 +32,5 @@ export default class InputPanel extends Component {
         )
     }
 }
+
+export default InputPanel

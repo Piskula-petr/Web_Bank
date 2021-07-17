@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { connect } from "react-redux";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
 import graph from "images/graph.png";
@@ -9,7 +10,7 @@ import rightArrow from "images/right_arrow.png";
 import months from "modules/months";
 import numberFormatter from "modules/numberFormatter";
 
-export default class MonthReport extends Component {
+class MonthReport extends Component {
 
 
     /**
@@ -171,3 +172,13 @@ export default class MonthReport extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+
+    return {
+        userID: state.user.userID,
+        currency: state.currency
+    }
+}
+
+export default connect(mapStateToProps) (MonthReport)

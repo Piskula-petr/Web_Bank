@@ -6,38 +6,9 @@ import LoginForm from "./components/login-page/LoginForm";
 import OverviewPage from "./components/overview-page/OverviewPage";
 import NewPayment from "./components/new-payment/NewPayment";
 
-export default class App extends Component {
+class App extends Component {
 
-
-  /**
-   * Konstruktor
-   * 
-   * @param props
-   */
-    constructor(props) {
-        super(props);
-
-        this.state = {
-
-            // ID přihlášeného uživatele
-            userID: 0,
-        }
-    }
-
-
-    /**
-     * Nastavení ID uživatele
-     * 
-     * @param userID 
-     */
-    setUserID = (userID) => {
-
-        this.setState({
-            userID
-        });
-    }
-
-
+    
     /**
      * Vykreslení
      */
@@ -48,28 +19,17 @@ export default class App extends Component {
 
                 {/* Přihlašovací formulář */}
                 <Route path="/prihlaseni">
-
-                    <LoginForm 
-                        setUserID={this.setUserID} />
-
+                    <LoginForm />
                 </Route>
 
                 {/* Přehled plateb */}
                 <Route path="/prehled">
-
-                    <OverviewPage 
-                        setUserID={this.setUserID} 
-                        userID={this.state.userID} />
-
+                    <OverviewPage />
                 </Route>
 
                 {/* Nová platba */}
                 <Route path="/nova-platba">
-
-                    <NewPayment 
-                        setUserID={this.setUserID} 
-                        userID={this.state.userID} />
-
+                    <NewPayment />
                 </Route>
 
                 <Redirect from="/" to="/prihlaseni" />
@@ -78,3 +38,5 @@ export default class App extends Component {
         )
     }
 }
+
+export default App

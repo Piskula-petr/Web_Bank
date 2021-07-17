@@ -2,12 +2,14 @@
 import React, {Component} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { connect } from "react-redux";
+import { changeCurrency } from "redux/currency/currencyActions";
 
 import styles from "components/overview-page/account-info/account-info.module.css";
 import safe from "images/safe.png";
 import numberFormatter from "modules/numberFormatter";
 
-export default class AccountInfo extends Component {
+class AccountInfo extends Component {
 
 
     /**
@@ -106,8 +108,8 @@ export default class AccountInfo extends Component {
                 name: currencyKey,
             }
 
-            // Nastavení měny (předek)
-            this.props.setCurrency(currency);
+            // Změna měny (redux)
+            this.props.changeCurrency(currency);
         });
     }
 
@@ -167,5 +169,21 @@ export default class AccountInfo extends Component {
             </div>
         )
     }
-
 }
+
+const mapStateToProps = (state) => {
+
+    return {
+        userID: state.user.userID,
+        currency: state.currency
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+
+    return {
+        changeCurrency: (currency) => dispatch(changeCurrency(currency))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (AccountInfo)

@@ -1,11 +1,12 @@
-import React, {Component} from "react";
+import React, {PureComponent} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { connect } from "react-redux";
 
 import creditCard from "images/credit_card.png";
 import styles from "components/overview-page/credit-card-info/credit-card-info.module.css";
 
-export default class CreditCardInfo extends Component {
+class CreditCardInfo extends PureComponent {
 
 
     /**
@@ -106,5 +107,13 @@ export default class CreditCardInfo extends Component {
             </div>
         )
     }
-
 }
+
+const mapStateToProps = (state) => {
+
+    return {
+        userID: state.user.userID
+    }
+}
+
+export default connect(mapStateToProps) (CreditCardInfo)

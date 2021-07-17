@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import styles from "components/new-payment/new-payment.module.css";
 import numberFormatter from "modules/numberFormatter";
 
-export default class InputPanelExchangeRate extends Component {
+class InputPanelExchangeRate extends Component {
 
 
     /**
@@ -30,3 +30,5 @@ export default class InputPanelExchangeRate extends Component {
         )
     }
 }
+
+export default InputPanelExchangeRate

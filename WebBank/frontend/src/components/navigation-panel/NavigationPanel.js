@@ -2,12 +2,14 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
+import { connect } from "react-redux";
+import { setUserID } from "redux/user/userActions";
 
 import styles from "components/navigation-panel/navigation-panel.module.css";
 import back from "images/back.png";
 import logout from "images/logout.png";
 
-export default class NavigationPanel extends Component {
+class NavigationPanel extends Component {
 
     
     /**
@@ -20,7 +22,7 @@ export default class NavigationPanel extends Component {
     
         this.state = {
 
-            // Zbývající vteřiny opočtu
+            // Zbývající vteřiny odpočtu
             secondsLeft: this.props.timeInterval,
 
             // Čas vypršení JWT
@@ -66,7 +68,7 @@ export default class NavigationPanel extends Component {
                     // vytvoření nového cookies
                     Cookies.set("jwt", jwt, {secure: true});
 
-                    // Nastavení času vypršení JWT
+                    // Nastavení času vypršení nového JWT
                     this.setJwtExpireTime();
 
                 }).catch((error) => console.log(error))
@@ -129,6 +131,7 @@ export default class NavigationPanel extends Component {
         // Odstranění cookies
         Cookies.remove("jwt");
 
+        // Vynulování ID uživatele (redux)
         this.props.setUserID(0);
     }
 
@@ -169,3 +172,12 @@ export default class NavigationPanel extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+
+    return {
+        setUserID: (userID) => dispatch(setUserID(userID))
+    }
+}
+
+export default connect(null, mapDispatchToProps) (NavigationPanel)

@@ -4,7 +4,7 @@ import styles from "components/overview-page/payment-report/payment-report.modul
 import MonthReport from "./MonthReport";
 import BalanceGraphs from "./BalanceGraphs";
 
-export default class PaymentReport extends Component {
+class PaymentReport extends Component {
 
 
     /**
@@ -16,15 +16,14 @@ export default class PaymentReport extends Component {
             <div className={styles.paymentReport}>
 
                 {/* Přehled měsíce */}
-                <MonthReport 
-                    userID={this.props.userID}
-                    currency={this.props.currency} />
+                <MonthReport />
 
                 {/* Grafy zůstatku za poslední 3 měsíce */}
-                <BalanceGraphs 
-                    userID={this.props.userID} />
+                <BalanceGraphs />
 
             </div>
         )
     }
 }
+
+export default PaymentReport

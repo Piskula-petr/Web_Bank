@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { connect } from "react-redux";
 
 import styles from "components/overview-page/payment-history/paymentHistory.module.css";
 import DetailTable from "components/overview-page/payment-history/DetailTable";
 import numberFormatter from "modules/numberFormatter";
 import dateFormatter from "modules/dateFormatter";
 
-export default class PaymentHistory extends Component {
+class PaymentHistory extends Component {
 
 
     /**
@@ -159,5 +160,14 @@ export default class PaymentHistory extends Component {
             </div>
         )
     }
-
 }
+
+const mapStateToProps = (state) => {
+
+    return {
+        userID: state.user.userID,
+        currency: state.currency
+    }
+}
+
+export default connect(mapStateToProps) (PaymentHistory)

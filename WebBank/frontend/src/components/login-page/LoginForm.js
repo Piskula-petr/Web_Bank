@@ -2,11 +2,13 @@ import React, {Component} from "react";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { connect } from "react-redux";
+import { setUserID } from "redux/user/userActions";
 
 import styles from "components/login-page/login-page.module.css";
 import logo from "images/logo.png";
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
 
     
     /**
@@ -80,7 +82,7 @@ export default class LoginForm extends Component {
             // Vytvoření cookies
             Cookies.set("jwt", jwt, {expires: new Date(expireTime), secure: true});
 
-            // Nastavení ID uživatele (předek)
+            // Nastavení ID uživatele (redux)
             this.props.setUserID(userID);
 
             this.setState({
@@ -160,3 +162,12 @@ export default class LoginForm extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch) => {
+
+    return {
+        setUserID: (userID) => dispatch(setUserID(userID))
+    }
+}
+
+export default connect(null, mapDispatchToProps) (LoginForm)

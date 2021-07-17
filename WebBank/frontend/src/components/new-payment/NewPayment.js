@@ -2,6 +2,7 @@ import React, {Component, createRef} from "react";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { connect } from "react-redux";
 
 import styles from "components/new-payment/new-payment.module.css";
 import payment from "images/payment.png";
@@ -13,7 +14,7 @@ import InputPanelExchangeRate from "components/new-payment/input-panel/InputPane
 import InputPanelWithConfirmation from "components/new-payment/input-panel/InputPanelWithConfirmation";
 import conformationCode from "modules/conformationCode";
 
-export default class NewPayment extends Component {
+class NewPayment extends Component {
 
 
     /**
@@ -186,6 +187,9 @@ export default class NewPayment extends Component {
                     variableSymbolError: data.variableSymbol,
                     constantSymbolError: data.constantSymbol,
                     specificSymbolError: data.specificSymbol,
+
+                    // Vygenerování nového ověřovacího kódu
+                    confirmationGenerated: conformationCode()
                 });
             });       
         });
@@ -256,7 +260,6 @@ export default class NewPayment extends Component {
 
                 {/* Navigační panel (odhlášení) */}
                <NavigationPanel
-                    setUserID={this.props.setUserID} 
                     timeInterval={5 * 60} 
                     backLabel="Přehled"/>
 
@@ -280,7 +283,7 @@ export default class NewPayment extends Component {
                         <InputPanel 
                             name="name"
                             label="Název platby:" 
-                            placeholder="Nájem bytu" 
+                            placeholder="Název platby" 
                             error={this.state.nameError} 
                             onChange={this.handleChange} />
 
@@ -319,7 +322,6 @@ export default class NewPayment extends Component {
                         <InputPanel 
                             name="variableSymbol" 
                             label="Variabilní symbol:" 
-                            placeholder="5795504032" 
                             error={this.state.variableSymbolError} 
                             onChange={this.handleChange} />
 
@@ -327,7 +329,6 @@ export default class NewPayment extends Component {
                         <InputPanel 
                             name="constantSymbol" 
                             label="Konstantní symbol:" 
-                            placeholder="5296841057" 
                             error={this.state.constantSymbolError} 
                             onChange={this.handleChange} />
 
@@ -335,7 +336,6 @@ export default class NewPayment extends Component {
                         <InputPanel 
                             name="specificSymbol" 
                             label="Specifický symbol:" 
-                            placeholder="4398956257" 
                             error={this.state.specificSymbolError} 
                             onChange={this.handleChange} />
 
@@ -361,3 +361,12 @@ export default class NewPayment extends Component {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+
+    return {
+        userID: state.user.userID
+    }
+}
+
+export default connect(mapStateToProps) (NewPayment)

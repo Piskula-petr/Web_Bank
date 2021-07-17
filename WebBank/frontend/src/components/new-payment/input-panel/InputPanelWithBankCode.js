@@ -6,7 +6,7 @@ import styles from "components/new-payment/new-payment.module.css";
 import bank from "images/bank.png";
 import caretDown from "images/caret_down.png";
 
-export default class InputPanelWithBankCode extends Component {
+class InputPanelWithBankCode extends Component {
 
 
     /**
@@ -96,3 +96,5 @@ export default class InputPanelWithBankCode extends Component {
         )
     }
 }
+
+export default InputPanelWithBankCode

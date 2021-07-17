@@ -3,8 +3,12 @@ import React, {Component} from "react";
 import styles from "components/overview-page/payment-history/paymentHistory.module.css";
 import dateFormatter from "modules/dateFormatter";
 
-export default class DetailTable extends Component {
+class DetailTable extends Component {
 
+    
+    /**
+     * Vykreslení
+     */
     render() {
 
         return(
@@ -62,5 +66,6 @@ export default class DetailTable extends Component {
             </div>
         )
     }
-
 }
+
+export default DetailTable

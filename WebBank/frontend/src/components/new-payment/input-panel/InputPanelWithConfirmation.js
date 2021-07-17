@@ -2,7 +2,7 @@ import React, {Component} from "react";
 
 import styles from "components/new-payment/new-payment.module.css";
 
-export default class InputPanelWithConfirmation extends Component {
+class InputPanelWithConfirmation extends Component {
 
 
     /**
@@ -35,3 +35,5 @@ export default class InputPanelWithConfirmation extends Component {
         )
     }
 }
+
+export default InputPanelWithConfirmation

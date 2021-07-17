@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 import styles from "components/new-payment/new-payment.module.css";
 
-export default class InputPanelWithCurrencies extends Component {
+class InputPanelWithCurrencies extends Component {
 
 
     /**
@@ -82,3 +82,5 @@ export default class InputPanelWithCurrencies extends Component {
         )
     }
 }
+
+export default InputPanelWithCurrencies

@@ -1,11 +1,12 @@
-import React, {Component, createRef} from "react";
+import React, {PureComponent, createRef} from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { connect } from "react-redux";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
 import months from "modules/months"
 
-export default class BalanceGraphs extends Component {
+class BalanceGraphs extends PureComponent {
 
 
     /**
@@ -167,3 +168,11 @@ export default class BalanceGraphs extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+
+    return {
+        userID: state.user.userID
+    }
+}
+
+export default connect(mapStateToProps) (BalanceGraphs)

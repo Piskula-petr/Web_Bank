@@ -8,39 +8,7 @@ import CreditCardInfo from "components/overview-page/credit-card-info/CreditCard
 import PaymentReport from "./payment-report/PaymentReport";
 import PaymentHistory from "./payment-history/PaymentHistory";
 
-export default class OverviewPage extends Component {
-
-
-    /**
-     * Konstruktor
-     * 
-     * @param props
-     */
-    constructor(props) {
-        super(props);
-
-        this.state = {
-
-            // Vybraná měna
-            currency: {
-                exchangeRate: 1,
-                name: "CZK",
-            }
-        }
-    }
-
-
-    /**
-     * Změna vybrané měny
-     * 
-     * @param data 
-     */
-    setCurrency = (data) => {
-
-        this.setState({
-            currency: data,
-        });
-    }
+class OverviewPage extends Component {
 
 
     /**
@@ -62,7 +30,6 @@ export default class OverviewPage extends Component {
 
                 {/* Navigační panel (odhlášení) */}
                 <NavigationPanel 
-                    setUserID={this.props.setUserID} 
                     timeInterval={5 * 60}/>
 
                 <div className={styles.container}>
@@ -70,13 +37,10 @@ export default class OverviewPage extends Component {
                     <div className={styles.firstColumn}>
 
                         {/* Informace o účtu */}
-                        <AccountInfo 
-                            userID={this.props.userID} 
-                            setCurrency={this.setCurrency} 
-                            currency={this.state.currency} />
+                        <AccountInfo />
 
                         {/* Informace o kreditní kartě */}
-                        <CreditCardInfo userID={this.props.userID} />
+                        <CreditCardInfo />
                             
                         {/* Přesměrování na novou platbu */}
                         <Link id="newPayment" className={styles.newPaymentLink} to="/nova-platba">
@@ -84,18 +48,15 @@ export default class OverviewPage extends Component {
                         </Link>
 
                         {/* Přehled plateb */}
-                        <PaymentReport 
-                            userID={this.props.userID}
-                            currency={this.state.currency} />
+                        <PaymentReport />
                     </div>
 
                     {/* Historie plateb */}
-                    <PaymentHistory 
-                        userID={this.props.userID}
-                        currency={this.state.currency} />
+                    <PaymentHistory />
                 </div>
             </div>
         )
     }
-
 }
+
+export default OverviewPage
