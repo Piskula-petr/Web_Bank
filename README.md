@@ -1,20 +1,24 @@
 # 5. Web Bank
 
 <div>
-  <img src="web_bank1.jpg" width="49%">
-  <img src="web_bank2.jpg" width="49.5%">
+  <img src="https://user-images.githubusercontent.com/60322749/126063319-e723084a-a6d0-4e15-a228-64b9ba549f4e.jpg" width="49%">
+  <img src="https://user-images.githubusercontent.com/60322749/126063331-a319db00-3300-4ab5-bac6-b50c1f7f0dcd.jpg" width="49.5%">
 </div> <br>
 
 ## Description
 REST web application simulating internet banking <br> <br>
 
 ## Technology
-Spring Boot <br>
-Hibernate <br>
-Hibernate Validator <br>
-React <br>
-PostgreSQL <br>
-JUnit / Mockito <br> <br>
+* Back-End
+  * Spring Boot
+  * Hibernate / Hibernate Validator
+  * PostgreSQL
+  * JUnit / Mockito
+
+- Front-End
+  - React (class based)
+  - Redux 
+  - CSS Modules <br> <br>
 
 ## SQL Diagram
-<img src="sql.png">
+<img src="https://user-images.githubusercontent.com/60322749/126063346-5a39e4ff-07fe-4aba-8fe3-9ea55013716e.png">
