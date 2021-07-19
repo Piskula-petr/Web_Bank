@@ -1,0 +1,28 @@
+.content {
+	width: 1280px;
+	margin: 0px auto;
+}
+
+.firstColumn {
+	float: left;
+}
+
+/*__________________________________ Nová platba - link __________________________*/
+.newPaymentLink {
+	display: block;
+	color: #394359;
+	border-top: 8px solid #02AAE9;
+	background: #02AAE9;
+	border-radius: 3px;
+	margin: 30px 15px;
+	background: #EEE;
+	padding: 10px 20px;
+	text-align: center;
+	font-size: 1.3em;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.newPaymentLink:hover {
+	text-decoration: underline;
+}
