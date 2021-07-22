@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useReducer} from 'react'
 import {Redirect} from "react-router-dom";
 import { connect } from 'react-redux'
 import axios from 'axios'
@@ -10,14 +10,48 @@ import logo from "images/logo.png";
 
 const LoginPage = (props) => {
 
-    // Přihlašovací údaje
-    const [loginData, setloginData] = useState({clientNumber: "", password: ""});
-
-    // Chybové zprávy
-    const [loginDataError, setloginDataError] = useState({clientNumberError: "", passwordError: ""})
 
     // Úspěšné přihlášení
     const [successLogin, setSuccessLogin] = useState(false);
+
+
+    // Výchozí data
+    const initialState = {
+
+        // Přihlašovací údaje
+        clientNumber: "",
+        password: "",
+
+        // Chybové zprávy
+        clientNumberError: "",
+        passwordError: ""
+    }
+
+
+    // Reducer
+    const [loginData, dispatch] = useReducer((state, action) => {
+
+        switch (action.type) {
+
+            case "ON_CHANGE":
+
+                return {
+                    ...state,
+                    [action.payload.name]: action.payload.value
+                }
+            
+            case "FETCH_ERROR":
+
+                return {
+                    ...state,
+                    clientNumberError: action.payload.clientNumberError,
+                    passwordError: action.payload.passwordError
+                }
+
+            default: throw new Error("Error: Unexisting action type");
+        }
+
+    }, initialState)
 
 
     useEffect(() => {
@@ -35,9 +69,9 @@ const LoginPage = (props) => {
      */
     const handleChange = (event) => {
 
-        setloginData({
-            ...loginData,
-            [event.target.name]: event.target.value
+        dispatch({
+            type: "ON_CHANGE", 
+            payload: event.target
         })
     }
 
@@ -85,10 +119,12 @@ const LoginPage = (props) => {
             }
 
             // Nastavení chybových zpráv
-            setloginDataError({
-                ...loginDataError,
-                clientNumberError: errorMessage,
-                passwordError: data.password
+            dispatch({
+                type: "FETCH_ERROR",
+                payload: {
+                    clientNumberError: errorMessage,
+                    passwordError: data.password
+                }
             })
         })
     }
@@ -98,6 +134,7 @@ const LoginPage = (props) => {
     if (successLogin) {
         return <Redirect to="/prehled" />
     }
+
 
 
     /**
@@ -116,7 +153,7 @@ const LoginPage = (props) => {
 
                 <div>
                     <div className={styles.errorMessage}>
-                        {loginDataError.clientNumberError}
+                        {loginData.clientNumberError}
                     </div>
 
                     <input id="clientNumber" name="clientNumber" 
@@ -131,7 +168,7 @@ const LoginPage = (props) => {
 
                 <div>
                     <div className={styles.errorMessage}>
-                        {loginDataError.passwordError}
+                        {loginData.passwordError}
                     </div>
 
                     <input type="password" id="password" 

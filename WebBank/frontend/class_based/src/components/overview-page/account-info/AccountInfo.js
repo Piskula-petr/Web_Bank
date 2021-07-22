@@ -22,14 +22,11 @@ class AccountInfo extends Component {
 
         this.state = {
 
-            // Uživatel
-            user: {
-                id: this.props.userID,
+            // Informace o uživateli
+            userInfo: {
+                id: 0,
                 name: "",
                 surname: "",
-                email: "",
-                clientNumber: 0,
-                password: "",
                 balance: 0,
                 currency: "",
                 accountNumber: "",
@@ -44,9 +41,7 @@ class AccountInfo extends Component {
             },
 
             // Aktivní měna
-            activeCurrency: {
-                CZK: true,
-            },
+            activeCurrency: "CZK",
         }
     }
 
@@ -70,7 +65,7 @@ class AccountInfo extends Component {
         })).catch((error) => console.log(error));
 
         // Request - vrací uživatele, podle ID
-        axios.get(`http://localhost:8080/api/user/userID=${this.props.userID}`, {
+        axios.get(`http://localhost:8080/api/userInfo/userID=${this.props.userID}`, {
 
             headers: {
                 "Authorization": "Bearer " + Cookies.getJSON("jwt").token
@@ -78,7 +73,7 @@ class AccountInfo extends Component {
 
         }).then(({ data }) => this.setState({
 
-            user: data,
+            userInfo: data,
 
         })).catch((error) => console.log(error));
     }
@@ -93,23 +88,24 @@ class AccountInfo extends Component {
 
         this.setState({
 
-            activeCurrency: {
-                [event.target.value]: true,
-            },
+            activeCurrency: event.target.value
 
         // Callback
         }, () => {
 
-            // Klíč měny [CZK]
-            const currencyKey = Object.keys(this.state.activeCurrency)[0];
+            const { activeCurrency } = this.state;
+            const { currency } = this.props;
 
-            const currency = {
-                exchangeRate: this.state.currencies[currencyKey],
-                name: currencyKey,
+            const isCurrencyEqual = (activeCurrency === currency.name ? true : false);
+
+            if (!isCurrencyEqual) {
+
+                // Změna měny (redux)
+                this.props.changeCurrency({
+                    exchangeRate: this.state.currencies[activeCurrency],
+                    name: activeCurrency
+                });
             }
-
-            // Změna měny (redux)
-            this.props.changeCurrency(currency);
         });
     }
 
@@ -125,7 +121,7 @@ class AccountInfo extends Component {
         let isUSD = "";
 
         // Změna třídy tlačítka (zvýraznění aktivní měny)
-        switch (Object.keys(this.state.activeCurrency)[0]) {
+        switch (this.state.activeCurrency) {
 
             case "CZK": isCZK = styles.active; break;
             case "EUR": isEUR = styles.active; break;
@@ -134,7 +130,9 @@ class AccountInfo extends Component {
         }
 
         // Zůstatek * hodnota kurzu
-        let balance = parseFloat(this.state.user.balance) * this.props.currency.exchangeRate;
+        let balance = parseFloat(this.state.userInfo.balance) * this.props.currency.exchangeRate;
+
+        const { name, surname, accountNumber } = this.state.userInfo;
 
         return(
             <div className={styles.account}>
@@ -144,12 +142,12 @@ class AccountInfo extends Component {
 
                 {/* Jméno uživatele */}
                 <div className={styles.user}>
-                    {this.state.user.name} {this.state.user.surname}
+                    {name} {surname}
                 </div>
 
                 {/* Číslo účtu */}
                 <div className={styles.accountNumber}>
-                    {this.state.user.accountNumber}
+                    {accountNumber}
                 </div>
 
                 {/* Aktuální zůstatek */}

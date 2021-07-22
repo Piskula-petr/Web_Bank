@@ -149,7 +149,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		query = session.createQuery(
 				
-		"UPDATE User "
+		"UPDATE UserInfo "
 	  + "SET balance = balance - :amount "
 	  + "WHERE account_number = :senderAccountNumber");
 		
@@ -180,7 +180,7 @@ public class PaymentServiceImpl implements PaymentService {
 			
 			query = session.createQuery(
 					
-			"UPDATE User "
+			"UPDATE UserInfo "
 		  + "SET balance = balance + :amount "
 		  + "WHERE account_number = :recipientAccountNumber");
 			

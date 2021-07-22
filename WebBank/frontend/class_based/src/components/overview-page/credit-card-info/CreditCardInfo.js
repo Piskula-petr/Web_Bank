@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
 
-import creditCard from "images/credit_card.png";
+import creditCardLogo from "images/credit_card.png";
 import styles from "components/overview-page/credit-card-info/credit-card-info.module.css";
 
 class CreditCardInfo extends PureComponent {
@@ -28,7 +28,7 @@ class CreditCardInfo extends PureComponent {
                 type: "",
             },
 
-            // Jméno Uživatele
+            // Jméno uživatele
             name: "",
             surname: "",
         }
@@ -54,7 +54,7 @@ class CreditCardInfo extends PureComponent {
         })).catch((error) => console.log(error));
 
         // Request - vrací uživatele, podle ID
-        axios.get(`http://localhost:8080/api/user/userID=${this.props.userID}`, {
+        axios.get(`http://localhost:8080/api/userInfo/userID=${this.props.userID}`, {
 
             headers: {
                 "Authorization": "Bearer " + Cookies.getJSON("jwt").token
@@ -74,35 +74,37 @@ class CreditCardInfo extends PureComponent {
      */
     render() {
 
+        const { creditCard, name, surname } = this.state;
+
         return(
             <div className={styles.creditCard}>
                 
                 {/* Obrázek */}
-                <img className={styles.previewImage} src={creditCard} alt="Credit Card" />
+                <img className={styles.previewImage} src={creditCardLogo} alt="Credit Card" />
 
                 {/* Typ platební karty */}
                 <div className={styles.type}>
-                    {this.state.creditCard.type}
+                    {creditCard.type}
                 </div>
 
                 {/* Jméno uživatele */}
                 <div className={styles.user}>
-                    {this.state.name} {this.state.surname}
+                    {name} {surname}
                 </div>
                 
                 {/* Platí od */}
                 <div className={styles.validFrom}>
-                    Platí od: <b>{this.state.creditCard.validFrom}</b>
+                    Platí od: <b>{creditCard.validFrom}</b>
                 </div>
 
                 {/* Platí do */}
                 <div className={styles.validTo}>
-                    Platí do: <b>{this.state.creditCard.validTo}</b>
+                    Platí do: <b>{creditCard.validTo}</b>
                 </div>
 
                 {/* Číslo kreditní karty */}
                 <div>Číslo karty:
-                    <div className={styles.cardNumber}>{this.state.creditCard.cardNumber}</div>
+                    <div className={styles.cardNumber}>{creditCard.cardNumber}</div>
                 </div>
             </div>
         )

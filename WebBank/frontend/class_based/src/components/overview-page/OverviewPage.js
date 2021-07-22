@@ -2,11 +2,11 @@ import React, {Component} from "react";
 import {Link} from "react-router-dom";
 
 import styles from "components/overview-page/overviewPage.module.css";
-import NavigationPanel from "../navigation-panel/NavigationPanel";
+import NavigationPanel from "components/navigation-panel/NavigationPanel";
 import AccountInfo from "components/overview-page/account-info/AccountInfo";
 import CreditCardInfo from "components/overview-page/credit-card-info/CreditCardInfo";
-import PaymentReport from "./payment-report/PaymentReport";
-import PaymentHistory from "./payment-history/PaymentHistory";
+import PaymentReport from "components/overview-page/payment-report/PaymentReport";
+import PaymentHistory from "components/overview-page/payment-history/PaymentHistory";
 
 class OverviewPage extends Component {
 
