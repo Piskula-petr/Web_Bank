@@ -1,0 +1,39 @@
+.creditCard {
+	color: #394359;
+	border-top: 8px solid #808080;
+	border-radius: 3px;
+	width: 340px;
+	margin: 30px 15px;
+	background: #EEE;
+	padding: 10px 20px;
+	text-align: right;
+}
+
+.previewImage {
+	float: left;
+	height: 45px;
+	margin: 8px 0px 0px 0px;
+}
+
+.creditCard .type {
+	font-size: 1.2em;
+}
+
+.creditCard .user {
+	font-size: 1.3em;
+	font-weight: bold;
+}
+
+.creditCard .validFrom {
+	margin: 15px 0px 0px 0px;
+}
+
+.creditCard .validTo {
+	margin: 0px 0px 15px 0px;
+}
+
+.creditCard .cardNumber {
+	font-size: 1.3em;
+	font-weight: bold;
+	margin: 4px 0px;
+}

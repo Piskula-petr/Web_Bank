@@ -13,7 +13,7 @@ const AccountInfo = (props) => {
 
 
     // Informace o uživateli
-    const [userInfo, setUserInfo] = useState({
+    const [ userInfo, setUserInfo ] = useState({
         id: 0,
         name: "",
         surname: "",
@@ -24,7 +24,7 @@ const AccountInfo = (props) => {
 
 
     // Seznam aktuálních kurzů
-    const [currencies, setCurrencies] = useState({
+    const [ currencies, setCurrencies ] = useState({
         CZK: 0,
         EUR: 0,
         JPY: 0,
@@ -33,7 +33,8 @@ const AccountInfo = (props) => {
 
 
     // Aktivní měna
-    const [activeCurrency, setActiveCurrency] = useState("CZK");
+    const [ activeCurrency, setActiveCurrency ] = useState("CZK");
+
 
     /**
      * Získání dat
@@ -51,7 +52,7 @@ const AccountInfo = (props) => {
 
         })).catch((error) => console.log(error));
 
-        // Request - vrací uživatele, podle ID
+        // Request - vrací informace o uživateli, podle ID
         axios.get(`http://localhost:8080/api/userInfo/userID=${props.userID}`, {
 
             headers: {
@@ -61,7 +62,7 @@ const AccountInfo = (props) => {
         }).then(({ data }) => setUserInfo(data))
             .catch((error) => console.log(error));
 
-    }, [props.userID])
+    }, [ props.userID ])
 
 
     /**
@@ -90,7 +91,7 @@ const AccountInfo = (props) => {
             });
         }
 
-    }, [isCurrencyEqual, changeCurrency, currencies, activeCurrency])
+    }, [ isCurrencyEqual, changeCurrency, currencies, activeCurrency ])
 
 
     let isCZK = "";
@@ -109,7 +110,6 @@ const AccountInfo = (props) => {
 
     // Zůstatek * hodnota kurzu
     let balance = parseFloat(userInfo.balance) * props.currency.exchangeRate;
-    
 
     /**
      * Vykreslení

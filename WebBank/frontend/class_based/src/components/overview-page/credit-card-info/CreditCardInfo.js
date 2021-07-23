@@ -3,8 +3,8 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
 
-import creditCardLogo from "images/credit_card.png";
 import styles from "components/overview-page/credit-card-info/credit-card-info.module.css";
+import creditCardLogo from "images/credit_card.png";
 
 class CreditCardInfo extends PureComponent {
 
@@ -60,10 +60,10 @@ class CreditCardInfo extends PureComponent {
                 "Authorization": "Bearer " + Cookies.getJSON("jwt").token
             }
 
-        }).then(({ data }) => this.setState({
+        }).then(({data: { name, surname }}) => this.setState({
 
-            name: data.name,
-            surname: data.surname,
+            name,
+            surname
 
         })).catch((error) => console.log(error));
     }
@@ -104,7 +104,10 @@ class CreditCardInfo extends PureComponent {
 
                 {/* Číslo kreditní karty */}
                 <div>Číslo karty:
-                    <div className={styles.cardNumber}>{creditCard.cardNumber}</div>
+                
+                    <div className={styles.cardNumber}>
+                        {creditCard.cardNumber}¨
+                    </div>
                 </div>
             </div>
         )

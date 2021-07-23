@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import styles from "components/overview-page/overviewPage.module.css";
 // import NavigationPanel from "components/navigation-panel/NavigationPanel";
 import AccountInfo from "components/overview-page/account-info/AccountInfo";
-// import CreditCardInfo from "components/overview-page/credit-card-info/CreditCardInfo";
+import CreditCardInfo from "components/overview-page/credit-card-info/CreditCardInfo";
 // import PaymentReport from "components/payment-report/PaymentReport";
 // import PaymentHistory from "components/payment-history/PaymentHistory";
 
@@ -37,7 +37,7 @@ const OverviewPage = () => {
                     <AccountInfo />
 
                     {/* Informace o kreditní kartě */}
-                    {/* <CreditCardInfo /> */}
+                    <CreditCardInfo />
                         
                     {/* Přesměrování na novou platbu */}
                     <Link id="newPayment" className={styles.newPaymentLink} to="/nova-platba">

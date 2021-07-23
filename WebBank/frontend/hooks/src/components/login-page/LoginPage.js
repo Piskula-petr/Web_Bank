@@ -12,7 +12,7 @@ const LoginPage = (props) => {
 
 
     // Úspěšné přihlášení
-    const [successLogin, setSuccessLogin] = useState(false);
+    const [ successLogin, setSuccessLogin ] = useState(false);
 
 
     // Výchozí data
@@ -29,7 +29,7 @@ const LoginPage = (props) => {
 
 
     // Reducer
-    const [loginData, dispatch] = useReducer((state, action) => {
+    const [ loginData, dispatch ] = useReducer((state, action) => {
 
         switch (action.type) {
 
