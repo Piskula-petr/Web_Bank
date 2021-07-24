@@ -182,6 +182,7 @@ public class OverviewPageController {
 			LocalDate endOfMonth = LocalDate.of(localDate.getYear(), localDate.getMonthValue(), startOfMonth.lengthOfMonth());
 			
 			MonthSum monthSum = new MonthSum();
+			monthSum.setMonth(localDate.getMonthValue());
 			monthSum.setIncome(paymentServise.getPaymentsSum(userID, "+", startOfMonth, endOfMonth));
 			monthSum.setCosts(paymentServise.getPaymentsSum(userID, "-", startOfMonth, endOfMonth));
 			monthsSum.add(monthSum);

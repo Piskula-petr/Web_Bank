@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class MonthSum {
 
+	private int month;
 	private BigDecimal income;
 	private BigDecimal costs;
 	
@@ -14,6 +15,14 @@ public class MonthSum {
 	}
 
 // Gettery + Settery /////////////////////////////////////////////////////////////////////////
+	
+	public int getMonth() {
+		return month;
+	}
+
+	public void setMonth(int month) {
+		this.month = month;
+	}
 	
 	public BigDecimal getIncome() {
 		return income;

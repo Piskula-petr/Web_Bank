@@ -7,7 +7,7 @@ import styles from "components/overview-page/payment-report/payment-report.modul
 import graph from "images/graph.png";
 import leftArrow from "images/left_arrow.png";
 import rightArrow from "images/right_arrow.png";
-import months from "modules/months";
+import Months from "modules/Months";
 import numberFormatter from "modules/numberFormatter";
 
 class MonthReport extends Component {
@@ -69,7 +69,7 @@ class MonthReport extends Component {
         }).then(({ data }) => this.setState({
 
             selectedMonth: {
-                name: months[month],
+                name: Months[month],
                 number: month,
                 year: year,
                 income: data.income,

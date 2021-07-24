@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
-import MonthReport from "./MonthReport";
-import BalanceGraphs from "./BalanceGraphs";
+import MonthReport from "components/overview-page/payment-report/MonthReport";
+import BalanceGraphs from "components/overview-page/payment-report/BalanceGraphs";
 
 class PaymentReport extends Component {
 

@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { connect } from "react-redux";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
-import months from "modules/months"
+import Months from "modules/Months"
 
 class BalanceGraphs extends PureComponent {
 
@@ -23,13 +23,11 @@ class BalanceGraphs extends PureComponent {
             width: 340,
             height: 100,
 
-            // Aktuální měsíc
-            currentMonth: 0,
-
-            // Příjmy / Výdaje
+            // Příjmy / výdaje za poslední 3 měsíce
             monthsSum: [],
         }
 
+        // Plátno
         this.canvas = createRef();
     }
 
@@ -48,8 +46,7 @@ class BalanceGraphs extends PureComponent {
 
         }).then(({ data }) => this.setState({
 
-            monthsSum: data,
-            currentMonth: new Date().getMonth() + 1,
+            monthsSum: data
 
         // Callback    
         }, () => this.drawGraphs()))
@@ -150,17 +147,12 @@ class BalanceGraphs extends PureComponent {
                 {/* Měsíce */}
                 <div className={styles.months}>
 
-                    <div>
-                        {months[this.state.currentMonth - 2]}
-                    </div>
-
-                    <div>
-                        {months[this.state.currentMonth - 1]}
-                    </div>
-
-                    <div>
-                        {months[this.state.currentMonth]}
-                    </div>
+                    {this.state.monthsSum.slice(0).reverse().map(item =>
+                    
+                        <div key={item.month}>
+                            {Months[item.month]}
+                        </div>
+                    )}
 
                 </div>
             </div>

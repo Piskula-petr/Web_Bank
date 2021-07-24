@@ -1,4 +1,4 @@
-const months = Object.freeze({
+const Months = Object.freeze({
     "1" : "Leden",
     "2" : "Únor",
     "3" : "Březen",
@@ -13,4 +13,4 @@ const months = Object.freeze({
     "12" : "Prosinec",
 });
 
-export default months;
+export default Months;

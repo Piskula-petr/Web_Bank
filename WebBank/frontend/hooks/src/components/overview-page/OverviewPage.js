@@ -5,7 +5,7 @@ import styles from "components/overview-page/overviewPage.module.css";
 // import NavigationPanel from "components/navigation-panel/NavigationPanel";
 import AccountInfo from "components/overview-page/account-info/AccountInfo";
 import CreditCardInfo from "components/overview-page/credit-card-info/CreditCardInfo";
-// import PaymentReport from "components/payment-report/PaymentReport";
+import PaymentReport from "components/overview-page/payment-report/PaymentReport";
 // import PaymentHistory from "components/payment-history/PaymentHistory";
 
 const OverviewPage = () => {
@@ -45,7 +45,7 @@ const OverviewPage = () => {
                     </Link>
 
                     {/* Přehled plateb */}
-                    {/* <PaymentReport /> */}
+                    <PaymentReport />
                 </div>
 
                 {/* Historie plateb */}
