@@ -59,9 +59,9 @@ class PaymentHistory extends Component {
                 "Authorization": "Bearer " + Cookies.getJSON("jwt").token
             }
 
-        }).then(({ data }) => this.setState({
+        }).then(({data: { paymentsCount }}) => this.setState({
 
-            paymentsCount: data.paymentsCount   
+            paymentsCount  
 
         })).catch((error) => console.log(error));
     }
@@ -73,10 +73,9 @@ class PaymentHistory extends Component {
     showMorepayments = () => {
 
         let payments = this.state.payments;
-        const length = this.state.payments.length;
 
         // Datum poslední zobrazené platby
-        const lastPaymentDate = this.state.payments[length - 1].paymentDate;
+        const lastPaymentDate = payments[payments.length - 1].paymentDate;
 
         // Datum předchozího měsíce
         let date = new Date(lastPaymentDate);
@@ -97,7 +96,7 @@ class PaymentHistory extends Component {
             payments.push(...data);
 
             this.setState({
-                payments: payments,
+                payments
             });
 
         }).catch((error) => console.log(error));

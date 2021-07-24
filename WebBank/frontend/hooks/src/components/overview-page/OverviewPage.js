@@ -6,7 +6,7 @@ import styles from "components/overview-page/overviewPage.module.css";
 import AccountInfo from "components/overview-page/account-info/AccountInfo";
 import CreditCardInfo from "components/overview-page/credit-card-info/CreditCardInfo";
 import PaymentReport from "components/overview-page/payment-report/PaymentReport";
-// import PaymentHistory from "components/payment-history/PaymentHistory";
+import PaymentHistory from "components/overview-page/payment-history/PaymentHistory";
 
 const OverviewPage = () => {
 
@@ -49,7 +49,7 @@ const OverviewPage = () => {
                 </div>
 
                 {/* Historie plateb */}
-                {/* <PaymentHistory /> */}
+                <PaymentHistory />
             </div>
         </div>
     )

@@ -15,8 +15,8 @@ const LoginPage = (props) => {
     const [ successLogin, setSuccessLogin ] = useState(false);
 
 
-    // Výchozí data
-    const initialState = {
+    // Výchozí přihlašovací data
+    const initialLoginData = {
 
         // Přihlašovací údaje
         clientNumber: "",
@@ -51,7 +51,7 @@ const LoginPage = (props) => {
             default: throw new Error("Error: Unexisting action type");
         }
 
-    }, initialState)
+    }, initialLoginData)
 
 
     useEffect(() => {
