@@ -1,14 +1,15 @@
 import React, {useEffect} from 'react'
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import { connect } from 'react-redux';
 
 import styles from "components/overview-page/overviewPage.module.css";
-// import NavigationPanel from "components/navigation-panel/NavigationPanel";
+import NavigationPanel from "components/navigation-panel/NavigationPanel";
 import AccountInfo from "components/overview-page/account-info/AccountInfo";
 import CreditCardInfo from "components/overview-page/credit-card-info/CreditCardInfo";
 import PaymentReport from "components/overview-page/payment-report/PaymentReport";
 import PaymentHistory from "components/overview-page/payment-history/PaymentHistory";
 
-const OverviewPage = () => {
+const OverviewPage = (props) => {
 
 
     useEffect(() => {
@@ -18,6 +19,11 @@ const OverviewPage = () => {
 
     }, [])
 
+    
+    // Přesměrování na přihlášení
+    if (props.userID === 0) {
+        return <Redirect to="/prihlaseni" />
+    }
 
     /**
      * Vykreslení
@@ -26,8 +32,8 @@ const OverviewPage = () => {
         <div className={styles.content}>
 
             {/* Navigační panel (odhlášení) */}
-            {/* <NavigationPanel 
-                timeInterval={5 * 60}/> */}
+            <NavigationPanel 
+                timeInterval={5 * 60}/>
 
             <div className={styles.container}>
 
@@ -55,4 +61,12 @@ const OverviewPage = () => {
     )
 }
 
-export default OverviewPage
+const mapStateToProps = (state) => {
+
+    return {
+        userID: state.user.userID,
+        currency: state.currency
+    }
+}
+
+export default connect(mapStateToProps) (OverviewPage)

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -51,14 +51,14 @@ class NavigationPanel extends Component {
 
             if (new Date().getTime() > this.state.jwtExpireTime.getTime()) {
 
-                // Obnovení JWT
+                // Request - obnovení JWT
                 axios.get("http://localhost:8080/api/refresh", {
 
                     headers: {
                         "Authorization": "Bearer " + Cookies.getJSON("jwt").token
                     }
 
-                }).then(({data: {token, expireTime}}) => {
+                }).then(({data: { token, expireTime }}) => {
 
                     const jwt = {
                         token,
@@ -66,7 +66,7 @@ class NavigationPanel extends Component {
                     }
 
                     // vytvoření nového cookies
-                    Cookies.set("jwt", jwt, {secure: true});
+                    Cookies.set("jwt", jwt, {expires: new Date(expireTime), secure: true});
 
                     // Nastavení času vypršení nového JWT
                     this.setJwtExpireTime();
@@ -140,6 +140,12 @@ class NavigationPanel extends Component {
      * Vykreslení
      */
     render() {
+
+        // Přesměrování na přihlášení, po vypršení odpočtu
+        if (this.state.secondsLeft === 0) {
+
+            return <Redirect to="/prihlaseni" />
+        }
 
         const { secondsLeft } = this.state;
 

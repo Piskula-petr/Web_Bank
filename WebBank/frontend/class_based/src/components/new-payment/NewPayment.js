@@ -250,6 +250,11 @@ class NewPayment extends Component {
      */
     render() {
 
+        // Přesměrování na přihlášení
+        if (this.props.userID === 0) {
+            return <Redirect to="/prihlaseni" />
+        }
+
         // Přesměrování na stránku přehledu, při úspěšně odeslané platbě
         if ( this.state.successfulPayment) {
             return <Redirect to="/prehled" />;

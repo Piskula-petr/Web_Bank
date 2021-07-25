@@ -93,15 +93,15 @@ const LoginPage = (props) => {
             clientNumber,
             password
 
-        }).then(({ data: {token, epireTime, userID} }) => {
+        }).then(({ data: {token, expireTime, userID} }) => {
 
             const jwt = {
                 token,
-                epireTime
+                expireTime
             }
 
             // Vytvoření cookies
-            Cookies.set("jwt", jwt, {expires: new Date(epireTime), secure: true});
+            Cookies.set("jwt", jwt, {expires: new Date(expireTime), secure: true});
 
             // Nastavení ID uživatele (redux)
             props.setUserID(userID);

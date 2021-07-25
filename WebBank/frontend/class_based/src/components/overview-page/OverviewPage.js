@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
 
 import styles from "components/overview-page/overviewPage.module.css";
 import NavigationPanel from "components/navigation-panel/NavigationPanel";
@@ -7,6 +7,7 @@ import AccountInfo from "components/overview-page/account-info/AccountInfo";
 import CreditCardInfo from "components/overview-page/credit-card-info/CreditCardInfo";
 import PaymentReport from "components/overview-page/payment-report/PaymentReport";
 import PaymentHistory from "components/overview-page/payment-history/PaymentHistory";
+import { connect } from "react-redux";
 
 class OverviewPage extends Component {
 
@@ -24,6 +25,11 @@ class OverviewPage extends Component {
      * Vykreslení
      */
     render() {
+
+        // Přesměrování na přihlášení
+        if (this.props.userID === 0) {
+            return <Redirect to="/prihlaseni" />
+        }
 
         return (
             <div className={styles.content}>
@@ -59,4 +65,12 @@ class OverviewPage extends Component {
     }
 }
 
-export default OverviewPage
+const mapStateToProps = (state) => {
+
+    return {
+        userID: state.user.userID,
+        currency: state.currency
+    }
+}
+
+export default connect(mapStateToProps) (OverviewPage)
