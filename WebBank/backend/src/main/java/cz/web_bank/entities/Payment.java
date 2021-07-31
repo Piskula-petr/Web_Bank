@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -46,15 +45,12 @@ public class Payment {
 	@Column(name = "currency", length = 3)
 	private Currency currency;
 	
-	@Max(value = 9999999999L, message = "Variabilní symbol může mýt maximálně 10 znaků")
 	@Column(name = "variable_symbol", length = 10)
 	private Long variableSymbol;
 	
-	@Max(value = 9999999999L, message = "Konstantní symbol může mýt maximálně 10 znaky")
 	@Column(name = "constant_symbol", length = 10)
 	private Long constantSymbol;
 	
-	@Max(value = 9999999999L, message = "Specifický symbol může mýt maximálně 10 znaků")
 	@Column(name = "specific_symbol", length = 10)
 	private Long specificSymbol;
 	

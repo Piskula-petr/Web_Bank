@@ -8,7 +8,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cz.web_bank.entities.User;
+import cz.web_bank.entities.UserInfo;
 import cz.web_bank.services.UserService;
 
 @Service
@@ -43,20 +43,20 @@ public class UserServiceImpl implements UserService {
 
 	
 	/**
-	 * 	Detaily o uživatelei podle ID
+	 * 	Informace o uživateli podle ID
 	 * 
 	 * 	@param userID - uživatelské ID
 	 * 
-	 * 	@return - vrací uživatele
+	 * 	@return - vrací informace o uživateli
 	 */
 	@Override
 	@Transactional
-	public User getUserByID(Long userID) {
+	public UserInfo getUserInfoByID(Long userID) {
 		
 		Session session = sessionFactory.getCurrentSession();
-		User user = session.get(User.class, userID);
+		UserInfo userInfo = session.get(UserInfo.class, userID);
 		
-		return user;
+		return userInfo;
 	}
 	
 }

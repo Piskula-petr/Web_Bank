@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import cz.web_bank.ApplicationMain;
 import cz.web_bank.entities.CreditCard;
 import cz.web_bank.entities.Payment;
-import cz.web_bank.entities.User;
+import cz.web_bank.entities.UserInfo;
 import cz.web_bank.services.CreditCardService;
 import cz.web_bank.services.PaymentService;
 import cz.web_bank.services.UserService;
@@ -79,36 +79,30 @@ public class OverviewPageControllerTest {
 	public void getUser() throws Exception {
 		
 		// Testovací uživatel
-		User user = new User();
-		user.setId(random.nextLong());
-		user.setName("name");
-		user.setSurname("surname");
-		user.setEmail("email@email.com");
-		user.setClientNumber(1234567890L);
-		user.setPassword("password");
-		user.setBalance(new BigDecimal(random.nextLong()));
-		user.setCurrency(Currency.getInstance("CZK"));
-		user.setAccountNumber("1234567890/0000");
+		UserInfo userInfo = new UserInfo();
+		userInfo.setId(random.nextLong());
+		userInfo.setName("name");
+		userInfo.setSurname("surname");
+		userInfo.setBalance(new BigDecimal(random.nextLong()));
+		userInfo.setCurrency(Currency.getInstance("CZK"));
+		userInfo.setAccountNumber("1234567890/0000");
 		
-		when(userService.getUserByID(anyLong())).thenReturn(user);
+		when(userService.getUserInfoByID(anyLong())).thenReturn(userInfo);
 		
 		// ID uživatele
 		long userID = random.nextLong();
 		
 		// Porovnání výstupních hodnot
-		mockMvc.perform(get("/api/user/userID=" + userID))
+		mockMvc.perform(get("/api/userInfo/userID=" + userID))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.id").value(user.getId()))
-			.andExpect(jsonPath("$.name").value(user.getName()))
-			.andExpect(jsonPath("$.surname").value(user.getSurname()))
-			.andExpect(jsonPath("$.email").value(user.getEmail()))
-			.andExpect(jsonPath("$.username").value(user.getUsername()))
-			.andExpect(jsonPath("$.password").value(user.getPassword()))
-			.andExpect(jsonPath("$.balance").value(user.getBalance()))
-			.andExpect(jsonPath("$.currency").value(user.getCurrency().toString()))
-			.andExpect(jsonPath("$.accountNumber").value(user.getAccountNumber()));
+			.andExpect(jsonPath("$.id").value(userInfo.getId()))
+			.andExpect(jsonPath("$.name").value(userInfo.getName()))
+			.andExpect(jsonPath("$.surname").value(userInfo.getSurname()))
+			.andExpect(jsonPath("$.balance").value(userInfo.getBalance()))
+			.andExpect(jsonPath("$.currency").value(userInfo.getCurrency().toString()))
+			.andExpect(jsonPath("$.accountNumber").value(userInfo.getAccountNumber()));
 		
-		verify(userService, times(1)).getUserByID(anyLong());
+		verify(userService, times(1)).getUserInfoByID(anyLong());
 	}
 	
 	

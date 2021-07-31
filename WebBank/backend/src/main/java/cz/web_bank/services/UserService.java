@@ -1,8 +1,9 @@
 package cz.web_bank.services;
 
-import cz.web_bank.entities.User;
+import cz.web_bank.entities.UserInfo;
 
 public interface UserService {
+	
 	
 	/**
 	 * 	Uživatelské ID
@@ -13,13 +14,15 @@ public interface UserService {
 	 */
 	public Long getUserIDByClientNumber(Long clientNumber);
 
+	
 	/**
-	 * 	Detaily o uživatelei podle ID
+	 * 	Informace o uživateli podle ID
 	 * 
 	 * 	@param userID - uživatelské ID
 	 * 
-	 * 	@return - vrací uživatele
+	 * 	@return - vrací informace o uživateli
 	 */
-	public User getUserByID(Long userID);
+	public UserInfo getUserInfoByID(Long userID);
+	
 	
 }

@@ -1,0 +1,153 @@
+.history {
+	float: left;
+	display: flex;
+	flex-direction: column;
+	color: #394359;
+	border-top: 8px solid #F3E82E;
+	border-radius: 3px;
+	width: 800px;
+	margin: 15px 15px 15px 15px;
+	background: #EEE;
+	padding: 0px 10px 0px 20px;
+}
+
+.hide {
+	display: none;
+}
+
+.plus {
+	color: #0f862f;
+}
+
+.minus {
+	color: #B22222;
+}
+
+/*__________________________________ Platba __________________________*/
+.paymentContainer {
+	border-top: 1px solid #394359;
+}
+
+.paymentContainer:first-child {
+	border: none;
+}
+
+.payment {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 70px;
+}
+
+.payment summary::marker {
+    content: "";
+}
+
+details summary:focus {
+	outline: none;
+}
+
+.payment:hover {
+	cursor: pointer;
+}
+
+.buttonContainer {
+	border-top: 1px solid #394359;
+}
+
+.buttonContainer button {
+	margin: 10px 0px 10px 0px;
+	font-size: 1.2em;
+	font-weight: bold;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	border: none;
+	cursor: pointer;
+	color: #394359;
+	background: transparent;
+}
+
+.buttonContainer button:hover  {
+	text-decoration: underline;
+}
+
+.buttonContainer button:focus {
+	outline: none;
+}
+
+.paymentDate {
+	display: inline-flex;
+	font-weight: bold;
+	font-size: 1.2em;
+	margin: 0px 20px 0px 0px;
+}
+
+.nameAndTypeContainer {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	justify-content: center;
+	flex-grow: 1;
+}
+
+.name {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.paymentType {
+	margin: 2px 0px 0px 0px;
+}
+
+.amount {
+	width: 230px;
+	font-weight: bold;
+	font-size: 1.2em;
+	text-align: right;
+	margin-left: auto;
+}
+
+.detail {
+	margin: 5px 0px 15px 0px;
+}
+
+.detail:hover {
+	cursor: default;
+}
+
+/*_____________________ Detail platby ____________________*/
+.detail {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+}
+
+.detail .hide {
+	display: none;
+}
+
+.detailBorder {
+	border-top: 1px solid #394359;
+	margin: 0px 0px 15px 0px;
+}
+
+.accountNumber, .variableSymbol, .constantSymbol, .specificSymbol, .paymentID, .date {
+	display: inline-flex;
+	margin: 2px 0px 2px 89px;
+	font-weight: bold;
+}
+
+.accountNumber div:last-of-type, .variableSymbol div:last-of-type, .constantSymbol div:last-of-type,
+.specificSymbol div:last-of-type, .paymentID div:last-of-type, .date div:last-of-type  {
+	margin: 0px 0px 0px auto;
+	text-align: left;
+	width: 370px;
+	font-weight: normal;
+}
+
+.date {
+	margin: 2px 0px 15px 89px;
+}
+

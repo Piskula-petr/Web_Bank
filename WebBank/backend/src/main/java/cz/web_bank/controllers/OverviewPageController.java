@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cz.web_bank.entities.CreditCard;
 import cz.web_bank.entities.Payment;
-import cz.web_bank.entities.User;
+import cz.web_bank.entities.UserInfo;
 import cz.web_bank.pojo.MonthSum;
 import cz.web_bank.services.CreditCardService;
 import cz.web_bank.services.PaymentService;
@@ -38,18 +38,18 @@ public class OverviewPageController {
 	
 	
 	/**
-	 * 	Získání uživatele podle ID
+	 * 	Získání informací o uživateli podle ID
 	 * 
 	 * 	@param userID - uživatelské ID
 	 * 
-	 * 	@return - vrací požadovaného uživatele
+	 * 	@return - vrací informace o uživateli
 	 */
-	@GetMapping("/user/userID={userID}")
-	public User getUser(@PathVariable("userID") long userID) {
+	@GetMapping("/userInfo/userID={userID}")
+	public UserInfo getUser(@PathVariable("userID") long userID) {
 		
-		User user = userServise.getUserByID(userID);
+		UserInfo userInfo = userServise.getUserInfoByID(userID);
 		
-		return user;
+		return userInfo;
 	}
 	
 	
@@ -182,6 +182,7 @@ public class OverviewPageController {
 			LocalDate endOfMonth = LocalDate.of(localDate.getYear(), localDate.getMonthValue(), startOfMonth.lengthOfMonth());
 			
 			MonthSum monthSum = new MonthSum();
+			monthSum.setMonth(localDate.getMonthValue());
 			monthSum.setIncome(paymentServise.getPaymentsSum(userID, "+", startOfMonth, endOfMonth));
 			monthSum.setCosts(paymentServise.getPaymentsSum(userID, "-", startOfMonth, endOfMonth));
 			monthsSum.add(monthSum);
