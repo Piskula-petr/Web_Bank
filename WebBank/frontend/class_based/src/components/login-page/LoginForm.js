@@ -51,8 +51,12 @@ class LoginForm extends Component {
      */
     handleChange = (event) => {
 
+        const validValue = (event.target.validity.valid 
+            ? event.target.value 
+                : this.state[event.target.name]);
+
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.name]: validValue
         });
     }
 
@@ -134,8 +138,8 @@ class LoginForm extends Component {
                             {this.state.clientNumberError}
                         </div>
 
-                        <input id="clientNumber" name="clientNumber" 
-                            autoFocus="autoFocus" onChange={this.handleChange} />
+                        <input pattern="[0-9]{0,10}" id="clientNumber" name="clientNumber" 
+                            autoFocus="autoFocus" onChange={this.handleChange} value={this.state.clientNumber} />
                     </div>
                 </div>
 
@@ -149,8 +153,8 @@ class LoginForm extends Component {
                             {this.state.passwordError}
                         </div>
 
-                        <input type="password" id="password" 
-                            name="password" onChange={this.handleChange} />
+                        <input type="password" id="password" name="password" 
+                            onChange={this.handleChange} value={this.state.password} />
                     </div>
                 </div>
 

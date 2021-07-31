@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 import './App.css';
 import LoginPage from "components/login-page/LoginPage";
 import OverviewPage from "components/overview-page/OverviewPage";
-// import NewPayment from "components/new-payment/NewPayment";
+import NewPayment from "components/new-payment/NewPayment";
 
 function App() {
 
@@ -25,9 +25,9 @@ function App() {
             </Route>
 
             {/* Nová platba */}
-            {/* <Route path="/nova-platba">
+            <Route path="/nova-platba">
                 <NewPayment />
-            </Route> */}
+            </Route>
 
             <Redirect from="/" to="/prihlaseni" />
 

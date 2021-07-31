@@ -10,7 +10,7 @@ class InputPanelWithConfirmation extends Component {
      */
     render() {
 
-        const { name, label, error, onChange, createRef, generatedValue } = this.props;
+        const { name, label, value, pattern, error, onChange, generatedConfirmationCode } = this.props;
 
         return(
             <div className={styles.inputContainer}>
@@ -23,13 +23,13 @@ class InputPanelWithConfirmation extends Component {
                     <input 
                         id={name} 
                         className={`${styles.input} ${styles.confirmationInput}`}
-                        ref={createRef}
-                        type="text"
+                        pattern={pattern}
+                        value={value}
                         name={name}
                         onChange={onChange} 
                         autoComplete="off" />
 
-                    <div className={styles.confirmationValue}>{generatedValue}</div>
+                    <div className={styles.confirmationValue}>{generatedConfirmationCode}</div>
                 </div>
             </div>
         )

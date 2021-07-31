@@ -24,7 +24,7 @@ class InputPanelWithCurrencies extends Component {
 
 
     /**
-     * Získání seznamu měn
+     * Získání dat
      */
     componentDidMount() {
 
@@ -49,7 +49,7 @@ class InputPanelWithCurrencies extends Component {
      */
     render() {
 
-        const { name, label, placeholder, error, onChange } = this.props;
+        const { name, label, pattern, value, placeholder, error, onChange, onClick } = this.props;
 
         return(
             <div className={styles.inputContainer}>
@@ -63,12 +63,13 @@ class InputPanelWithCurrencies extends Component {
                         id={name} 
                         className={`${styles.input} ${styles.amountInput}`}
                         placeholder={placeholder} 
-                        type="text"
+                        pattern={pattern}
+                        value={value}
                         name={name}
                         onChange={onChange} />
 
                     {/* Výběr měny */}
-                    <select className={styles.select} name="currency" onChange={onChange}>
+                    <select className={styles.select} name="currency" onClick={onClick}>
 
                         {this.state.currencies.map(item =>
 

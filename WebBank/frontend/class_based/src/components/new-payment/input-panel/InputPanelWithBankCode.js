@@ -26,11 +26,11 @@ class InputPanelWithBankCode extends Component {
 
 
     /**
-     * Získání seznamu bankovních kódů
+     * Získání dat
      */
     componentDidMount() {
 
-        // Request - vrací kódy bank
+        // Request - vrací seznamu bankovních kódů
         axios.get("http://localhost:8080/api/bankCodes", {
 
             headers: {
@@ -50,7 +50,7 @@ class InputPanelWithBankCode extends Component {
      */
     render() {
 
-        const { name, label, error, placeholder, onChange, onClick, bankCode, selection } = this.props; 
+        const { name, label, error, pattern, value, placeholder, onChange, onClick, toggleBankCodes, bankCode, selection } = this.props; 
 
         return(
             <div className={styles.inputContainer}>
@@ -64,12 +64,13 @@ class InputPanelWithBankCode extends Component {
                         id={name} 
                         className={`${styles.input} ${styles.accountNumberPrefix}`}
                         placeholder={placeholder} 
-                        type="text" 
+                        pattern={pattern}
+                        value={value}
                         name={name} 
                         onChange={onChange} />
 
                     {/* Výběr banky */}
-                    <div className={styles.bankCodesSelect} onClick={onClick}>
+                    <div className={styles.bankCodesSelect} onClick={toggleBankCodes}>
 
                         <div>
                             <div>{bankCode}</div>

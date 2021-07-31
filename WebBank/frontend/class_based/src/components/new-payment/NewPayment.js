@@ -1,4 +1,4 @@
-import React, {Component, createRef} from "react";
+import React, {Component} from "react";
 import {Redirect} from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -6,13 +6,13 @@ import { connect } from "react-redux";
 
 import styles from "components/new-payment/new-payment.module.css";
 import payment from "images/payment.png";
+import confirmationCode from "modules/confirmationCode";
 import NavigationPanel from "components/navigation-panel/NavigationPanel";
 import InputPanel from "components/new-payment/input-panel/InputPanel";
 import InputPanelWithBankCode from "components/new-payment/input-panel/InputPanelWithBankCode";
 import InputPanelWithCurrencies from "components/new-payment/input-panel/InputPanelWithCurrencies";
 import InputPanelExchangeRate from "components/new-payment/input-panel/InputPanelExchangeRate";
 import InputPanelWithConfirmation from "components/new-payment/input-panel/InputPanelWithConfirmation";
-import conformationCode from "modules/conformationCode";
 
 class NewPayment extends Component {
 
@@ -25,56 +25,56 @@ class NewPayment extends Component {
 
         this.state = {
 
+            // Úspěšná platba
+            successfulPayment : false,
+
             // Parametry nové platby
-            payment: {
+            newPayment: {
                 userID: this.props.userID,
                 name: "",
                 mark: "-",
                 accountNumber: "",
-                amount: 0,
+                amount: "",
                 currency: "CZK",
-                variableSymbol: 0,
-                constantSymbol: 0,
-                specificSymbol: 0,
+                variableSymbol: "",
+                constantSymbol: "",
+                specificSymbol: "",
                 paymentDate: new Date(),
                 paymentType: "Platba bankovním převodem",
             },
 
-            // Zadaná částka
-            amountInput: 0,
-
-            // Úspěšná platba
-            successfulPayment : false,
-
             // Chybové zprávy
-            nameError: "",
-            accountNumberError: "",
-            amountError: "",
-            variableSymbolError: "",
-            constantSymbolError: "",
-            specificSymbolError: "",
-            confirmationError: "",
+            paymentError: {
+                nameError: "",
+                accountNumberError: "",
+                amountError: "",
+                variableSymbolError: "",
+                constantSymbolError: "",
+                specificSymbolError: "",
+                confirmationError: "",
+            },
 
             // Prefix čísla účtu
-            accountNumberPrefix: "",
+            accountNumberPrefixInput: "",
 
-            // Bankovní kód
+            // Kód banky
             bankCode: "",
 
-            // Zobrazení výběru bankovních kódů
-            bankCodeSelection: false,
+            // Přepínač výběru bankovních kódů
+            bankCodeSelectionToggle: false,
+
+            // Zadaná částka
+            amountInput: "",
 
             // Směnný kurz na CZK
             exchangeRateToCZK: 1,
 
-            // Vygenerování 5 místného potvzovacího kódu
-            confirmationGenerated: conformationCode(),
-
             // Zadaný ověřovací kód
-            confirmationInput: "",
-        }
+            inputConfirmationCode: "",
 
-        this.confirmationInputRef = createRef();
+            // Vygenerování 5 místného potvzovacího kódu
+            generatedConfirmationCode: confirmationCode()
+        }
     }
 
 
@@ -88,27 +88,109 @@ class NewPayment extends Component {
 
 
     /**
-     * Nastavení stavu bankovního kódu
+     * Změna vstupních údajů
      * 
      * @param event 
      */
-    setBankCode = (event) => {
+     handleChange = (event) => {
 
-        // Skrytí / zobrazení bankovních kódů + nastavení kódu při výběru
-        if (event.target.id === "bankCode") {
+        const name = event.target.name;
+        
+        const validValue = (event.target.validity.valid
+            ? event.target.value
+                : this.state.newPayment[event.target.name])
+
+        this.setState({
+            newPayment: {
+                ...this.state.newPayment,
+                [name]: validValue
+            }
+        });
+    }
+
+
+    /**
+     * Změna čísla účtu
+     * 
+     * @param event 
+     */
+    handleAccountNumberPrefix = (event) => {
+
+        const validValue = (event.target.validity.valid
+            ? event.target.value
+                : this.state.accountNumberPrefixInput);
+
+        this.setState({
+            accountNumberPrefixInput: validValue
+        })
+    }
+
+
+    /**
+     * Změna bankovního kódu
+     * 
+     * @param event 
+     */
+     handleBankCodeSelection = (event) => {
+
+        this.setState({
+            bankCode: event.target.attributes.name.value,
+        });
+    }
+
+
+    /**
+     * Změna částky platby
+     * 
+     * @param event 
+     */
+    handleAmount = (event) => {
+
+        const validValue = (event.target.validity.valid
+            ? event.target.value
+                : this.state.amountInput);
+
+        this.setState({
+            amountInput: validValue
+        })
+    }
+
+
+    /**
+     * Změna směnného kurzu
+     * 
+     * @param event 
+     */
+    handleExchangeRate = (event) => {
+
+        const value = event.target.value;
+
+        // Request - vrací aktuální směnný kurz
+        axios.get(`https://api.exchangerate.host/latest?base=${value}`)
+            .then(({data: { rates }}) => {
 
             this.setState({
-                bankCode: event.target.attributes.name.value,
-                bankCodeSelection: !this.state.bankCodeSelection,
-            });
+                exchangeRateToCZK: rates.CZK
+            })  
 
-        // Skrytí / zobrazení bankovních kódů
-        } else {
+        }).catch((error) => console.log(error));
+    }
 
-            this.setState({
-                bankCodeSelection: !this.state.bankCodeSelection,
-            });
-        }
+
+    /**
+     * Změna potvrzovacího kódu
+     * 
+     * @param event 
+     */
+    handleConfirmationCode = (event) => {
+
+        const validValue = (event.target.validity.valid 
+            ? event.target.value
+                : this.state.inputConfirmationCode);
+        
+        this.setState({
+            inputConfirmationCode: validValue
+        })
     }
 
 
@@ -121,127 +203,94 @@ class NewPayment extends Component {
 
         event.preventDefault();
 
-        // Vynulování zadaného ověřovacího kódu
-        this.confirmationInputRef.current.value = "";
+        const { newPayment, amountInput, generatedConfirmationCode, inputConfirmationCode } = this.state;
 
-        const { confirmationGenerated, confirmationInput } = this.state;
+        // Složení celého čísla účtu
+        const accountNumber = this.state.accountNumberPrefixInput + "/" + this.state.bankCode;
+        newPayment.accountNumber = accountNumber;
 
-        // Složení bankovního účtu
-        const accountNumber = this.state.accountNumberPrefix + "/" + this.state.bankCode;
+        // Změna desetinné značky
+        if (isNaN(amountInput)) {
+
+            newPayment.amount = amountInput.replace(",", ".");
+        }
 
         // Přepočet na CZK
-        const amountInCZK = (this.state.amountInput * this.state.exchangeRateToCZK).toFixed(2);
+        newPayment.amount = (newPayment.amount * this.state.exchangeRateToCZK).toFixed(2);
 
         this.setState({
 
-            payment: {
-                ...this.state.payment,
-                accountNumber: accountNumber,
-                amount: amountInCZK,
-            }
+            newPayment
         
         // Callback    
         }, () => {
 
-            // Odeslání nové platby
-            axios.post("http://localhost:8080/api/newPayment", this.state.payment, {
+            // Shodný ověřovací kód
+            if (generatedConfirmationCode === parseInt(inputConfirmationCode)) {
 
-                headers: {
-                    "Authorization": "Bearer " + Cookies.getJSON("jwt").token
-                }
+                // Odeslání nové platby
+                axios.post("http://localhost:8080/api/newPayment", this.state.newPayment, {
 
-            }).then(() => {
+                    headers: {
+                        "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                    }
 
-                // Úspěšná platba + shodný ověřovací kód
-                if (confirmationGenerated === parseInt(confirmationInput)) {
+                }).then(() => {
 
+                    // Úspěšná platba
                     this.setState({
                         successfulPayment: true,
                     });
 
-                } else if (confirmationGenerated !== parseInt(confirmationInput)) {
+                }).catch(({response: { data }}) => {
 
+                    let accountNumberError = data.accountNumber;
+
+                    // Nastavení chybové zprávy, při nevybrání bankovního kódu
+                    if (this.state.newPayment.accountNumber.length >= 10 && this.state.bankCode === "") {
+
+                        accountNumberError = "Kód banky musí být zadán";
+                    }
+
+                    // Nastavení chybových zpráv
                     this.setState({
-                        confirmationError: "Ověřovací kód není správný",
+                        paymentError: {
+                            nameError: data.name,
+                            accountNumberError: accountNumberError,
+                            amountError: data.amount,
+                            variableSymbolError: data.variableSymbol,
+                            constantSymbolError: data.constantSymbol,
+                            specificSymbolError: data.specificSymbol,
+                            confirmationError: ""
+                        },
+
+                        // Vynulování ověřovacího kódu
+                        inputConfirmationCode: "",
 
                         // Vygenerování nového ověřovacího kódu
-                        confirmationGenerated: conformationCode()
+                        generatedConfirmationCode: confirmationCode()
                     });
-                }
+                });
 
-            }).catch(({ response: { data } }) => {
+            // Nesprávný ověřovací kód
+            } else if (generatedConfirmationCode !== parseInt(inputConfirmationCode)) {
 
-                let accountNumberError = data.accountNumber;
-
-                // Nastavení chybové zprávy, při nevybrání bankovního kódu
-                if (this.state.payment.accountNumber.length >= 10 && this.state.bankCode === "") {
-
-                    accountNumberError = "Kód banky musí být zadán";
-                }
-
-                // Nastavení chybových zpráv
                 this.setState({
-                    nameError: data.name,
-                    accountNumberError: accountNumberError,
-                    amountError: data.amount,
-                    variableSymbolError: data.variableSymbol,
-                    constantSymbolError: data.constantSymbol,
-                    specificSymbolError: data.specificSymbol,
+                    paymentError: {
+                        nameError: "",
+                        accountNumberError: "",
+                        amountError: "",
+                        variableSymbolError: "",
+                        constantSymbolError: "",
+                        specificSymbolError: "",
+                        confirmationError: "Ověřovací kód není správný"
+                    },
 
                     // Vygenerování nového ověřovacího kódu
-                    confirmationGenerated: conformationCode()
+                    generatedConfirmationCode: confirmationCode()
                 });
-            });       
+            }
         });
-    }
-
-
-    /**
-     * Změna vstupních údajů
-     * 
-     * @param event 
-     */
-    handleChange = (event) => {
-
-        const name = event.target.name;
-        let value = event.target.value;
-
-        // Nastavení pomocných proměnných
-        if (name === "accountNumberPrefix" || name === "confirmationInput" || name === "amountInput") {
-            
-            // Změna desetinné značky (častka platby)
-            if (value.includes(",")) {
-
-                value = value.replace(",", ".");
-            }
-
-            this.setState({
-                [name]: value,
-            });
-
-        // Nastavení platebních údajů  
-        } else {
-
-            // Získání směnného kurzu vybrané měny
-            if (name === "currency") {
-
-                // Request - vrací seznam aktuálních kurzů
-                axios.get(`https://api.exchangerate.host/latest?base=${value}`)
-                    .then(({ data: { rates } }) => this.setState({
-
-                    exchangeRateToCZK: rates.CZK
-
-                })).catch((error) => console.log(error));
-            }
-
-            this.setState({
-
-                payment: {
-                    ...this.state.payment,
-                    [name]: value,
-                }
-            });
-        }
     }
 
 
@@ -289,32 +338,39 @@ class NewPayment extends Component {
                             name="name"
                             label="Název platby:" 
                             placeholder="Název platby" 
-                            error={this.state.nameError} 
+                            pattern="[\p{L} 0-9]*"
+                            value={this.state.newPayment.name}
+                            error={this.state.paymentError.nameError} 
                             onChange={this.handleChange} />
 
                         {/* Číslo účtu */}
                         <InputPanelWithBankCode 
-                            name="accountNumberPrefix"
+                            name="accountNumberPrefixInput"
                             label="Číslo účtu:"
                             placeholder="7253962689" 
-                            error={this.state.accountNumberError} 
-                            onChange={this.handleChange} 
-                            onClick={this.setBankCode} 
+                            pattern="[0-9]{0,10}"
+                            value={this.state.accountNumberPrefixInput}
+                            error={this.state.paymentError.accountNumberError} 
+                            onChange={this.handleAccountNumberPrefix} 
+                            toggleBankCodes={() => this.setState({ bankCodeSelectionToggle: !this.state.bankCodeSelectionToggle })}
+                            onClick={this.handleBankCodeSelection} 
                             bankCode={this.state.bankCode} 
-                            selection={this.state.bankCodeSelection} />
+                            selection={this.state.bankCodeSelectionToggle} />
 
                         {/* Částka */}
                         <InputPanelWithCurrencies 
                             name="amountInput" 
                             label="Částka:" 
                             placeholder="0,00" 
-                            error={this.state.amountError} 
-                            onChange={this.handleChange} />
+                            pattern="^[1-9]\d*((\.|,)\d{0,2})?$"
+                            value={this.state.amountInput}
+                            error={this.state.paymentError.amountError} 
+                            onChange={this.handleAmount} 
+                            onClick={this.handleExchangeRate} />
 
                         {/* Přepočet měny */}
                         <InputPanelExchangeRate 
                             label="Aktuální přepočet:" 
-                            currency={this.state.payment.currency}
                             amount={this.state.amountInput} 
                             exchangeRate={this.state.exchangeRateToCZK} />
 
@@ -327,21 +383,27 @@ class NewPayment extends Component {
                         <InputPanel 
                             name="variableSymbol" 
                             label="Variabilní symbol:" 
-                            error={this.state.variableSymbolError} 
+                            pattern="[0-9]{0,10}"
+                            value={this.state.newPayment.variableSymbol}
+                            error={this.state.paymentError.variableSymbolError} 
                             onChange={this.handleChange} />
 
                         {/* Konstantní symbol */}
                         <InputPanel 
                             name="constantSymbol" 
                             label="Konstantní symbol:" 
-                            error={this.state.constantSymbolError} 
+                            pattern="[0-9]{0,10}"
+                            value={this.state.newPayment.constantSymbol}
+                            error={this.state.paymentError.constantSymbolError} 
                             onChange={this.handleChange} />
 
                         {/* Specifický symbol */}
                         <InputPanel 
                             name="specificSymbol" 
                             label="Specifický symbol:" 
-                            error={this.state.specificSymbolError} 
+                            pattern="[0-9]{0,10}"
+                            value={this.state.newPayment.specificSymbol}
+                            error={this.state.paymentError.specificSymbolError} 
                             onChange={this.handleChange} />
 
                         {/* Oddělující sekce */}
@@ -353,10 +415,11 @@ class NewPayment extends Component {
                         <InputPanelWithConfirmation 
                             name="confirmationInput" 
                             label="Ověřovací kód:" 
-                            error={this.state.confirmationError} 
-                            onChange={this.handleChange} 
-                            generatedValue={this.state.confirmationGenerated} 
-                            createRef={this.confirmationInputRef} />
+                            pattern="[0-9]{0,5}"
+                            value={this.state.inputConfirmationCode}
+                            error={this.state.paymentError.confirmationError} 
+                            onChange={this.handleConfirmationCode} 
+                            generatedConfirmationCode={this.state.generatedConfirmationCode} />
 
                         <button type="submit">Odeslat platbu</button>
 

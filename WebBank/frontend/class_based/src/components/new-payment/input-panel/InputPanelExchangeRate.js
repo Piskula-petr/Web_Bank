@@ -11,13 +11,16 @@ class InputPanelExchangeRate extends Component {
      */
     render() {
 
-        const { currency, amount, label } = this.props;
+        const { label } = this.props;
+
+        // Změna desetinné značky
+        const amount = (isNaN(this.props.amount) ? this.props.amount.replace(",", ".") : this.props.amount)
 
         // Přepočet na CZK
         const exchangeRate = (amount * this.props.exchangeRate).toFixed(2);
 
         return(
-            <div className={(currency === "CZK" ? styles.hide : "")}>
+            <div className={(this.props.exchangeRate === 1 || this.props.amount === "" ? styles.hide : "")}>
                 
                 <div className={styles.exchangeRate}>
 

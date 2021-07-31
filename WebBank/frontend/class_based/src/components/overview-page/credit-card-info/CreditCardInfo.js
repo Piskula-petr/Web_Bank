@@ -106,7 +106,7 @@ class CreditCardInfo extends PureComponent {
                 <div>Číslo karty:
                 
                     <div className={styles.cardNumber}>
-                        {creditCard.cardNumber}¨
+                        {creditCard.cardNumber}
                     </div>
                 </div>
             </div>

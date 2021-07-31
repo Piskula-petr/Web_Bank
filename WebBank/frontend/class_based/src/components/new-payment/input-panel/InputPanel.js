@@ -10,7 +10,7 @@ class InputPanel extends Component {
      */
     render() {
 
-        const { name, label, error, placeholder, onChange } = this.props;
+        const { name, label, pattern, value,  error, placeholder, onChange } = this.props;
 
         return(
             <div className={styles.inputContainer}>
@@ -24,7 +24,8 @@ class InputPanel extends Component {
                         id={name} 
                         className={styles.input}
                         placeholder={placeholder} 
-                        type="text" 
+                        pattern={pattern}
+                        value={value}
                         name={name}
                         onChange={onChange}/>
                 </div>

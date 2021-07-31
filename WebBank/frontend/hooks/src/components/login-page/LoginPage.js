@@ -29,16 +29,13 @@ const LoginPage = (props) => {
 
 
     // Reducer
-    const [ loginData, dispatch ] = useReducer((state, action) => {
+    const [ state, dispatch ] = useReducer((state, action) => {
 
         switch (action.type) {
 
-            case "ON_CHANGE":
+            case "SET_CHANGE":
 
-                return {
-                    ...state,
-                    [action.payload.name]: action.payload.value
-                }
+                return action.payload
             
             case "FETCH_ERROR":
 
@@ -69,9 +66,16 @@ const LoginPage = (props) => {
      */
     const handleChange = (event) => {
 
+        const validValue = (event.target.validity.valid 
+            ? event.target.value 
+                : state[event.target.name]);
+
         dispatch({
-            type: "ON_CHANGE", 
-            payload: event.target
+            type: "SET_CHANGE", 
+            payload: {
+                ...state,
+                [event.target.name]: validValue
+            }
         })
     }
 
@@ -85,7 +89,7 @@ const LoginPage = (props) => {
 
         event.preventDefault();
 
-        const { clientNumber, password } = loginData;
+        const { clientNumber, password } = state;
 
         // Request - vrací uživatelské ID
         axios.post("http://localhost:8080/api/login", {
@@ -153,11 +157,11 @@ const LoginPage = (props) => {
 
                 <div>
                     <div className={styles.errorMessage}>
-                        {loginData.clientNumberError}
+                        {state.clientNumberError}
                     </div>
 
-                    <input id="clientNumber" name="clientNumber" 
-                        autoFocus="autoFocus" onChange={handleChange} />
+                    <input pattern="[0-9]{0,10}" id="clientNumber" name="clientNumber" 
+                        value={state.clientNumber} autoFocus="autoFocus" onChange={handleChange} />
                 </div>
             </div>
 
@@ -168,10 +172,10 @@ const LoginPage = (props) => {
 
                 <div>
                     <div className={styles.errorMessage}>
-                        {loginData.passwordError}
+                        {state.passwordError}
                     </div>
 
-                    <input type="password" id="password" 
+                    <input type="password" id="password" value={state.password}
                         name="password" onChange={handleChange} />
                 </div>
             </div>
