@@ -12,6 +12,7 @@ REST web application simulating internet banking <br> <br>
 * Back-End
   * Spring Boot
   * Hibernate / Hibernate Validator
+  * Lombok
   * PostgreSQL
   * JUnit / Mockito
 
