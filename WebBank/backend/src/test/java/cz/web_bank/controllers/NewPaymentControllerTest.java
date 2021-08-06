@@ -177,10 +177,9 @@ public class NewPaymentControllerTest {
 		
 		// vytvoření testovací platby
 		Payment payment = new Payment();
+		payment.setName("");
 		payment.setAmount(new BigDecimal(0));
-		payment.setVariableSymbol(Long.MAX_VALUE);
-		payment.setConstantSymbol(Long.MAX_VALUE);
-		payment.setSpecificSymbol(Long.MAX_VALUE);
+		payment.setAccountNumber("");
 		
 		// Porovnání výstupních hodnot
 		mockMvc.perform((post("/api/newPayment")
@@ -190,9 +189,6 @@ public class NewPaymentControllerTest {
 			.andExpect(jsonPath("$.timestamp").exists())
 			.andExpect(jsonPath("$.name").value("Název platby nesmí být prázdný"))
 			.andExpect(jsonPath("$.amount").value("Částka platby nesmí být prázdná"))
-			.andExpect(jsonPath("$.variableSymbol").value("Variabilní symbol může mýt maximálně 10 znaků"))
-			.andExpect(jsonPath("$.constantSymbol").value("Konstantní symbol může mýt maximálně 10 znaky"))
-			.andExpect(jsonPath("$.specificSymbol").value("Specifický symbol může mýt maximálně 10 znaků"))
 			.andExpect(jsonPath("$.accountNumber").value("Číslo účtu nesmí být prázdné"));
 		
 		verify(paymentServise, times(0)).savePayment(any(Payment.class));;

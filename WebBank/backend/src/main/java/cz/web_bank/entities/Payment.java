@@ -12,15 +12,21 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity()
 @Table(name = "payments")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Payment {
 	
 	@Id
@@ -62,114 +68,8 @@ public class Payment {
 	@Column(name = "payment_type")
 	private String paymentType;
 
-	@NotBlank(message = "Číslo účtu nesmí být prázdné")
-	@Size(min = 15, max = 15, message = "Číslo účtu musí mýt 10 znaků")
+	@NotBlank(message = "Číslo účtu nesmí být prázdné")	
 	@Column(name = "account_number", length = 15)
 	private String accountNumber;
-	
-// Bezparametrový konstruktor //////////////////////////////////////////////////////////////////////
-	
-	public Payment() {
-		
-	}
-	
-// Gettery + Settery ///////////////////////////////////////////////////////////////////////////////
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public Long getUserID() {
-		return userID;
-	}
-
-	public void setUserID(Long userID) {
-		this.userID = userID;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getMark() {
-		return mark;
-	}
-
-	public void setMark(String mark) {
-		this.mark = mark;
-	}
-
-	public BigDecimal getAmount() {
-		
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
-
-	public Long getVariableSymbol() {
-		return variableSymbol;
-	}
-
-	public void setVariableSymbol(Long variableSymbol) {
-		this.variableSymbol = variableSymbol;
-	}
-
-	public Long getConstantSymbol() {
-		return constantSymbol;
-	}
-
-	public void setConstantSymbol(Long constantSymbol) {
-		this.constantSymbol = constantSymbol;
-	}
-
-	public Long getSpecificSymbol() {
-		return specificSymbol;
-	}
-
-	public void setSpecificSymbol(Long specificSymbol) {
-		this.specificSymbol = specificSymbol;
-	}
-
-	public LocalDate getPaymentDate() {
-		return paymentDate;
-	}
-
-	public void setPaymentDate(LocalDate paymentDate) {
-		this.paymentDate = paymentDate;
-	}
-
-	public String getPaymentType() {
-		return paymentType;
-	}
-
-	public void setPaymentType(String paymentType) {
-		this.paymentType = paymentType;
-	}
-
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
-	}
 	
 }

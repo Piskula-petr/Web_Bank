@@ -9,8 +9,15 @@ import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity
 @Table(name = "authorities")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Authority implements GrantedAuthority {
 
 	private static final long serialVersionUID = 1L;
@@ -22,30 +29,5 @@ public class Authority implements GrantedAuthority {
 	
 	@Column(name = "authority", length = 100)
 	private String authority;
-	
-// Bezparametrový konstruktor /////////////////////////////////////////////////////////////
-	
-	public Authority() {
-		
-	}
-	
-// Gettery + Settery //////////////////////////////////////////////////////////////////////	
-	
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	@Override
-	public String getAuthority() {
-		return authority;
-	}
-
-	public void setAuthority(String authority) {
-		this.authority = authority;
-	}
 	
 }

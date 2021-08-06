@@ -10,8 +10,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity()
 @Table(name = "users")
+@NoArgsConstructor
+@Getter
+@Setter
 public class UserInfo {
 
 	@Id
@@ -33,61 +40,5 @@ public class UserInfo {
 	
 	@Column(name = "account_number", length = 15)
 	private String accountNumber;
-	
-// Bezparametrový konstruktor ////////////////////////////////////////////////////////////////////////	
-
-	public UserInfo() {
-		
-	}
-	
-// Gettery + Settery ////////////////////////////////////////////////////////////////////////////////	
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public BigDecimal getBalance() {
-		return balance;
-	}
-
-	public void setBalance(BigDecimal balance) {
-		this.balance = balance;
-	}
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
-
-	public String getAccountNumber() {
-		return accountNumber;
-	}
-
-	public void setAccountNumber(String accountNumber) {
-		this.accountNumber = accountNumber;
-	}
 	
 }

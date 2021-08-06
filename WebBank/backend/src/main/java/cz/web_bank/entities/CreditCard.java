@@ -10,8 +10,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity()
 @Table(name = "credit_cards")
+@NoArgsConstructor
+@Setter
 public class CreditCard {
 
 	@Id
@@ -31,52 +36,27 @@ public class CreditCard {
 	@Column(name = "type")
 	private String type;
 	
-// Bezparametrový konstruktor ////////////////////////////////////////////////////////////////////
-	
-	public CreditCard() {
-		
-	}
-	
-// Gettery + Settery /////////////////////////////////////////////////////////////////////////////
+// Gettery ////////////////////////////////////////////////////////////////////////////////
 	
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getCardNumber() {
 		return cardNumber.substring(0, 4) + "-" + cardNumber.substring(4, 8) + "-" + cardNumber.substring(8, 12) + "-" + cardNumber.substring(12, 16);
-	}
-
-	public void setCardNumber(String cardNumber) {
-		this.cardNumber = cardNumber;
 	}
 
 	public String getValidFrom() {
 		return validFrom.format(DateTimeFormatter.ofPattern("MM/yy"));
 	}
 
-	public void setValidFrom(LocalDate validFrom) {
-		this.validFrom = validFrom;
-	}
-
 	public String getValidTo() {
 		return validTo.format(DateTimeFormatter.ofPattern("MM/yy"));
 	}
 
-	public void setValidTo(LocalDate validTo) {
-		this.validTo = validTo;
-	}
-
 	public String getType() {
 		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 	
 }

@@ -17,8 +17,13 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity()
 @Table(name = "users")
+@NoArgsConstructor
+@Setter
 public class User implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -38,21 +43,11 @@ public class User implements UserDetails {
 	@JoinColumn(name = "user_id")
 	private List<Authority> authorities;
 	
-// Bezparametrový konstruktor ////////////////////////////////////////////////////////////////////////
-
-	public User() {
-
-	}
-	
-// Gettery + Settery /////////////////////////////////////////////////////////////////////////////////
+// Gettery /////////////////////////////////////////////////////////////////////////////////
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authorities;
-	}
-	
-	public void setAuthorities(List<Authority> authorities) {
-		this.authorities = authorities;
 	}
 
 	@Override
@@ -60,17 +55,9 @@ public class User implements UserDetails {
 		return String.valueOf(userName);
 	}
 	
-	public void setUsername(Long userName) {
-		this.userName = userName;
-	}
-	
 	@Override
 	public String getPassword() {
 		return password;
-	}
-	
-	public void setPassword(String password) {
-		this.password = password;
 	}
 	
 	@Override

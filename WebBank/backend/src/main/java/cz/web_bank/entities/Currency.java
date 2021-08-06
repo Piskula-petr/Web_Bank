@@ -7,8 +7,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity()
 @Table(name = "currencies")
+@NoArgsConstructor
+@Getter
+@Setter
 public class Currency {
 
 	@Id
@@ -21,37 +28,5 @@ public class Currency {
 	
 	@Column(name = "code", length = 3)
 	private String code;
-	
-// Bezparametrový konstruktor ////////////////////////////////////////////////////////////////////
-	
-	public Currency() {
-		
-	}
-	
-// Gettery + Settery /////////////////////////////////////////////////////////////////////////////
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
 	
 }
