@@ -89,7 +89,7 @@ const NewPayment = (props) => {
 
             case "SET_AMOUNT":
 
-            return { ...state, amountInput: action.payload }
+                return { ...state, amountInput: action.payload }
 
             case "SET_BANK_CODE":
 
