@@ -4,7 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
 import { NewPayment } from "modules/interfaces/newPayment";
-import { PaymentErrors } from "modules/interfaces/paymentError";
+import { NewPaymentErrors } from "modules/interfaces/newPaymentError";
 import { State } from "redux/rootReducer";
 
 import styles from "components/new-payment-page/new-payment.module.css";
@@ -24,7 +24,7 @@ interface NewPaymentProps {
 interface NewPaymentState {
     successfulPayment: boolean,
     newPayment: NewPayment,
-    paymentErrors: PaymentErrors,
+    newPaymentErrors: NewPaymentErrors,
     accountNumberPrefixInput: string,
     bankCode: string | null,
     bankCodeSelectionToggle: boolean,
@@ -64,7 +64,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
             },
 
             // Chybové zprávy
-            paymentErrors: {
+            newPaymentErrors: {
                 nameError: "",
                 accountNumberError: "",
                 amountError: "",
@@ -275,7 +275,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
 
                     // Nastavení chybových zpráv
                     this.setState({
-                        paymentErrors: {
+                        newPaymentErrors: {
                             nameError: data.name,
                             accountNumberError: accountNumberError,
                             amountError: data.amount,
@@ -297,7 +297,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
             } else if (generatedConfirmationCode !== parseInt(inputConfirmationCode)) {
 
                 this.setState({
-                    paymentErrors: {
+                    newPaymentErrors: {
                         nameError: "",
                         accountNumberError: "",
                         amountError: "",
@@ -361,7 +361,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             placeholder="Název platby" 
                             pattern="[\p{L} 0-9]*"
                             value={this.state.newPayment.name}
-                            error={this.state.paymentErrors.nameError} 
+                            error={this.state.newPaymentErrors.nameError} 
                             onChange={this.handleChange} />
 
                         {/* Číslo účtu */}
@@ -371,7 +371,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             placeholder="7253962689" 
                             pattern="[0-9]{0,10}"
                             value={this.state.accountNumberPrefixInput}
-                            error={this.state.paymentErrors.accountNumberError} 
+                            error={this.state.newPaymentErrors.accountNumberError} 
                             onChange={this.handleAccountNumberPrefix} 
                             toggleBankCodes={() => this.setState({ bankCodeSelectionToggle: !this.state.bankCodeSelectionToggle })}
                             onClick={this.handleBankCodeSelection} 
@@ -385,7 +385,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             placeholder="0,00" 
                             pattern="^[1-9]\d*((\.|,)\d{0,2})?$"
                             value={this.state.amountInput}
-                            error={this.state.paymentErrors.amountError} 
+                            error={this.state.newPaymentErrors.amountError} 
                             onChange={this.handleAmount} 
                             onClick={this.handleExchangeRate} />
 
@@ -406,7 +406,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             label="Variabilní symbol:" 
                             pattern="[0-9]{0,10}"
                             value={this.state.newPayment.variableSymbol}
-                            error={this.state.paymentErrors.variableSymbolError} 
+                            error={this.state.newPaymentErrors.variableSymbolError} 
                             onChange={this.handleChange} />
 
                         {/* Konstantní symbol */}
@@ -415,7 +415,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             label="Konstantní symbol:" 
                             pattern="[0-9]{0,10}"
                             value={this.state.newPayment.constantSymbol}
-                            error={this.state.paymentErrors.constantSymbolError} 
+                            error={this.state.newPaymentErrors.constantSymbolError} 
                             onChange={this.handleChange} />
 
                         {/* Specifický symbol */}
@@ -424,7 +424,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             label="Specifický symbol:" 
                             pattern="[0-9]{0,10}"
                             value={this.state.newPayment.specificSymbol}
-                            error={this.state.paymentErrors.specificSymbolError} 
+                            error={this.state.newPaymentErrors.specificSymbolError} 
                             onChange={this.handleChange} />
 
                         {/* Oddělující sekce */}
@@ -438,7 +438,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             label="Ověřovací kód:" 
                             pattern="[0-9]{0,5}"
                             value={this.state.inputConfirmationCode}
-                            error={this.state.paymentErrors.confirmationError} 
+                            error={this.state.newPaymentErrors.confirmationError} 
                             onChange={this.handleConfirmationCode} 
                             generatedConfirmationCode={this.state.generatedConfirmationCode} />
 

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
 
 import "App.css";
-import LoginFormPage from "./components/login-form-page/LoginFormPage";
+import LoginPage from "./components/login-page/LoginPage";
 import OverviewPage from "./components/overview-page/OverviewPage";
 import NewPaymentPage from "./components/new-payment-page/NewPaymentPage";
 
@@ -19,7 +19,7 @@ class App extends Component {
 
                 {/* Přihlašovací formulář */}
                 <Route path="/prihlaseni">
-                    <LoginFormPage />
+                    <LoginPage />
                 </Route>
 
                 {/* Přehled plateb */}
