@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -44,7 +44,7 @@ public class Payment {
 	@Column(name = "mark", length = 1)
 	private String mark;
 	
-	@Min(value = 1, message = "Částka platby nesmí být prázdná")
+	@DecimalMin(value = "0.01", message = "Částka platby nesmí být prázdná")
 	@Column(name = "amount")
 	private BigDecimal amount;
 	
