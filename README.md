@@ -17,7 +17,7 @@ REST web application simulating internet banking <br> <br>
   * JUnit / Mockito
 
 - Front-End
-  - React (class based)
+  - React (class / hooks)
   - Redux 
   - CSS Modules <br> <br>
 
