@@ -2,7 +2,6 @@ import React from 'react'
 import { ImageBackground, ScrollView, View  } from 'react-native'
 
 import { styles } from "components/overview-page/overviewPageStyle";
-import background from "assets/background.jpg";
 import AccountInfo from "components/overview-page/account-info/AccountInfo";
 import CreditCardInfo from "components/overview-page/credit-card-info/CreditCardInfo";
 import PaymentReport from "components/overview-page/payment-report/PaymentReport";
@@ -15,7 +14,7 @@ const OverviewPage: React.FC = () => {
      * Vykreslení
      */
     return (
-        <ImageBackground source={background} style={styles.container}>
+        <View style={styles.container}>
 
             <ScrollView>
                 <View style={styles.previewContainer}>
@@ -35,7 +34,7 @@ const OverviewPage: React.FC = () => {
             {/* Navigační panel */}
             <NavigationPanel isOverviewActive={true} />
 
-        </ImageBackground>
+        </View>
     )
 }
 

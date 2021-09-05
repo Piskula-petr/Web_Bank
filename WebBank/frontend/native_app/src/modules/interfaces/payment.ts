@@ -10,5 +10,5 @@ export interface Payment {
     specificSymbol: number,
     paymentDate: Date,
     paymentType: string,
-    accountNumber: string
+    accountNumber: string,
 }

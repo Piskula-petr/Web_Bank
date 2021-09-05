@@ -5,23 +5,12 @@ import Cookies from 'js-cookie';
 
 import styles from "components/overview-page/credit-card-info/credit-card-info.module.css";
 import creditCardLogo from "images/credit_card.png";
+import { CreditCard } from "modules/interfaces/creditCard";
+import { User } from "modules/interfaces/user";
 import { State } from 'redux/rootReducer';
 
 interface CreditCardInfoProps {
     userID: number
-}
-
-interface CreditCard {
-    id: number,
-    cardNumber: number,
-    validFrom: string,
-    validTo: string,
-    type: string
-}
-
-interface User {
-    name: string,
-    surname: string
 }
 
 const CreditCardInfo: React.FC<CreditCardInfoProps> = (props) => {

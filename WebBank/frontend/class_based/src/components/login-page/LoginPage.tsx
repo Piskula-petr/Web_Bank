@@ -6,7 +6,7 @@ import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import { setUserID } from "redux/user/userActions";
 
-import styles from "components/login-form-page/login-page.module.css";
+import styles from "components/login-page/login-page.module.css";
 import logo from "images/logo.png";
 
 interface LoginProps {

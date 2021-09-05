@@ -146,7 +146,7 @@ class MonthReport extends Component <MonthReportProps, MonthReportState> {
         // Aktuální měsíc (číselně)
         const currentMonth: number = new Date().getMonth() + 1;
 
-        const mark: string = (this.state.selectedMonth.balance > 0 ? "+" : "");
+        const mark: string = (this.state.selectedMonth.balance < 0 ? "-" : "");
 
         const income: number = this.state.selectedMonth.income * this.props.currency.exchangeRate;
         const costs: number = this.state.selectedMonth.costs * this.props.currency.exchangeRate;

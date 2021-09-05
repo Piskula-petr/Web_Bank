@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { View, ImageBackground, ScrollView, Text } from 'react-native'
+import { View, ImageBackground, ScrollView, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
 import axios from 'axios'
 import * as SecureStore from "expo-secure-store";
 import { connect } from "react-redux";
 
 import { styles } from "components/history-page/HistoryPageStyle";
-import background from "assets/background.jpg";
 import NavigationPanel from "components/navigation-panel/NavigationPanel";
 import { IP_ADRESS } from "modules/IPAdress";
 import { State } from "modules/redux/rootReducer";
@@ -13,6 +12,7 @@ import { Currency } from "modules/redux/currency/currency";
 import { dateFormatter } from "modules/dateFormatter";
 import { numberFormatter } from "modules/numberFormatter";
 import { Payment } from "modules/interfaces/payment";
+import DetailTable from 'components/history-page/DetailTable';
 
 interface HistoryPageProps {
     userID: number,
@@ -28,6 +28,9 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
 
     // Platby
     const [ payments, setPayments ] = useState<Array<Payment>>([]);
+
+    // Detail plateb
+    const [ paymentsToggle, setPaymentsToggle ] = useState<Array<boolean>>([]);
 
 
     /**
@@ -52,8 +55,14 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
                         "Authorization": "Bearer " + token
                     }
 
-                }).then(({ data }) => setPayments(data))
-                    .catch((error) => console.log(error));
+                }).then(({ data }) => {
+
+                    const payments: Array<Payment> = data;
+
+                    setPayments(payments);
+                    setPaymentsToggle(new Array(payments.length).fill(false));
+
+                }).catch((error) => console.log(error));
 
                 // Request - vrací celkový počat plateb
                 axios.get(`http://${IP_ADRESS}:8080/api/payments/count/userID=${props.userID}`, {
@@ -78,7 +87,7 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
         // Datum poslední zobrazené platby
         const lastPaymentDate: Date = payments[payments.length - 1].paymentDate;
 
-        // Datum předchozího měsíce¨
+        // Datum předchozího měsíce
         let date: Date = new Date(lastPaymentDate);
         date.setMonth(date.getMonth());
 
@@ -98,10 +107,29 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
                         "Authorization": "Bearer " + token
                     }
 
-                }).then(({ data }) => setPayments([...payments, ...data]))
-                    .catch((error) => console.log(error));
+                }).then(({ data }) => {
+
+                    const newPayments: Array<Payment> = data;
+
+                    setPayments([...payments, ...newPayments]);
+                    setPaymentsToggle([...paymentsToggle, ...new Array(newPayments.length).fill(false)]);
+
+                }).catch((error) => console.log(error));
             }
         });
+    }
+
+
+    /**
+     * Zobrazení / skrytí detailu platby
+     * 
+     * @param index - index platby
+     */
+    const handleToggle = (index: number): void => {
+        
+        setPaymentsToggle(
+            paymentsToggle.map((value, i) => i === index ? !value : value)
+        );
     }
 
 
@@ -109,33 +137,69 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
      * Vykreslení
      */
     return (
-        <ImageBackground source={background} style={styles.container}>
+        <View style={styles.container}>
             
             <ScrollView>
-                <View style={styles.container}>
+                {(payments.length === 0)
+                
+                // Loading
+                ? <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#EEE" />
+                </View>
+                
+                // Platby
+                : <View style={styles.historycontainer}>
 
-                    {payments.map(item => 
+                    {payments.map((item, index) => 
 
-                        <View key={item.id}>
+                        <TouchableOpacity 
+                            key={item.id} 
+                            style={styles.paymentsContainer} 
+                            onPress={() => handleToggle(index)} 
+                            activeOpacity={0.8}>
 
                             {/* Datum platby */}
-                            <Text>{dateFormatter(item.paymentDate.toString()).substring(0, 6)}</Text>
-                            
-                            <View>
-                                <Text>{item.name}</Text>
-                                <Text>{item.paymentType}</Text>
+                            <Text style={styles.date}>
+                                {dateFormatter(item.paymentDate.toString()).substring(0, 6)}
+                            </Text>
+
+                            <View style={styles.paymentContainer}>
+                                
+                                {/* Název platby */}
+                                <Text style={styles.name}>{item.name}</Text>
+
+                                {/* Typ platby */}
+                                <Text style={styles.type}>{item.paymentType}</Text>
+
+                                {/* Částka */}
+                                <Text style={[styles.amount, {color: (item.mark.includes("+") ? "#0f862f" : "#B22222")}]}>
+                                    {item.mark} 
+                                    {numberFormatter((item.amount * props.currency.exchangeRate).toFixed(2))}&nbsp;
+                                    {props.currency.name}
+                                </Text>
+
+                                {/* Detail platby */}
+                                <DetailTable payment={item} detailToggle={paymentsToggle[index]} />
+                                
                             </View>
-                            
-                        </View>    
+                        </TouchableOpacity>    
                     )}
 
-                </View>
+                    {/* Načtení starších plateb */}
+                    <TouchableOpacity 
+                        style={[styles.buttonContainer, {display: (payments.length === paymentsCount ? "none" : "flex")}]}
+                        onPress={showMorepayments} >
+
+                        <Text style={styles.buttonText}>Načíst starší platby</Text>
+                    </TouchableOpacity>
+                </View>}
+
             </ScrollView>
 
             {/* Navigační panel */}
             <NavigationPanel isHistoryActive={true} />
 
-        </ImageBackground>
+        </View>
     )
 }
 

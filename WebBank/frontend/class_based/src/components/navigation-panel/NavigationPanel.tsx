@@ -28,6 +28,7 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
 
     private interval: number | undefined;
     
+
     /**
      * Konstruktor
      * 
@@ -42,7 +43,7 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
             secondsLeft: this.props.timeInterval,
 
             // Čas vypršení JWT
-            jwtExpireTime: new Date(),
+            jwtExpireTime: new Date(Cookies.getJSON("jwt").expireTime),
         }
     }
 
@@ -51,9 +52,6 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
      * Nasazení componenty
      */
     componentDidMount(): void {
-
-        // Nastavení času vypršení JWT
-        this.setJwtExpireTime();
 
         // Přidání click eventu
         document.addEventListener("click", this.handleClick);
@@ -65,7 +63,9 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
                 secondsLeft: this.state.secondsLeft - 1, 
             });
 
-            if (new Date().getTime() > this.state.jwtExpireTime.getTime()) {
+            const TIME_BEFORE_EXPIRE: number = 30 * 1000;   // 30 sekund
+
+            if (new Date().getTime() > (this.state.jwtExpireTime.getTime() - TIME_BEFORE_EXPIRE)) {
 
                 // Request - obnovení JWT
                 axios.get("http://localhost:8080/api/refresh", {
@@ -84,8 +84,9 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
                     // vytvoření nového cookies
                     Cookies.set("jwt", jwt, {expires: new Date(expireTime), secure: true});
 
-                    // Nastavení času vypršení nového JWT
-                    this.setJwtExpireTime();
+                    this.setState({
+                        jwtExpireTime: new Date(expireTime)
+                    })
 
                 }).catch((error) => console.log(error))
             }
@@ -117,22 +118,6 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
         this.setState({
             secondsLeft: this.props.timeInterval
         });
-    }
-
-
-    /**
-     * Nastavení času vypršení JWT
-     */
-    setJwtExpireTime = () => {
-
-        let jwtExpireTime: Date = new Date(Cookies.getJSON("jwt").expireTime);
-
-        // Odečtení 1 minuty, od vypršení JWT
-        jwtExpireTime.setTime(jwtExpireTime.getTime() - (1 * 60 * 1000));
-
-        this.setState({
-            jwtExpireTime
-        })
     }
 
 

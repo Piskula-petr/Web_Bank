@@ -7,6 +7,8 @@ import { Dispatch } from "redux";
 
 import styles from "components/overview-page/account-info/account-info.module.css";
 import safe from "images/safe.png";
+import { Currencies } from "modules/interfaces/currencies";
+import { UserInfo } from "modules/interfaces/userInfo";
 import numberFormatter from "modules/numberFormatter";
 import { Currency } from "redux/currency/currency";
 import { changeCurrency } from "redux/currency/currencyActions";
@@ -16,23 +18,6 @@ interface AccountInfoProps {
     userID: number,
     currency: Currency,
     changeCurrency: (currency: Currency) => void,
-}
-
-interface UserInfo {
-    id: number,
-    name: string,
-    surname: string,
-    balance: number,
-    currency: string,
-    accountNumber: string
-}
-
-interface Currencies {
-    CZK: number,
-    EUR: number,
-    JPY: number,
-    USD: number,
-    [key: string]: number
 }
 
 const AccountInfo: React.FC<AccountInfoProps> = (props) => {

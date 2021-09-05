@@ -129,7 +129,7 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
     // Aktuální měsíc (číselně)
     const currentMonth: number = new Date().getMonth() + 1;
 
-    const mark: string = (selectedMonth.balance > 0 ? "+" : "-");
+    const mark: string = (selectedMonth.balance > 0 ? "+" : "");
 
     const income: number = selectedMonth.income * props.currency.exchangeRate;
     const costs: number = selectedMonth.costs * props.currency.exchangeRate;

@@ -10,6 +10,7 @@ import leftArrow from "images/left_arrow.png";
 import rightArrow from "images/right_arrow.png";
 import Months from "modules/Months";
 import numberFormatter from "modules/numberFormatter";
+import { SelectedMonth } from "modules/interfaces/selectedMonth";
 import { State } from "redux/rootReducer";
 import { Status } from "modules/enums/status";
 import { Currency } from 'redux/currency/currency';
@@ -17,15 +18,6 @@ import { Currency } from 'redux/currency/currency';
 interface MonthReportProps {
     userID: number,
     currency: Currency
-}
-
-interface SelectedMonth {
-    name: string,
-    number: number,
-    year: number,
-    income: number,
-    costs: number,
-    balance: number,
 }
 
 const MonthReport: React.FC<MonthReportProps> = (props) => {
@@ -127,7 +119,7 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
     // Aktuální měsíc (číselně)
     const currentMonth: number = new Date().getMonth() + 1;
 
-    const mark: string = (selectedMonth.balance > 0 ? "+" : "");
+    const mark: string = (selectedMonth.balance < 0 ? "-" : "");
 
     const income: number = selectedMonth.income * props.currency.exchangeRate;
     const costs: number = selectedMonth.costs * props.currency.exchangeRate;

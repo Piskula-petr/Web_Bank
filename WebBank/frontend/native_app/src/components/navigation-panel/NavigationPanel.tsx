@@ -11,6 +11,7 @@ import history from "assets/history.png"
 import payment from "assets/payment.png"
 import { ScreenList } from "modules/screenList";
 import { IP_ADRESS } from "modules/IPAdress";
+import { JWT } from "modules/interfaces/jwt";
 
 interface NavigationPanelProps {
     isOverviewActive?: boolean,
@@ -20,15 +21,15 @@ interface NavigationPanelProps {
 
 const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
 
+    
     const navigation = useNavigation<StackNavigationProp<ScreenList>>();
 
 
-    // JWT token
-    const [ jwt, setJwt ] = useState<string>("");
+    // JWT 
+    const [ jwt, setJwt ] = useState<JWT>();
 
-
-    // Čas vypršení JWT
-    const [ jwtExpireTime, setJwtExpireTime ] = useState<Date>();
+    // ID intervalu
+    const [ intervalID, setIntervalID ] = useState<number>();
 
 
     /**
@@ -42,14 +43,10 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
 
                 const { token, expireTime } = JSON.parse(value);
 
-                setJwt(token);
-
-                let jwtExpireTime: Date = new Date(expireTime);
-
-                // Odečtení 1 minuty, od vypršení JWT
-                jwtExpireTime.setTime(jwtExpireTime.getTime() - (1 * 60 * 1000));
-
-                setJwtExpireTime(jwtExpireTime);
+                setJwt({
+                    token,
+                    expireTime: new Date(expireTime)
+                });
             }
         });
 
@@ -61,45 +58,45 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
      */
     useEffect(() => {
 
-        const interval = setInterval(() => {
-            
-            if (jwtExpireTime) {
+        const interval = window.setInterval(() => {
 
-                if (new Date().getTime() > jwtExpireTime.getTime()) {
+            const TIME_BEFORE_EXPIRE: number = 30 * 1000;   // 30 sekund
+
+            if (jwt) {
+
+                if (new Date().getTime() > (jwt.expireTime.getTime() - TIME_BEFORE_EXPIRE)) {
 
                     // Request - obnovení JWT
                     axios.get(`http://${IP_ADRESS}:8080/api/refresh`, {
     
                         headers: {
-                            "Authorization": "Bearer " + jwt
+                            "Authorization": "Bearer " + jwt.token
                         }
     
                     }).then(({data: { token, expireTime }}) => {
     
-                        const jwt = {
+                        const newJwt = {
                             token,
-                            expireTime
+                            expireTime: new Date(expireTime)
                         }
     
                         // Uložení tokenu
-                        SecureStore.setItemAsync("jwt", JSON.stringify(jwt));
-
-                        let jwtNewExpireTime: Date = new Date(expireTime);
-        
-                        // Odečtení 1 minuty, od vypršení JWT
-                        jwtNewExpireTime.setTime(jwtNewExpireTime.getTime() - (1 * 60 * 1000));
+                        SecureStore.setItemAsync("jwt", JSON.stringify(newJwt));
     
-                        setJwtExpireTime(jwtNewExpireTime);
+                        setJwt(newJwt);
     
                     }).catch((error) => console.log(error));
                 }
             }
 
-        }, 10 * 1000)        
+        }, 10 * 1000);
+        
+        // Nastavení ID ibtervalu
+        setIntervalID(interval);
 
         return () => clearInterval(interval);
 
-    }, [ jwtExpireTime ])
+    }, [ jwt ])
 
 
     /**
@@ -110,11 +107,10 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
      */
     const handleRedirect = (activeScreen: boolean | undefined, targetSreen: keyof ScreenList): void => {
 
-        // Zabránění přesměrování na stejnou obrazovku
-        if (!activeScreen) {
+        clearInterval(intervalID);
 
-            navigation.navigate(targetSreen);
-        }
+        // Zabránění přesměrování na stejnou obrazovku
+        if (!activeScreen) navigation.navigate(targetSreen);
     }
 
 

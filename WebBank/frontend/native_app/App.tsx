@@ -10,8 +10,9 @@ import { ScreenList } from "modules/screenList";
 import LoginPage from 'components/login-page/LoginPage';
 import OverviewPage from "components/overview-page/OverviewPage";
 import HistoryPage from "components/history-page/HistoryPage";
+import NewPayment from "components/new-payment-page/NewPayment";
 
-const App = () => {
+const App: React.FC = () => {
 
 
     /**
@@ -55,6 +56,9 @@ const App = () => {
                             component={HistoryPage} />
 
                         {/* Nová platba */}
+                        <Screen
+                            name="NewPayment"
+                            component={NewPayment} />
 
                     </Navigator>
                 </NavigationContainer>
