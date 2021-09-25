@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
         color: "#cc0000",
         alignSelf: "center",
         fontSize: 15,
-        marginBottom: -15,
+        marginBottom: 2
     },
 
     input: {

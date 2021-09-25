@@ -22,22 +22,7 @@ const NewPaymentPreview: React.FC = () => {
 
 
     // Nová platba
-    const [ newPayment, setNewPayment ] = useState<NewPayment>(
-        // route.params.newPayment
-        {
-            accountNumber: "123/0800",
-            amount: "123",
-            constantSymbol: "",
-            currency: "CKZ",
-            mark: "-",
-            name: "Test",
-            paymentDate: undefined,
-            paymentType: "Platba kartou",
-            specificSymbol: "",
-            userID: 1,
-            variableSymbol: ""
-        }
-    );
+    const [ newPayment, setNewPayment ] = useState<NewPayment>(route.params.newPayment);
 
     /**
      * Změna nepovinných údajů
