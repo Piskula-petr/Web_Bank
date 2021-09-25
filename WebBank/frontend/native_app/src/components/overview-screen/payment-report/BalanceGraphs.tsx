@@ -4,8 +4,9 @@ import Canvas, { CanvasRenderingContext2D } from "react-native-canvas";
 import { connect } from "react-redux";
 import axios from 'axios';
 import * as SecureStore from "expo-secure-store";
+import { useIsFocused } from '@react-navigation/native';
 
-import { styles } from "components/overview-page/payment-report/paymentReportStyle";
+import { styles } from "components/overview-screen/payment-report/paymentReportStyle";
 import { Months } from 'modules/Months';
 import { State } from "modules/redux/rootReducer";
 import { MonthSum } from "modules/interfaces/monthSum";
@@ -18,6 +19,9 @@ interface BalanceGraphsProps {
 const BalanceGraphs: React.FC<BalanceGraphsProps> = (props) => {
 
 
+    const isFocused = useIsFocused();
+
+
     // Příjmy / výdaje za poslední 3 měsíce
     const [ monthsSum, setMonthsSum ] = useState<Array<MonthSum>>([])
 
@@ -27,32 +31,43 @@ const BalanceGraphs: React.FC<BalanceGraphsProps> = (props) => {
 
 
     /**
+     * Rozměry plátna
+     */
+    useEffect(() => {
+
+        if (canvas.current) {
+
+            canvas.current.height = 90;
+            canvas.current.width = 329;
+        }
+
+    }, [canvas ])
+
+
+    /**
      * Získání dat
      */
     useEffect(() => {
 
-        // Získání JWT z uložiště
         SecureStore.getItemAsync("jwt").then((value) => {
 
             if (value) {
 
                 const { token } = JSON.parse(value);
 
-                // Request - vrací součet plateb za 3 mesíce
+                // Request - vrací součet plateb za 3 měsíce
                 axios.get(`http://${IP_ADRESS}:8080/api/payments/sum/graphs/userID=${props.userID}`, {
 
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    }
+                    headers: { Authorization: "Bearer " + token }
 
                 }).then(({ data }) => setMonthsSum(data))
                     .catch((error) => console.log(error));
             }
         });
 
-    }, [ props.userID ])
+    }, [ isFocused ])
 
-
+    
     useEffect(() => {
 
         // Vykreslení grafů
@@ -86,8 +101,8 @@ const BalanceGraphs: React.FC<BalanceGraphsProps> = (props) => {
             // Šířka plátna - odsazení zprava
             let WIDTH: number = canvas.current.width - 20;
 
-            // Výška plátna
-            const HEIGHT: number = canvas.current.height;
+            // Výška plátna - odsazení
+            const HEIGHT: number = canvas.current.height - 10;
 
             // Šířka sloupce grafu
             const GRAPH_WIDTH: number = 25;
@@ -98,36 +113,27 @@ const BalanceGraphs: React.FC<BalanceGraphsProps> = (props) => {
                 let costs: number = Math.round((monthsSum[i].costs / maxValue) * HEIGHT);
                 let income: number = Math.round((monthsSum[i].income / maxValue) * HEIGHT);
 
-                // Graf nákladů
-                drawgraph(WIDTH - GRAPH_WIDTH, HEIGHT - costs, "#B22222", GRAPH_WIDTH, costs);
+                const context: CanvasRenderingContext2D = canvas.current.getContext("2d")
+
+                // Sloupec nákladů
+                context.fillStyle = "#B22222";
+                context.fillRect(
+                    WIDTH - GRAPH_WIDTH, 
+                    HEIGHT - costs, 
+                    GRAPH_WIDTH, 
+                    costs);
 
                 // Graf příjmů
-                drawgraph(WIDTH - (2 * GRAPH_WIDTH) - 3, HEIGHT - income, "#0f862f", GRAPH_WIDTH, income);
+                context.fillStyle = "#0F862F";
+                context.fillRect(
+                    WIDTH - (2 * GRAPH_WIDTH) - 3, // -3 => mezera mezi sloupci
+                    HEIGHT - income, 
+                    GRAPH_WIDTH, 
+                    income);
 
-                // Snížení šířky
-                WIDTH = WIDTH - 99; // -99 => Šířka sloupce grafu (příjmy / náklady)
+                // Snížení šířky zprava
+                WIDTH = WIDTH - 121; // -121 => šířka sloupce grafu (příjmy + náklady)
             }
-        }
-    }
-
-
-    /**
-     * Animace grafu
-     * 
-     * @param positionX - pozice X
-     * @param positionY - pozice Y
-     * @param color - barva
-     * @param grapWidth - šířka grafu
-     * @param graphHeight - výška grafu
-     */
-    const drawgraph = (positionX: number, positionY: number, color: string, grapWidth: number, graphHeight: number): void => {
-
-        if (canvas.current) {
-
-            const context: CanvasRenderingContext2D = canvas.current.getContext("2d")
-
-            context.fillStyle = color;
-            context.fillRect(positionX, positionY, grapWidth, graphHeight);
         }
     }
 

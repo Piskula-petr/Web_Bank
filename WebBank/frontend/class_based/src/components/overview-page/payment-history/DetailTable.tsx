@@ -1,8 +1,8 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { Payment } from "modules/interfaces/payment";
 
 import styles from "components/overview-page/payment-history/paymentHistory.module.css";
-import dateFormatter from "modules/dateFormatter";
+import { dateFormatter } from "modules/dateFormatter";
 
 interface DetailTableProps {
     payment: Payment

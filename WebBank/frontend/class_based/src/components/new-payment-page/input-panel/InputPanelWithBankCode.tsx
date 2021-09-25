@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { BankCode } from "modules/interfaces/bankCode";
@@ -10,7 +10,6 @@ import caretDown from "images/caret_down.png";
 interface InputPanelWithBankCodeProps {
     name: string,
     label: string,
-    placeholder: string,
     pattern: string,
     value: string,
     error: string,
@@ -53,7 +52,7 @@ class InputPanelWithBankCode extends Component <InputPanelWithBankCodeProps, Inp
         axios.get("http://localhost:8080/api/bankCodes", {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => this.setState({
@@ -69,7 +68,7 @@ class InputPanelWithBankCode extends Component <InputPanelWithBankCodeProps, Inp
      */
     render(): JSX.Element {
 
-        const { name, label, error, pattern, value, placeholder, onChange, onClick, toggleBankCodes, bankCode, selection } = this.props; 
+        const { name, label, error, pattern, value, onChange, onClick, toggleBankCodes, bankCode, selection } = this.props; 
 
         return(
             <div className={styles.inputContainer}>
@@ -82,7 +81,6 @@ class InputPanelWithBankCode extends Component <InputPanelWithBankCodeProps, Inp
                     <input 
                         id={name} 
                         className={`${styles.input} ${styles.accountNumberPrefix}`}
-                        placeholder={placeholder} 
                         pattern={pattern}
                         value={value}
                         name={name} 

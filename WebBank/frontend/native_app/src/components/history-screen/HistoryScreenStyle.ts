@@ -12,11 +12,11 @@ export const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        height: Dimensions.get("window").height,
+        height: Dimensions.get("window").height - 100,
     },
     
     historycontainer: {
-        width: "95%",
+        width: "100%",
         marginVertical: 10,
         backgroundColor: "#EEE",
         borderTopColor: "#f4e92f",

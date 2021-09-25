@@ -37,7 +37,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
 
 
     /**
-     * Nasazení componenty
+     * Obnovená JWT
      */
     useEffect(() => {
 
@@ -56,7 +56,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
                 axios.get("http://localhost:8080/api/refresh", {
 
                     headers: {
-                        "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                        Authorization: "Bearer " + Cookies.getJSON("jwt").token
                     }
 
                 }).then(({data: { token, expireTime }}) => {
@@ -118,17 +118,19 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
     }
 
 
+    // Přesměrování na přihlášení, po vypršení odpočtu
+    if (secondsLeft === 0) {
+        
+        return <Redirect to="/prihlaseni" />
+    }
+
+
     let minutes: number = Math.floor((secondsLeft / 60) % 60);
     let seconds: number = Math.floor(secondsLeft % 60);
 
     let zero: string = (seconds < 10 ? "0" : "");
 
-    // Přesměrování na přihlášení, po vypršení odpočtu
-    if (secondsLeft === 0) {
-
-        return <Redirect to="/prihlaseni" />
-    }
-
+    
     /**
      * Vykreslení
      */

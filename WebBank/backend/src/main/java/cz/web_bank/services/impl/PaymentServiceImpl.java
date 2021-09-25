@@ -138,7 +138,7 @@ public class PaymentServiceImpl implements PaymentService {
 		Query query = session.createQuery(
 				
 		"SELECT accountNumber "
-	  + "FROM User "
+	  + "FROM UserInfo "
 	  + "WHERE id = :senderID");
 		
 		query.setParameter("senderID", senderPayment.getUserID());

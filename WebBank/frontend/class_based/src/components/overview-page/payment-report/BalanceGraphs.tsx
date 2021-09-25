@@ -1,4 +1,4 @@
-import React, {PureComponent, createRef} from "react";
+import React, { PureComponent, createRef } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
@@ -6,7 +6,7 @@ import { MonthSum } from "modules/interfaces/monthSum";
 import { State } from "redux/rootReducer";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
-import Months from "modules/Months"
+import { Months } from "modules/Months"
 
 interface BalanceGraphsProps {
     userID: number
@@ -54,7 +54,7 @@ class BalanceGraphs extends PureComponent <BalanceGraphsProps, BalanceGraphsStat
         axios.get(`http://localhost:8080/api/payments/sum/graphs/userID=${this.props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => this.setState({

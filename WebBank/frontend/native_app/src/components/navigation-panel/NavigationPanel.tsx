@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, TouchableWithoutFeedback, Image } from 'react-native'
 import axios from "axios";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 
 import { styles } from "components/navigation-panel/navigationPanelStyle";
@@ -11,7 +11,6 @@ import history from "assets/history.png"
 import payment from "assets/payment.png"
 import { ScreenList } from "modules/screenList";
 import { IP_ADRESS } from "modules/IPAdress";
-import { JWT } from "modules/interfaces/jwt";
 
 interface NavigationPanelProps {
     isOverviewActive?: boolean,
@@ -19,14 +18,21 @@ interface NavigationPanelProps {
     isNewpaymentActive?: boolean,
 }
 
+interface JWT {
+    token: string,
+    expireTime: Date
+}
+
 const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
 
     
+    const isFocused: boolean = useIsFocused();
     const navigation = useNavigation<StackNavigationProp<ScreenList>>();
 
 
     // JWT 
     const [ jwt, setJwt ] = useState<JWT>();
+
 
     // ID intervalu
     const [ intervalID, setIntervalID ] = useState<number>();
@@ -50,7 +56,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
             }
         });
 
-    }, [])
+    }, [ isFocused ])
 
 
     /**
@@ -58,7 +64,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
      */
     useEffect(() => {
 
-        const interval = window.setInterval(() => {
+        const interval: number = window.setInterval(() => {
 
             const TIME_BEFORE_EXPIRE: number = 30 * 1000;   // 30 sekund
 
@@ -69,9 +75,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
                     // Request - obnovení JWT
                     axios.get(`http://${IP_ADRESS}:8080/api/refresh`, {
     
-                        headers: {
-                            "Authorization": "Bearer " + jwt.token
-                        }
+                        headers: { Authorization: "Bearer " + jwt.token }
     
                     }).then(({data: { token, expireTime }}) => {
     
@@ -83,13 +87,14 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
                         // Uložení tokenu
                         SecureStore.setItemAsync("jwt", JSON.stringify(newJwt));
     
+                        // Nastavení nového JWT
                         setJwt(newJwt);
     
                     }).catch((error) => console.log(error));
                 }
             }
 
-        }, 10 * 1000);
+        }, 10 * 1000); // Interval 10 sekund
         
         // Nastavení ID ibtervalu
         setIntervalID(interval);
@@ -116,6 +121,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
 
     const { isOverviewActive, isHistoryActive, isNewpaymentActive } = props;
 
+
     /**
      * Vykreslení
      */
@@ -123,7 +129,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
         <View style={styles.container}>
 
             {/* Přehled */}
-            <TouchableWithoutFeedback onPress={() => handleRedirect(isOverviewActive, "OverviewPage")}>
+            <TouchableWithoutFeedback onPress={() => handleRedirect(isOverviewActive, "OverviewScreen")}>
                 <View>
 
                     <Image 
@@ -133,12 +139,12 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
                     <Text style={[styles.buttonText, {color: (isOverviewActive ? "#02AAE9" : "#394359")}]}>
                         Přehled
                     </Text>
-
+                    
                 </View>
             </TouchableWithoutFeedback>
 
             {/* Historie */}
-            <TouchableWithoutFeedback onPress={() => handleRedirect(isHistoryActive, "HistoryPage")}>
+            <TouchableWithoutFeedback onPress={() => handleRedirect(isHistoryActive, "HistoryScreen")}>
                 <View>
 
                     <Image 
@@ -153,7 +159,7 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
             </TouchableWithoutFeedback>
 
             {/* Nová platba */}
-            <TouchableWithoutFeedback onPress={() => handleRedirect(isNewpaymentActive, "NewPayment")}>
+            <TouchableWithoutFeedback onPress={() => handleRedirect(isNewpaymentActive, "NewPaymentName")}>
                 <View>
 
                     <Image 

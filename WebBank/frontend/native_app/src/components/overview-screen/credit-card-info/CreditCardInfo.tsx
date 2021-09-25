@@ -4,7 +4,7 @@ import axios from 'axios';
 import * as SecureStore from "expo-secure-store";
 import { connect } from "react-redux";
 
-import { styles } from "components/overview-page/credit-card-info/creditCardInfoStyle";
+import { styles } from "components/overview-screen/credit-card-info/creditCardInfoStyle";
 import { State } from "modules/redux/rootReducer";
 import { CreditCard } from 'modules/interfaces/creditCard';
 import { User } from "modules/interfaces/user";
@@ -40,7 +40,6 @@ const CreditCardInfo: React.FC<CreditCardInfoProps> = (props) => {
      */
     useEffect(() => {
 
-        // Získání JWT z uložiště
         SecureStore.getItemAsync("jwt").then((value) => {
 
             if (value) {
@@ -50,9 +49,7 @@ const CreditCardInfo: React.FC<CreditCardInfoProps> = (props) => {
                 // Request - vrací kreditní kartu, podle ID uživatele
                 axios.get(`http://${IP_ADRESS}:8080/api/creditCard/userID=${props.userID}` , {
 
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    }
+                    headers: { Authorization: "Bearer " + token }
 
                 }).then(({ data }) => setCreditCard(data))
                     .catch((error) => console.log(error));
@@ -60,9 +57,7 @@ const CreditCardInfo: React.FC<CreditCardInfoProps> = (props) => {
                 // Request - vrací uživatele, podle ID
                 axios.get(`http://${IP_ADRESS}:8080/api/userInfo/userID=${props.userID}` , {
 
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    }
+                    headers: { Authorization: "Bearer " + token }
 
                 }).then(({data: { name, surname }}) => setUser({
 
@@ -73,7 +68,7 @@ const CreditCardInfo: React.FC<CreditCardInfoProps> = (props) => {
             }
         });
 
-    }, [props.userID])
+    }, [])
 
 
     /**
@@ -83,7 +78,7 @@ const CreditCardInfo: React.FC<CreditCardInfoProps> = (props) => {
         <View style={styles.container}>
             
             {/* Logo */}
-            <Image source={creditCardLogo} style={styles.logo} />
+            <Image style={styles.logo} source={creditCardLogo} />
 
             {/* Typ platební karty */}
             <Text style={styles.type}>{creditCard.type}</Text>

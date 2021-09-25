@@ -14,7 +14,9 @@ interface InputPanelWithConfirmationProps {
 
 const InputPanelWithConfirmation: React.FC<InputPanelWithConfirmationProps> = (props) => {
 
+    
     const { name, label, value, pattern, error, onChange, generatedConfirmationCode } = props;
+
 
     /**
      * Vykreslení

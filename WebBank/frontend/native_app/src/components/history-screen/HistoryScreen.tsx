@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import { View, ImageBackground, ScrollView, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, ScrollView, Text, TouchableOpacity, ActivityIndicator, RefreshControl } from 'react-native'
 import axios from 'axios'
 import * as SecureStore from "expo-secure-store";
 import { connect } from "react-redux";
+import { useIsFocused } from '@react-navigation/native';
 
-import { styles } from "components/history-page/HistoryPageStyle";
+import { styles } from "components/history-screen/HistoryScreenStyle";
 import NavigationPanel from "components/navigation-panel/NavigationPanel";
 import { IP_ADRESS } from "modules/IPAdress";
 import { State } from "modules/redux/rootReducer";
@@ -12,7 +13,8 @@ import { Currency } from "modules/redux/currency/currency";
 import { dateFormatter } from "modules/dateFormatter";
 import { numberFormatter } from "modules/numberFormatter";
 import { Payment } from "modules/interfaces/payment";
-import DetailTable from 'components/history-page/DetailTable';
+import DetailTable from 'components/history-screen/DetailTable';
+import { StatusBar } from 'expo-status-bar';
 
 interface HistoryPageProps {
     userID: number,
@@ -22,6 +24,9 @@ interface HistoryPageProps {
 const HistoryPage: React.FC<HistoryPageProps> = (props) => {
 
 
+    const isFocused = useIsFocused();
+
+
     // Celkový počet plateb
     const [ paymentsCount, setPaymentsCount ] = useState<number>(0);
 
@@ -29,14 +34,26 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
     // Platby
     const [ payments, setPayments ] = useState<Array<Payment>>([]);
 
-    // Detail plateb
+
+    // Zobrazení detailu plateb
     const [ paymentsToggle, setPaymentsToggle ] = useState<Array<boolean>>([]);
 
 
     /**
-     * Získání dat
+     * Inicializace komponenty
      */
     useEffect(() => {
+
+        // Získání seznamu plateb
+        getPayments();
+
+    }, [ isFocused ])
+
+
+    /**
+     * Získání seznamu plateb
+     */
+    const getPayments = (): void => {
 
         const date: Date = new Date();
         const month: number = date.getMonth() + 1;
@@ -51,9 +68,7 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
                 // Request - vrací platby ze zadaného měsíce
                 axios.get(`http://${IP_ADRESS}:8080/api/payments/month/userID=${props.userID}&month=${month}&year=${year}`, {
 
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    }
+                    headers: { Authorization: "Bearer " + token }
 
                 }).then(({ data }) => {
 
@@ -67,16 +82,13 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
                 // Request - vrací celkový počat plateb
                 axios.get(`http://${IP_ADRESS}:8080/api/payments/count/userID=${props.userID}`, {
 
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    }
+                    headers: { Authorization: "Bearer " + token }
 
                 }).then(({data: { paymentsCount }}) => setPaymentsCount(paymentsCount))
                     .catch((error) => console.log(error));
             }
         });
-
-    }, [ props.userID ])
+    }
 
 
     /**
@@ -103,9 +115,7 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
                 // Request - vrací platby ze zadaného měsíce
                 axios.get(`http://${IP_ADRESS}:8080/api/payments/month/userID=${props.userID}&month=${previousMonth}&year=${year}`, {
 
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    }
+                    headers: { Authorization: "Bearer " + token }
 
                 }).then(({ data }) => {
 
@@ -127,6 +137,7 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
      */
     const handleToggle = (index: number): void => {
         
+        // Změna boolean hodnoty podle indexu
         setPaymentsToggle(
             paymentsToggle.map((value, i) => i === index ? !value : value)
         );
@@ -139,10 +150,19 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
     return (
         <View style={styles.container}>
             
-            <ScrollView>
+            <StatusBar translucent={true} backgroundColor="transparent" style="light" />
+
+            <ScrollView 
+                refreshControl={
+
+                    // Obnovení listu
+                    <RefreshControl 
+                        onRefresh={() => getPayments()} 
+                        refreshing={false}/>}>
+                
                 {(payments.length === 0)
                 
-                // Loading
+                // Načítání
                 ? <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color="#EEE" />
                 </View>
@@ -166,7 +186,7 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
                             <View style={styles.paymentContainer}>
                                 
                                 {/* Název platby */}
-                                <Text style={styles.name}>{item.name}</Text>
+                                <Text style={styles.name} numberOfLines={1} ellipsizeMode={"tail"}>{item.name}</Text>
 
                                 {/* Typ platby */}
                                 <Text style={styles.type}>{item.paymentType}</Text>
@@ -185,7 +205,7 @@ const HistoryPage: React.FC<HistoryPageProps> = (props) => {
                         </TouchableOpacity>    
                     )}
 
-                    {/* Načtení starších plateb */}
+                    {/* Tlačítko pro načtení dalších plateb */}
                     <TouchableOpacity 
                         style={[styles.buttonContainer, {display: (payments.length === paymentsCount ? "none" : "flex")}]}
                         onPress={showMorepayments} >

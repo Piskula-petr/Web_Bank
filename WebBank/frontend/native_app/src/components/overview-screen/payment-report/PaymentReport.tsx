@@ -1,11 +1,11 @@
 import React from 'react'
 import { View } from 'react-native'
 
-import { styles } from "components/overview-page/payment-report/paymentReportStyle";
-import MonthReport from "components/overview-page/payment-report/MonthReport";
-import BalanceGraphs from "components/overview-page/payment-report/BalanceGraphs";
+import { styles } from "components/overview-screen/payment-report/paymentReportStyle";
+import MonthReport from "components/overview-screen/payment-report/MonthReport";
+import BalanceGraphs from "components/overview-screen/payment-report/BalanceGraphs";
 
-const PaymentReport = () => {
+const PaymentReport: React.FC = () => {
 
 
     /**

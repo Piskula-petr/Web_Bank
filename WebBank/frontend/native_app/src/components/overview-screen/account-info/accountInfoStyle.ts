@@ -1,14 +1,14 @@
 import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
-   
+    
     container: {
         marginVertical: 10,
         backgroundColor: "#EEE",
-        borderTopColor: "#808080",
+        borderTopColor: "#EE842C",
         borderTopWidth: 8,
         borderRadius: 3,
-        width: "95%",
+        width: "100%",
         paddingVertical: 10,
         paddingHorizontal: 20,
     },
@@ -17,16 +17,8 @@ export const styles = StyleSheet.create({
         position: "absolute",
         top: 15,
         left: 15,
-        resizeMode: "contain",
+        width: 50,
         height: 50,
-        width: 65,
-    },
-
-    type: {
-        textAlign: "right",
-        fontFamily: "Verdana",
-        color: "#394359",
-        fontSize: 15,
     },
 
     user: {
@@ -34,41 +26,35 @@ export const styles = StyleSheet.create({
         textAlign: "right",
         color: "#394359",
         fontSize: 18,
-        paddingTop: 3
     },
 
-    validFrom: {
-        textAlign: "right",
+    accountNumber: {
         fontFamily: "Verdana",
-        color: "#394359",
-        fontSize: 13,
-        paddingTop: 8,
-    },
-
-    validTo: {
         textAlign: "right",
-        fontFamily: "Verdana",
         color: "#394359",
-        fontSize: 13,
-        paddingBottom: 8,
+        fontSize: 14,
+        paddingVertical: 2,
     },
 
-    bold: {
-        fontFamily: "Verdana-Bold"
-    },
-
-    cardNumberLabel: {
+    balanceLabel: {
+        fontFamily: "Verdana",
         textAlign: "right",
-        fontFamily: "Verdana",
         color: "#394359",
+        paddingTop: 7,
         fontSize: 13,
     },
 
-    cardNumber: {
-        textAlign: "right",
+    balance: {
         fontFamily: "Verdana-Bold",
-        color: "#394359",
-        fontSize: 18,
+        textAlign: "right",
+        fontSize: 21,
+        color: "#0f862f",
+        paddingBottom: 7,
+    },
+
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: "flex-end",
     }
 
 });

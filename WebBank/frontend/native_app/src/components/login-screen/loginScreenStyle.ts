@@ -11,7 +11,7 @@ export const styles = StyleSheet.create({
     },
 
     loginContainer: {
-        width: "80%",
+        width: "90%",
         borderWidth: 4,
         borderStyle: "solid",
         borderColor: "white",
@@ -26,6 +26,7 @@ export const styles = StyleSheet.create({
     },
 
     input: {
+        fontFamily: "Verdana",
         fontSize: 17,
         borderRadius: 4,
         marginVertical: 20,
@@ -35,6 +36,7 @@ export const styles = StyleSheet.create({
     },
 
     errorMessage: {
+        fontFamily: "Verdana",
         color: "red",
         marginBottom: -15,
         textAlign: "center",
@@ -48,6 +50,7 @@ export const styles = StyleSheet.create({
     },
 
     buttonText: {
+        fontFamily: "Verdana",
         color:"white",
         textAlign: "center",
         fontSize: 18,

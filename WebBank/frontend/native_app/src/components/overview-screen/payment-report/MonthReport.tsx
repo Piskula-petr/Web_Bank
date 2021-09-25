@@ -3,16 +3,16 @@ import { View, Image, Text, TouchableHighlight } from 'react-native'
 import { connect } from "react-redux";
 import axios from 'axios';
 import * as SecureStore from "expo-secure-store";
+import { useIsFocused } from '@react-navigation/native';
 
-import { styles } from 'components/overview-page/payment-report/paymentReportStyle';
-import graph from "assets/graph.png";
+import { styles } from 'components/overview-screen/payment-report/paymentReportStyle';
+import graphLogo from "assets/graph.png";
 import leftArrow from "assets/left_arrow.png";
 import rightArrow from "assets/right_arrow.png";
 import { Currency } from 'modules/redux/currency/currency';
 import { State } from "modules/redux/rootReducer";
 import { SelectedMonth } from "modules/interfaces/selectedMonth";
 import { Months } from 'modules/Months';
-import { Status } from 'modules/enums/status';
 import { numberFormatter } from "modules/numberFormatter";
 import { IP_ADRESS } from "modules/IPAdress";
 
@@ -21,7 +21,12 @@ interface MonthReportProps {
     currency: Currency
 }
 
+type MonthSelect = "next" | "previous";
+
 const MonthReport: React.FC<MonthReportProps> = (props) => {
+
+
+    const isFocused = useIsFocused();
 
 
     // Zobrazený měsíc
@@ -48,7 +53,7 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
         // Nastavení součtu plateb v měsíci
         setMonthSum(month, year)
 
-    }, [])
+    }, [ isFocused ])
 
 
     /**
@@ -59,7 +64,6 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
      */
     const setMonthSum = (month: number, year: number): void => {
 
-        // Získání JWT z uložiště
         SecureStore.getItemAsync("jwt").then((value) => {
 
             if (value) {
@@ -69,9 +73,7 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
                 // Request - vrací součet plateb za měsíc
                 axios.get(`http://${IP_ADRESS}:8080/api/payments/sum/month/userID=${props.userID}&month=${month}&year=${year}`, {
 
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    }
+                    headers: { Authorization: "Bearer " + token }
 
                 }).then(({ data }) => setSelectedMonth({
 
@@ -91,15 +93,15 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
     /**
      * Nastavení součtu plateb měsíce
      * 
-     * @param status = Enum [next, previous]
+     * @param monthSelect = Type [next, previous]
      */
-    const monthSum = (status: Status): void => {
+    const monthSum = (monthSelect: MonthSelect): void => {
 
         let month: number = 0;
         let year: number = selectedMonth.year;
 
         // Další měsíc
-        if (status === Status.next) {
+        if (monthSelect === "next") {
 
             month = selectedMonth.number + 1;
 
@@ -110,7 +112,7 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
             } 
 
         // Předchozí měsíc
-        } else if (status === Status.previous) {
+        } else if (monthSelect === "previous") {
 
             month = selectedMonth.number - 1;
 
@@ -135,6 +137,7 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
     const costs: number = selectedMonth.costs * props.currency.exchangeRate;
     const balance: number = selectedMonth.balance * props.currency.exchangeRate;
 
+
     /**
      * Vykreslení
      */
@@ -142,20 +145,20 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
         <View>
             
             {/* Logo */}
-            <Image source={graph} style={styles.logo} />
+            <Image style={styles.logo} source={graphLogo} />
 
             {/* Název měsíce + navigační šipky */}
             <View style={styles.buttonContainer}>
 
                 {/* Předchozí měsíc */}
-                <TouchableHighlight onPress={() => monthSum(Status.previous)} underlayColor="transparent">
+                <TouchableHighlight onPress={() => monthSum("previous")} underlayColor="transparent">
                     <Image style={styles.arrowImage} source={leftArrow} />
                 </TouchableHighlight>
 
                 <Text style={styles.month}>{selectedMonth.name}</Text>
 
                 {/* Další měsíc */}
-                <TouchableHighlight onPress={() => monthSum(Status.next)} underlayColor="transparent" 
+                <TouchableHighlight onPress={() => monthSum("next")} underlayColor="transparent" 
                     style={{display: (selectedMonth.number === currentMonth ? "none" : "flex")}}>
 
                     <Image style={styles.arrowImage} source={rightArrow} />

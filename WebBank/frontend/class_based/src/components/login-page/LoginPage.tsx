@@ -1,5 +1,5 @@
-import React, {ChangeEvent, Component} from "react";
-import {Redirect} from "react-router-dom";
+import React, { ChangeEvent, Component } from "react";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Dispatch } from "redux";
@@ -84,7 +84,7 @@ class LoginPage extends Component <LoginProps, LoginState> {
 
         event.preventDefault();
 
-        // Request - vrací uživatelské ID
+        // Request - přihlášení uživatele
         axios.post("http://localhost:8080/api/login", {
 
             clientNumber: this.state.clientNumber,
@@ -133,6 +133,7 @@ class LoginPage extends Component <LoginProps, LoginState> {
 
         // Přesměrování na stránku přehledu
         if (this.state.successLogin) {
+            
             return <Redirect to="/prehled" />
         }
 

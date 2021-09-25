@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
@@ -7,11 +7,11 @@ import { State } from "redux/rootReducer";
 import { Currency } from "redux/currency/currency";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
-import graph from "images/graph.png";
+import graphLogo from "images/graph.png";
 import leftArrow from "images/left_arrow.png";
 import rightArrow from "images/right_arrow.png";
-import Months from "modules/Months";
-import numberFormatter from "modules/numberFormatter";
+import { Months } from "modules/Months";
+import { numberFormatter } from "modules/numberFormatter";
 
 interface MonthReportProps {
     userID: number,
@@ -82,7 +82,7 @@ class MonthReport extends Component <MonthReportProps, MonthReportState> {
         axios.get(`http://localhost:8080/api/payments/sum/month/userID=${this.props.userID}&month=${month}&year=${year}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => this.setState({
@@ -156,7 +156,7 @@ class MonthReport extends Component <MonthReportProps, MonthReportState> {
             <div>
 
                 {/* Obrázek */}
-                <img className={styles.previewImage} src={graph} alt="Graph" />
+                <img className={styles.previewImage} src={graphLogo} alt="Graph" />
 
                 {/* Název měsíce + navigační šipky */}
                 <div className={styles.month}>

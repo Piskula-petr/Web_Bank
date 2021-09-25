@@ -5,11 +5,11 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
-import graph from "images/graph.png";
+import graphLogo from "images/graph.png";
 import leftArrow from "images/left_arrow.png";
 import rightArrow from "images/right_arrow.png";
-import Months from "modules/Months";
-import numberFormatter from "modules/numberFormatter";
+import { Months } from "modules/Months";
+import { numberFormatter } from "modules/numberFormatter";
 import { SelectedMonth } from "modules/interfaces/selectedMonth";
 import { State } from "redux/rootReducer";
 import { Status } from "modules/enums/status";
@@ -62,7 +62,7 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
         axios.get(`http://localhost:8080/api/payments/sum/month/userID=${props.userID}&month=${month}&year=${year}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => setSelectedMonth({
@@ -125,6 +125,7 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
     const costs: number = selectedMonth.costs * props.currency.exchangeRate;
     const balance: number = selectedMonth.balance * props.currency.exchangeRate;
 
+
     /**
      * Vykreslení
      */
@@ -132,7 +133,7 @@ const MonthReport: React.FC<MonthReportProps> = (props) => {
         <div>
 
             {/* Obrázek */}
-            <img className={styles.previewImage} src={graph} alt="Graph" />
+            <img className={styles.previewImage} src={graphLogo} alt="Graph" />
 
             {/* Název měsíce + navigační šipky */}
             <div className={styles.month}>

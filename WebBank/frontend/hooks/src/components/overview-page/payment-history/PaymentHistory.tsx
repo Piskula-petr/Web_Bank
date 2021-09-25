@@ -5,8 +5,8 @@ import { connect } from 'react-redux'
 
 import styles from "components/overview-page/payment-history/paymentHistory.module.css";
 import DetailTable from "components/overview-page/payment-history/DetailTable";
-import numberFormatter from "modules/numberFormatter";
-import dateFormatter from "modules/dateFormatter";
+import { numberFormatter } from "modules/numberFormatter";
+import { dateFormatter } from "modules/dateFormatter";
 import { Payment } from 'modules/interfaces/payment';
 import { State } from "redux/rootReducer";
 import { Currency } from "redux/currency/currency";
@@ -40,7 +40,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = (props) => {
         axios.get(`http://localhost:8080/api/payments/month/userID=${props.userID}&month=${month}&year=${year}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => setPayments(data))
@@ -50,7 +50,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = (props) => {
         axios.get(`http://localhost:8080/api/payments/count/userID=${props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({data : { paymentsCount }}) => setPaymentsCount(paymentsCount))
@@ -78,7 +78,7 @@ const PaymentHistory: React.FC<PaymentHistoryProps> = (props) => {
         axios.get(`http://localhost:8080/api/payments/month/userID=${props.userID}&month=${previousMonth}&year=${year}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => setPayments([...payments, ...data]))

@@ -1,4 +1,11 @@
-const dateFormatter = (dateString: string): string => {
+/**
+ * Naformátování datumu
+ * 
+ * @param dateString - vstupní hodnota
+ * 
+ * @returns - vrací datum ve formátu [dd.MM.yyyy]
+ */
+export const dateFormatter = (dateString: string): string => {
 
     const date: Date = new Date(dateString);
 
@@ -21,5 +28,3 @@ const dateFormatter = (dateString: string): string => {
 
     return finalDate;
 }
-
-export default dateFormatter;

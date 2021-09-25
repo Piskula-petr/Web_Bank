@@ -1,7 +1,7 @@
 import React from "react"
 
 import styles from "components/overview-page/payment-history/paymentHistory.module.css";
-import dateFormatter from "modules/dateFormatter";
+import { dateFormatter } from "modules/dateFormatter";
 import { Payment } from "modules/interfaces/payment";
 
 interface DetailTableProps {
@@ -20,7 +20,7 @@ const DetailTable: React.FC<DetailTableProps> = (props) => {
             <div className={styles.detailBorder}></div>
 
             {/* Číslo účtu */}
-            <div className={`${styles.accountNumber} ${(props.payment.accountNumber === "0" ? styles.hide : "")}`}>
+            <div className={`${styles.accountNumber} ${(props.payment.accountNumber ? styles.hide : "")}`}>
                 
                 <div>Číslo účtu:</div>
                 <div>{props.payment.accountNumber}</div>
@@ -28,7 +28,7 @@ const DetailTable: React.FC<DetailTableProps> = (props) => {
             </div>
 
             {/* Variabilní symbol */}
-            <div className={`${styles.variableSymbol} ${(props.payment.variableSymbol === 0 ? styles.hide : "")}`}>
+            <div className={`${styles.variableSymbol} ${(props.payment.variableSymbol ? styles.hide : "")}`}>
                 
                 <div>Variabilní symbol:</div>
                 <div>{props.payment.variableSymbol}</div>
@@ -36,7 +36,7 @@ const DetailTable: React.FC<DetailTableProps> = (props) => {
             </div>
 
             {/* Konstantní symbol */}
-            <div className={`${styles.constantSymbol} ${(props.payment.constantSymbol === 0 ? styles.hide : "")}`}>
+            <div className={`${styles.constantSymbol} ${(props.payment.constantSymbol ? styles.hide : "")}`}>
                 
                 <div>Konstantní symbol:</div>
                 <div>{props.payment.constantSymbol}</div>
@@ -44,7 +44,7 @@ const DetailTable: React.FC<DetailTableProps> = (props) => {
             </div>
 
             {/* Specifický symbol */}
-            <div className={`${styles.specificSymbol} ${(props.payment.specificSymbol === 0 ? styles.hide : "")}`}>
+            <div className={`${styles.specificSymbol} ${(props.payment.specificSymbol ? styles.hide : "")}`}>
                 
                 <div>Specifický symbol:</div>
                 <div>{props.payment.specificSymbol}</div>

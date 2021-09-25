@@ -3,9 +3,10 @@ import { View, Text, Image } from 'react-native'
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as SecureStore from "expo-secure-store";
+import { useIsFocused } from '@react-navigation/native';
 
-import { styles } from "components/overview-page/account-info/accountInfoStyle";
-import safe from "assets/safe.png";
+import { styles } from "components/overview-screen/account-info/accountInfoStyle";
+import safeLogo from "assets/safe.png";
 import { Currency } from 'modules/redux/currency/currency';
 import { UserInfo } from 'modules/interfaces/userInfo';
 import { Currencies } from "modules/interfaces/currencies";
@@ -23,6 +24,9 @@ interface AccountInfoProps {
 }
 
 const AccountInfo: React.FC<AccountInfoProps> = (props) => {
+
+
+    const isFocused: boolean = useIsFocused();
 
 
     // Informace o uživateli
@@ -65,7 +69,6 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
 
         })).catch((error) => console.log(error));
         
-        // Získání JWT z uložiště
         SecureStore.getItemAsync("jwt").then((value) => {
 
             if (value) {
@@ -75,24 +78,22 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
                 // Request - vrací informace o uživateli, podle ID
                 axios.get(`http://${IP_ADRESS}:8080/api/userInfo/userID=${props.userID}`, {
 
-                    headers: {
-                        "Authorization": "Bearer " + token
-                    }
+                    headers: { Authorization: "Bearer " + token }
 
                 }).then(({ data }) => setUserInfo(data))
                     .catch((error) => console.log(error));
             } 
         });
 
-    }, [ props.userID ])
+    }, [ isFocused ])
 
 
     const { changeCurrency, currency } = props;
-    
     const isCurrencyEqual: boolean = (currency.name === activeCurrency ? true : false);
 
+
     /**
-     * Změna měny
+     * Změna aktivní měny
      */
     useEffect(() => {
 
@@ -125,6 +126,7 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
     // Zůstatek * hodnota kurzu
     let balance: number = userInfo.balance * props.currency.exchangeRate;
 
+
     /**
      * Vykreslení
      */
@@ -132,7 +134,7 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
         <View style={styles.container}>
 
             {/* Logo */}
-            <Image style={styles.logo} source={safe} />
+            <Image style={styles.logo} source={safeLogo} />
 
             {/* Jméno uživatele */}
             <Text style={styles.user}>{userInfo.name} {userInfo.surname}</Text>

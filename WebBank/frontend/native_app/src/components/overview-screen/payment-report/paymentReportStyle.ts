@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
         borderTopColor: "#EB1C22",
         borderTopWidth: 8,
         borderRadius: 3,
-        width: "95%",
+        width: "100%",
         paddingVertical: 10,
         paddingHorizontal: 20,
     },
@@ -71,13 +71,11 @@ export const styles = StyleSheet.create({
     },
 
     canvas: {
-        width: "100%",
-        height: 90,
+        alignSelf: "center",
         borderWidth: 2,
         borderColor: "#394359",
         borderRadius: 5,
-        marginVertical: 3,
-        paddingVertical: 3,
+        paddingVertical: 3
     },
 
     months: {

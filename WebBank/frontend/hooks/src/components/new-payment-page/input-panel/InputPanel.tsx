@@ -5,16 +5,17 @@ import styles from "components/new-payment-page/new-payment-page.module.css";
 interface InputPanelProps {
     name: string,
     label: string,
-    placeholder?: string,
     pattern: string,
     value: string,
-    error: string,
+    error?: string,
     onChange: (event: any) => void
 }
 
 const InputPanel: React.FC<InputPanelProps> = (props) => {
 
-    const { name, label, placeholder, pattern, value, error, onChange } = props;
+    
+    const { name, label, pattern, value, error, onChange } = props;
+
 
     /**
      * Vykreslení
@@ -30,7 +31,6 @@ const InputPanel: React.FC<InputPanelProps> = (props) => {
                 <input 
                     id={name} 
                     className={styles.input}
-                    placeholder={placeholder} 
                     pattern={pattern}
                     value={value}
                     name={name}

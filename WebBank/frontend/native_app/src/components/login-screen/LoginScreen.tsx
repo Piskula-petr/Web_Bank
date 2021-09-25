@@ -1,22 +1,25 @@
 import React, { useReducer } from 'react'
-import { View, TextInput, StatusBar, TouchableHighlight, Text, Image } from 'react-native'
+import { View, TextInput, TouchableHighlight, Text, Image } from 'react-native'
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 import { Dispatch } from "redux";
 import * as SecureStore from "expo-secure-store";
+import { StatusBar } from 'expo-status-bar';
 
-import { styles } from "components/login-page/loginPageStyle";
+import { styles } from "components/login-screen/loginScreenStyle";
 import logo from "assets/logo.png";
 import { ScreenList } from 'modules/screenList';
-import { LoginReducerState, LoginReducerAction } from "components/login-page/loginReducer";
+import { LoginReducerState, LoginReducerAction } from "components/login-screen/loginReducer";
 import { setUserID } from "modules/redux/user/userActions";
 import { IP_ADRESS } from "modules/IPAdress";
 
 interface LoginPageProps {
     setUserID: (userID: number) => void
 }
+
+type InputName = "clientNumber" | "password";
 
 const LoginPage: React.FC<LoginPageProps> = (props) => {
 
@@ -64,17 +67,16 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
     /**
      * Změna přihlašovacích údajů
      * 
-     * @param name - Název vstupu
-     * @param value - Hodnota vstupu
-     * @param pattern - Pattern validace
+     * @param name - název vstupu [ clientNumber, password ]
+     * @param value - zadaná hodnota
      */
-    const handleChange = (name: string, value: string, pattern: string | undefined = undefined): void => {
+    const handleChange = (name: InputName, value: string): void => {
 
         let validValue: string = value;
 
-        if (pattern) {
+        if (name === "clientNumber") {
             
-            const regex = new RegExp(pattern);
+            const regex: RegExp = new RegExp("^[0-9]{0,10}$");
             validValue = (regex.test(value) ? value : state[name]);
         }
 
@@ -95,7 +97,7 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
 
         const { clientNumber, password } = state;
 
-        // Request - vrací uživatelské ID
+        // Request - přihlášení uživatele
         axios.post(`http://${IP_ADRESS}:8080/api/login`, {
 
             clientNumber,
@@ -114,8 +116,8 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
             // Nastavení ID uživatele (redux)
             props.setUserID(userID);
 
-            // Přesměrování na přehled plateb
-            navigation.navigate("OverviewPage");
+            // Přesměrování na přehled
+            navigation.navigate("OverviewScreen");
 
         }).catch(({ response: {data} }) => {
 
@@ -127,7 +129,6 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
                 errorMessage = "Přihlašovací údaje jsou nesprávné";
             }
 
-            // Nastavení chybových zpráv
             dispatch({
                 type: "FETCH_ERROR",
                 payload: {
@@ -145,7 +146,7 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
     return (
         <View style={styles.container}>
 
-            <StatusBar translucent={true} backgroundColor="transparent" />
+            <StatusBar translucent={true} backgroundColor="transparent" style="light" />
 
             {/* Logo */}
             <Image style={styles.logo} source={logo} />
@@ -157,7 +158,7 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
                 {/* Klientské číslo */}
                 <TextInput 
                     style={styles.input} 
-                    onChangeText={(value) => handleChange("clientNumber", value, "^[0-9]{0,10}$")} 
+                    onChangeText={(value) => handleChange("clientNumber" , value)} 
                     value={state.clientNumber}
                     placeholder="Uživatelské číslo" />
 
@@ -171,7 +172,7 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
                     value={state.password}
                     placeholder="Heslo" />
 
-                {/* Přihlášení */}
+                {/* Přihlašovací tlačítko */}
                 <TouchableHighlight 
                     style={styles.button} 
                     underlayColor="#B22222"

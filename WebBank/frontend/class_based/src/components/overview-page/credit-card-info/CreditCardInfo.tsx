@@ -1,4 +1,4 @@
-import React, {PureComponent} from "react";
+import React, { PureComponent } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
@@ -62,7 +62,7 @@ class CreditCardInfo extends PureComponent <CreditCardInfoProps, CreditCardInfoS
         axios.get(`http://localhost:8080/api/creditCard/userID=${this.props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => this.setState({
@@ -75,7 +75,7 @@ class CreditCardInfo extends PureComponent <CreditCardInfoProps, CreditCardInfoS
         axios.get(`http://localhost:8080/api/userInfo/userID=${this.props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({data: { name, surname }}) => this.setState({

@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {Link, Redirect} from "react-router-dom";
+import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { State } from "redux/rootReducer";
 
 import styles from "components/overview-page/overviewPage.module.css";
@@ -33,6 +33,7 @@ class OverviewPage extends Component <OverviewPageProps> {
 
         // Přesměrování na přihlášení
         if (this.props.userID === 0) {
+            
             return <Redirect to="/prihlaseni" />
         }
 

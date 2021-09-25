@@ -55,7 +55,10 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
     }, initialLoginData)
 
 
-    useEffect((): void => {
+    /**
+     * Inicializace komponenty
+     */
+    useEffect(() => {
 
         // Změna názvu stránky
         document.title = "Přihlášení | Web Bank"
@@ -95,7 +98,7 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
 
         const { clientNumber, password } = state;
 
-        // Request - vrací uživatelské ID
+        // Request - přihlášení uživatele
         axios.post("http://localhost:8080/api/login", {
 
             clientNumber,
@@ -126,7 +129,6 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
                 errorMessage = "Přihlašovací údaje jsou nesprávné";
             }
 
-            // Nastavení chybových zpráv
             dispatch({
                 type: "FETCH_ERROR",
                 payload: {
@@ -140,6 +142,7 @@ const LoginPage: React.FC<LoginPageProps> = (props) => {
     
     // Přesměrování na stránku přehledu
     if (successLogin) {
+        
         return <Redirect to="/prehled" />
     }
 

@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { connect } from 'react-redux'
 
 import styles from "components/overview-page/payment-report/payment-report.module.css";
-import Months from "modules/Months"
+import { Months } from "modules/Months"
 import { MonthSum } from "modules/interfaces/monthSum";
 import { State } from "redux/rootReducer";
 
@@ -40,7 +40,7 @@ const BalanceGraphs: React.FC<BalanceGraphsProps> = (props) => {
         axios.get(`http://localhost:8080/api/payments/sum/graphs/userID=${props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => setMonthsSum(data))

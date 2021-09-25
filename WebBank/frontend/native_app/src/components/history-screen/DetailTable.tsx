@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-import { styles } from "components/history-page/HistoryPageStyle";
+import { styles } from "components/history-screen/HistoryScreenStyle";
 import { Payment } from 'modules/interfaces/payment'
 import { dateFormatter } from "modules/dateFormatter";
 
@@ -15,6 +15,7 @@ const DetailTable: React.FC<DetailTableProps> = (props) => {
 
     const { payment, detailToggle } = props;
 
+    
     /**
      * Vykreslení
      */
@@ -22,25 +23,25 @@ const DetailTable: React.FC<DetailTableProps> = (props) => {
         <View style={[{marginVertical: 10}, {display: (detailToggle ? "flex" : "none")}]}>
 
             {/* Číslo účtu */}
-            <View style={[styles.detailContainer, {display: (payment.accountNumber === "0" ? "none" : "flex")}]}>
+            <View style={[styles.detailContainer, {display: (!payment.accountNumber ? "none" : "flex")}]}>
                 <Text style={styles.detailText}>Číslo účtu:</Text>
                 <Text style={styles.detailText}>{payment.accountNumber}</Text>
             </View>
 
             {/* Variabilní symbol */}
-            <View style={[styles.detailContainer, {display: (payment.variableSymbol === 0 ? "none" : "flex")}]}>
+            <View style={[styles.detailContainer, {display: (!payment.variableSymbol ? "none" : "flex")}]}>
                 <Text style={styles.detailText}>Variabilní symbol:</Text>
                 <Text style={styles.detailText}>{payment.variableSymbol}</Text>
             </View>
 
             {/* Konstantní symbol */}
-            <View style={[styles.detailContainer, {display: (payment.constantSymbol === 0 ? "none" : "flex")}]}>
+            <View style={[styles.detailContainer, {display: (!payment.constantSymbol ? "none" : "flex")}]}>
                 <Text style={styles.detailText}>Konstantní symbol:</Text>
                 <Text style={styles.detailText}>{payment.constantSymbol}</Text>
             </View>
 
             {/* Specifický symbol */}
-            <View style={[styles.detailContainer, {display: (payment.specificSymbol === 0 ? "none" : "flex")}]}>
+            <View style={[styles.detailContainer, {display: (!payment.specificSymbol ? "none" : "flex")}]}>
                 <Text style={styles.detailText}>Specifický symbol:</Text>
                 <Text style={styles.detailText}>{payment.specificSymbol}</Text>
             </View>

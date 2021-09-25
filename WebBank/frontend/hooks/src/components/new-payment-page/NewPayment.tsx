@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 
 import styles from "components/new-payment-page/new-payment-page.module.css";
 import paymentLogo from "images/payment.png";
-import confirmationCode from "modules/confirmationCode";
+import { confirmationCode } from "modules/confirmationCode";
 import NavigationPanel from "components/navigation-panel/NavigationPanel";
 import InputPanel from "components/new-payment-page/input-panel/InputPanel";
 import InputPanelWithBankCode from "components/new-payment-page/input-panel/InputPanelWithBankCode";
@@ -54,9 +54,6 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
             nameError: "",
             accountNumberError: "",
             amountError: "",
-            variableSymbolError: "",
-            constantSymbolError: "",
-            specificSymbolError: "",
             confirmationError: ""
         },
 
@@ -117,6 +114,9 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
     }, initialNewPayment);
 
 
+    /**
+     * Inicializace komponenty
+     */
     useEffect(() => {
 
         // Změna titulku stránky
@@ -153,7 +153,7 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
     /**
      * Změna číšla účtu
      * 
-     * @param} event 
+     * @param event 
      */
     const handleAccountNumberPrefix = (event: ChangeEvent<HTMLInputElement>) => {
 
@@ -223,7 +223,7 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
 
 
     /**
-     * Změna potvrzovacího kódu
+     * Změna ověřovacího kódu
      * 
      * @param event 
      */
@@ -268,11 +268,11 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
         // Shodný ověřovací kód
         if (generatedConfirmationCode === parseInt(inputConfirmationCode)) {
 
-            // Odeslání nové platby
+            // Request - odeslání nové platby
             axios.post("http://localhost:8080/api/newPayment", newPayment, {
 
                 headers: {
-                    "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                    Authorization: "Bearer " + Cookies.getJSON("jwt").token
                 }
 
             }).then(() => {
@@ -298,9 +298,6 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
                             nameError: data.name,
                             accountNumberError: accountNumberError,
                             amountError: data.amount,
-                            variableSymbolError: data.variableSymbol,
-                            constantSymbolError: data.constantSymbol,
-                            specificSymbolError: data.specificSymbol,
                             confirmationError: ""
                         },
     
@@ -324,9 +321,6 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
                         nameError: "",
                         accountNumberError: "",
                         amountError: "",
-                        variableSymbolError: "",
-                        constantSymbolError: "",
-                        specificSymbolError: "",
                         confirmationError: "Ověřovací kód není správný"
                     },
 
@@ -340,13 +334,16 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
 
     // Přesměrování na přihlášení
     if (props.userID === 0) {
+
         return <Redirect to="/prihlaseni" />
     }
 
     // Přesměrování na stránku přehledu, při úspěšně odeslané platbě
     if (successfulPayment) {
+
         return <Redirect to="/prehled" />;
     }
+
 
     /**
      * Vykreslení
@@ -378,8 +375,7 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
                     {/* Název platby */}
                     <InputPanel 
                         name="name"
-                        label="Název platby:" 
-                        placeholder="Název platby" 
+                        label="Název platby:"  
                         pattern="[\p{L} 0-9]*"
                         value={state.newPayment.name}
                         error={state.newPaymentErrors.nameError} 
@@ -388,8 +384,7 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
                     {/* Číslo účtu */}
                     <InputPanelWithBankCode 
                         name="accountNumber"
-                        label="Číslo účtu:"
-                        placeholder="7253962689" 
+                        label="Číslo účtu:" 
                         pattern="[0-9]{0,10}"
                         value={state.accountNumberPrefixInput}
                         error={state.newPaymentErrors.accountNumberError} 
@@ -402,8 +397,7 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
                     {/* Částka */}
                     <InputPanelWithCurrencies 
                         name="amount" 
-                        label="Částka:" 
-                        placeholder="0,00" 
+                        label="Částka:"  
                         pattern="^[1-9]\d*((\.|,)\d{0,2})?$"
                         value={state.amountInput}
                         error={state.newPaymentErrors.amountError} 
@@ -427,7 +421,6 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
                         label="Variabilní symbol:" 
                         pattern="[0-9]{0,10}"
                         value={state.newPayment.variableSymbol}
-                        error={state.newPaymentErrors.variableSymbolError} 
                         onChange={handleChange} />
 
                     {/* Konstantní symbol */}
@@ -436,7 +429,6 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
                         label="Konstantní symbol:" 
                         pattern="[0-9]{0,10}"
                         value={state.newPayment.constantSymbol}
-                        error={state.newPaymentErrors.constantSymbolError} 
                         onChange={handleChange} />
 
                     {/* Specifický symbol */}
@@ -445,7 +437,6 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
                         label="Specifický symbol:" 
                         pattern="[0-9]{0,10}"
                         value={state.newPayment.specificSymbol}
-                        error={state.newPaymentErrors.specificSymbolError} 
                         onChange={handleChange} />
 
                     {/* Oddělující sekce */}
@@ -453,7 +444,7 @@ const NewPaymentPage: React.FC<NewPaymentPageProps> = (props) => {
                         <div>Ověření</div> <hr/>
                     </div>
 
-                    {/* conformationCode */}
+                    {/* Ověřovací kód */}
                     <InputPanelWithConfirmation 
                         name="confirmationCode" 
                         label="Ověřovací kód:" 

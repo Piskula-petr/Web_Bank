@@ -9,8 +9,13 @@ interface CurrencyButtonProps {
 
 const CurrencyButton: React.FC<CurrencyButtonProps> = (props) => {
 
+    
     const { text, activeCurrency, handleClick } = props;
 
+    
+    /**
+     * Vykreslení
+     */
     return (
         <TouchableHighlight
             style={[styles.button, {backgroundColor: (activeCurrency ? "#B22222" : "transparent")}]} 

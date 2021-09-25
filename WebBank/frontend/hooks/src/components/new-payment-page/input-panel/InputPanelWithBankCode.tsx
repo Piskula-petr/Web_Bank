@@ -10,7 +10,6 @@ import { BankCode } from 'modules/interfaces/bankCode';
 interface InputPanelWithBankCodeProps {
     name: string,
     label: string,
-    placeholder: string, 
     pattern: string,
     value: string,
     error: string,
@@ -37,7 +36,7 @@ const InputPanelWithBankCode: React.FC<InputPanelWithBankCodeProps> = (props) =>
         axios.get("http://localhost:8080/api/bankCodes", {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => setBankCodes(data))
@@ -46,7 +45,8 @@ const InputPanelWithBankCode: React.FC<InputPanelWithBankCodeProps> = (props) =>
     }, [])
 
 
-    const { name, label, error, pattern, value, placeholder, onChange, onClick, toggleBankCodes, bankCode, selection } = props; 
+    const { name, label, error, pattern, value, onChange, onClick, toggleBankCodes, bankCode, selection } = props; 
+
 
     /**
      * Vykreslení
@@ -62,7 +62,6 @@ const InputPanelWithBankCode: React.FC<InputPanelWithBankCodeProps> = (props) =>
                 <input 
                     id={name} 
                     className={`${styles.input} ${styles.accountNumberPrefix}`}
-                    placeholder={placeholder} 
                     pattern={pattern}
                     value={value}
                     name={name} 

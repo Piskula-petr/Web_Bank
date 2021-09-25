@@ -17,6 +17,9 @@ interface OverviewPageProps {
 const OverviewPage: React.FC<OverviewPageProps> = (props) => {
 
 
+    /**
+     * Inicializace komponenty
+     */
     useEffect(() => {
 
         // Změna titulku
@@ -27,9 +30,11 @@ const OverviewPage: React.FC<OverviewPageProps> = (props) => {
     
     // Přesměrování na přihlášení
     if (props.userID === 0) {
+
         return <Redirect to="/prihlaseni" />
     }
 
+    
     /**
      * Vykreslení
      */

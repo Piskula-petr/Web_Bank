@@ -42,7 +42,7 @@ const CreditCardInfo: React.FC<CreditCardInfoProps> = (props) => {
         axios.get(`http://localhost:8080/api/creditCard/userID=${props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => setCreditCard(data))
@@ -52,7 +52,7 @@ const CreditCardInfo: React.FC<CreditCardInfoProps> = (props) => {
         axios.get(`http://localhost:8080/api/userInfo/userID=${props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({data: { name, surname }}) => setUser({
