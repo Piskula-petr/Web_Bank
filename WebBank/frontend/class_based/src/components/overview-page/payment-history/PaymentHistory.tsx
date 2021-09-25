@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
@@ -8,8 +8,8 @@ import { State } from "redux/rootReducer";
 
 import styles from "components/overview-page/payment-history/paymentHistory.module.css";
 import DetailTable from "components/overview-page/payment-history/DetailTable";
-import numberFormatter from "modules/numberFormatter";
-import dateFormatter from "modules/dateFormatter";
+import { numberFormatter } from "modules/numberFormatter";
+import { dateFormatter } from "modules/dateFormatter";
 
 interface PaymentHistoryProps {
     userID: number,
@@ -55,7 +55,7 @@ class PaymentHistory extends Component <PaymentHistoryProps, PaymentHistoryState
         axios.get(`http://localhost:8080/api/payments/month/userID=${this.props.userID}&month=${month}&year=${year}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => this.setState({
@@ -69,7 +69,7 @@ class PaymentHistory extends Component <PaymentHistoryProps, PaymentHistoryState
         axios.get(`http://localhost:8080/api/payments/count/userID=${this.props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({data: { paymentsCount }}) => this.setState({
@@ -101,7 +101,7 @@ class PaymentHistory extends Component <PaymentHistoryProps, PaymentHistoryState
         axios.get(`http://localhost:8080/api/payments/month/userID=${this.props.userID}&month=${previousMonth}&year=${year}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => {

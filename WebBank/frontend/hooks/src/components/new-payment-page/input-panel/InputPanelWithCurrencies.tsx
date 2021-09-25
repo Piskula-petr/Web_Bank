@@ -8,7 +8,6 @@ import { Currency } from 'modules/interfaces/currency';
 interface InputPanelWithCurrenciesProps {
     name: string,
     label: string,
-    placeholder: string,
     pattern: string,
     value: string,
     error: string,
@@ -18,30 +17,33 @@ interface InputPanelWithCurrenciesProps {
 
 const InputPanelWithCurrencies: React.FC<InputPanelWithCurrenciesProps> = (props) => {
 
+
     // Seznam dostupných měn
     const [ currencies, setCurrencies ] = useState<Array<Currency>>([])
 
 
+    /**
+     * Získání dat
+     */
     useEffect(() => {
 
         // Request - vrací seznam měn
         axios.get("http://localhost:8080/api/currencies", {
 
-            headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
-            } 
+            headers: { Authorization: "Bearer " + Cookies.getJSON("jwt").token } 
 
         }).then(({ data }) => setCurrencies(
 
             // Setřízení podle ID
-            data.sort((a: Currency, b: Currency) => {return a.id - b.id}
+            data.sort((a: Currency, b: Currency) => { return a.id - b.id }
 
         ))).catch((error) => console.log(error));
 
     }, [])
 
     
-    const { name, label, pattern, value, placeholder, error, onChange, onClick } = props;
+    const { name, label, pattern, value, error, onChange, onClick } = props;
+
 
     /**
      * Vykreslení
@@ -57,7 +59,6 @@ const InputPanelWithCurrencies: React.FC<InputPanelWithCurrenciesProps> = (props
                 <input 
                     id={name} 
                     className={`${styles.input} ${styles.amountInput}`}
-                    placeholder={placeholder} 
                     pattern={pattern}
                     value={value}
                     name={name}

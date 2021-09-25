@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Currency } from "modules/interfaces/currency";
@@ -8,7 +8,6 @@ import styles from "components/new-payment-page/new-payment.module.css";
 interface InputPanelWithCurrenciesProps {
     name: string,
     label: string,
-    placeholder: string,
     pattern: string,
     value: string,
     error: string,
@@ -48,7 +47,7 @@ class InputPanelWithCurrencies extends Component <InputPanelWithCurrenciesProps,
         axios.get("http://localhost:8080/api/currencies", {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => this.setState({
@@ -65,7 +64,7 @@ class InputPanelWithCurrencies extends Component <InputPanelWithCurrenciesProps,
      */
     render(): JSX.Element {
 
-        const { name, label, pattern, value, placeholder, error, onChange, onClick } = this.props;
+        const { name, label, pattern, value, error, onChange, onClick } = this.props;
 
         return(
             <div className={styles.inputContainer}>
@@ -78,7 +77,6 @@ class InputPanelWithCurrencies extends Component <InputPanelWithCurrenciesProps,
                     <input 
                         id={name} 
                         className={`${styles.input} ${styles.amountInput}`}
-                        placeholder={placeholder} 
                         pattern={pattern}
                         value={value}
                         name={name}

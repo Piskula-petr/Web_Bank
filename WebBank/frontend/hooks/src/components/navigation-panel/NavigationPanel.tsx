@@ -30,17 +30,14 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
     // Čas vypršení JWT
     const [ jwtExpireTime, setJwtExpireTime ] = useState<Date>(() => {
 
-        let jwtExpireTime: Date = new Date(Cookies.getJSON("jwt").expireTime);
-
-        // Odečtení 1 minuty, od vypršení JWT
-        jwtExpireTime.setTime(jwtExpireTime.getTime() - (1 * 60 * 1000));
+        const jwtExpireTime: Date = new Date(Cookies.getJSON("jwt").expireTime);
 
         return jwtExpireTime;
     });
 
 
     /**
-     * Nasazení componenty
+     * Obnovená JWT
      */
     useEffect(() => {
 
@@ -51,31 +48,28 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
 
             setSecondsLeft(prevSecondsLeft => prevSecondsLeft - 1);
 
-            if (new Date().getTime() > jwtExpireTime.getTime()) {
+            const TIME_BEFORE_EXPIRE: number = 30 * 1000;   // 30 sekund
+
+            if (new Date().getTime() > (jwtExpireTime.getTime() - TIME_BEFORE_EXPIRE)) {
 
                 // Request - obnovení JWT
                 axios.get("http://localhost:8080/api/refresh", {
 
                     headers: {
-                        "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                        Authorization: "Bearer " + Cookies.getJSON("jwt").token
                     }
 
                 }).then(({data: { token, expireTime }}) => {
 
-                    const jwt = {
+                    const newJwt = {
                         token,
                         expireTime
                     }
 
                     // vytvoření nového cookies
-                    Cookies.set("jwt", jwt, {expires: new Date(expireTime), secure: true});
+                    Cookies.set("jwt", newJwt, {expires: new Date(expireTime), secure: true});
 
-                    let jwtNewExpireTime: Date = new Date(Cookies.getJSON("jwt").expireTime);
-
-                    // Odečtení 1 minuty, od vypršení JWT
-                    jwtNewExpireTime.setTime(jwtNewExpireTime.getTime() - (1 * 60 * 1000));
-
-                    setJwtExpireTime(jwtNewExpireTime);
+                    setJwtExpireTime(new Date(expireTime));
 
                 }).catch((error) => console.log(error));
             }
@@ -124,17 +118,19 @@ const NavigationPanel: React.FC<NavigationPanelProps> = (props) => {
     }
 
 
+    // Přesměrování na přihlášení, po vypršení odpočtu
+    if (secondsLeft === 0) {
+        
+        return <Redirect to="/prihlaseni" />
+    }
+
+
     let minutes: number = Math.floor((secondsLeft / 60) % 60);
     let seconds: number = Math.floor(secondsLeft % 60);
 
     let zero: string = (seconds < 10 ? "0" : "");
 
-    // Přesměrování na přihlášení, po vypršení odpočtu
-    if (secondsLeft === 0) {
-
-        return <Redirect to="/prihlaseni" />
-    }
-
+    
     /**
      * Vykreslení
      */

@@ -1,5 +1,5 @@
-import React, {ChangeEvent, Component} from "react";
-import {Redirect} from "react-router-dom";
+import React, { ChangeEvent, Component } from "react";
+import { Redirect } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
@@ -8,8 +8,8 @@ import { NewPaymentErrors } from "modules/interfaces/newPaymentError";
 import { State } from "redux/rootReducer";
 
 import styles from "components/new-payment-page/new-payment.module.css";
-import payment from "images/payment.png";
-import confirmationCode from "modules/confirmationCode";
+import paymentLogo from "images/payment.png";
+import { confirmationCode } from "modules/confirmationCode";
 import NavigationPanel from "components/navigation-panel/NavigationPanel";
 import InputPanel from "components/new-payment-page/input-panel/InputPanel";
 import InputPanelWithBankCode from "components/new-payment-page/input-panel/InputPanelWithBankCode";
@@ -68,9 +68,6 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                 nameError: "",
                 accountNumberError: "",
                 amountError: "",
-                variableSymbolError: "",
-                constantSymbolError: "",
-                specificSymbolError: "",
                 confirmationError: "",
             },
 
@@ -249,11 +246,11 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
             // Shodný ověřovací kód
             if (generatedConfirmationCode === parseInt(inputConfirmationCode)) {
 
-                // Odeslání nové platby
+                // Request - odeslání nové platby
                 axios.post("http://localhost:8080/api/newPayment", this.state.newPayment, {
 
                     headers: {
-                        "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                        Authorization: "Bearer " + Cookies.getJSON("jwt").token
                     }
 
                 }).then(() => {
@@ -279,9 +276,6 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             nameError: data.name,
                             accountNumberError: accountNumberError,
                             amountError: data.amount,
-                            variableSymbolError: data.variableSymbol,
-                            constantSymbolError: data.constantSymbol,
-                            specificSymbolError: data.specificSymbol,
                             confirmationError: ""
                         },
 
@@ -301,9 +295,6 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                         nameError: "",
                         accountNumberError: "",
                         amountError: "",
-                        variableSymbolError: "",
-                        constantSymbolError: "",
-                        specificSymbolError: "",
                         confirmationError: "Ověřovací kód není správný"
                     },
 
@@ -322,11 +313,13 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
 
         // Přesměrování na přihlášení
         if (this.props.userID === 0) {
+
             return <Redirect to="/prihlaseni" />
         }
 
         // Přesměrování na stránku přehledu, při úspěšně odeslané platbě
         if ( this.state.successfulPayment) {
+
             return <Redirect to="/prehled" />;
         }
 
@@ -341,7 +334,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                 <div className={styles.container}>
 
                     {/* Logo */}
-                    <img className={styles.logo} src={payment} alt="Payment" />
+                    <img className={styles.logo} src={paymentLogo} alt="Payment" />
 
                     <h1>Nová platba</h1>
                     <hr/> <br/>
@@ -358,7 +351,6 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                         <InputPanel 
                             name="name"
                             label="Název platby:" 
-                            placeholder="Název platby" 
                             pattern="[\p{L} 0-9]*"
                             value={this.state.newPayment.name}
                             error={this.state.newPaymentErrors.nameError} 
@@ -368,7 +360,6 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                         <InputPanelWithBankCode 
                             name="accountNumberPrefixInput"
                             label="Číslo účtu:"
-                            placeholder="7253962689" 
                             pattern="[0-9]{0,10}"
                             value={this.state.accountNumberPrefixInput}
                             error={this.state.newPaymentErrors.accountNumberError} 
@@ -381,8 +372,7 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                         {/* Částka */}
                         <InputPanelWithCurrencies 
                             name="amountInput" 
-                            label="Částka:" 
-                            placeholder="0,00" 
+                            label="Částka:"  
                             pattern="^[1-9]\d*((\.|,)\d{0,2})?$"
                             value={this.state.amountInput}
                             error={this.state.newPaymentErrors.amountError} 
@@ -406,7 +396,6 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             label="Variabilní symbol:" 
                             pattern="[0-9]{0,10}"
                             value={this.state.newPayment.variableSymbol}
-                            error={this.state.newPaymentErrors.variableSymbolError} 
                             onChange={this.handleChange} />
 
                         {/* Konstantní symbol */}
@@ -415,7 +404,6 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             label="Konstantní symbol:" 
                             pattern="[0-9]{0,10}"
                             value={this.state.newPayment.constantSymbol}
-                            error={this.state.newPaymentErrors.constantSymbolError} 
                             onChange={this.handleChange} />
 
                         {/* Specifický symbol */}
@@ -424,7 +412,6 @@ class NewPaymentPage extends Component <NewPaymentProps, NewPaymentState> {
                             label="Specifický symbol:" 
                             pattern="[0-9]{0,10}"
                             value={this.state.newPayment.specificSymbol}
-                            error={this.state.newPaymentErrors.specificSymbolError} 
                             onChange={this.handleChange} />
 
                         {/* Oddělující sekce */}

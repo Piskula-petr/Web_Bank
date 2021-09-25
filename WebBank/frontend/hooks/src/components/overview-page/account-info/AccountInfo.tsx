@@ -6,8 +6,10 @@ import Cookies from 'js-cookie';
 import { Dispatch } from "redux";
 
 import styles from "components/overview-page/account-info/account-info.module.css";
-import safe from "images/safe.png";
-import numberFormatter from "modules/numberFormatter";
+import safeLogo from "images/safe.png";
+import { Currencies } from "modules/interfaces/currencies";
+import { UserInfo } from "modules/interfaces/userInfo";
+import { numberFormatter } from "modules/numberFormatter";
 import { Currency } from "redux/currency/currency";
 import { changeCurrency } from "redux/currency/currencyActions";
 import { State } from "redux/rootReducer";
@@ -16,23 +18,6 @@ interface AccountInfoProps {
     userID: number,
     currency: Currency,
     changeCurrency: (currency: Currency) => void,
-}
-
-interface UserInfo {
-    id: number,
-    name: string,
-    surname: string,
-    balance: number,
-    currency: string,
-    accountNumber: string
-}
-
-interface Currencies {
-    CZK: number,
-    EUR: number,
-    JPY: number,
-    USD: number,
-    [key: string]: number
 }
 
 const AccountInfo: React.FC<AccountInfoProps> = (props) => {
@@ -82,7 +67,7 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
         axios.get(`http://localhost:8080/api/userInfo/userID=${props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => setUserInfo(data))
@@ -137,6 +122,7 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
     // Zůstatek * hodnota kurzu
     let balance: number = userInfo.balance * props.currency.exchangeRate;
 
+
     /**
      * Vykreslení
      */
@@ -144,7 +130,7 @@ const AccountInfo: React.FC<AccountInfoProps> = (props) => {
         <div className={styles.account}>
 
             {/* Obrázek */}
-            <img className={styles.previewImage} src={safe} alt="Safe" />
+            <img className={styles.previewImage} src={safeLogo} alt="Safe" />
 
             {/* Jméno uživatele */}
             <div className={styles.user}>

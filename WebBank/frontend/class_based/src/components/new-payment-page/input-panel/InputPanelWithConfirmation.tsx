@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 import styles from "components/new-payment-page/new-payment.module.css";
 

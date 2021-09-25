@@ -1,5 +1,5 @@
-import React, {Component} from "react";
-import {Link, Redirect} from "react-router-dom";
+import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { connect } from "react-redux";
@@ -8,8 +8,8 @@ import { Dispatch } from "redux";
 import { Currency } from "redux/currency/currency";
 
 import styles from "components/navigation-panel/navigation-panel.module.css";
-import back from "images/back.png";
-import logout from "images/logout.png";
+import backLogo from "images/back.png";
+import logoutLogo from "images/logout.png";
 import { changeCurrency } from "redux/currency/currencyActions";
 
 interface NavigationPanelProps {
@@ -26,8 +26,10 @@ interface NavigationPanelState {
 
 class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelState> {
 
+
     private interval: number | undefined;
     
+
     /**
      * Konstruktor
      * 
@@ -42,7 +44,7 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
             secondsLeft: this.props.timeInterval,
 
             // Čas vypršení JWT
-            jwtExpireTime: new Date(),
+            jwtExpireTime: new Date(Cookies.getJSON("jwt").expireTime),
         }
     }
 
@@ -51,9 +53,6 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
      * Nasazení componenty
      */
     componentDidMount(): void {
-
-        // Nastavení času vypršení JWT
-        this.setJwtExpireTime();
 
         // Přidání click eventu
         document.addEventListener("click", this.handleClick);
@@ -65,13 +64,15 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
                 secondsLeft: this.state.secondsLeft - 1, 
             });
 
-            if (new Date().getTime() > this.state.jwtExpireTime.getTime()) {
+            const TIME_BEFORE_EXPIRE: number = 30 * 1000;   // 30 sekund
+
+            if (new Date().getTime() > (this.state.jwtExpireTime.getTime() - TIME_BEFORE_EXPIRE)) {
 
                 // Request - obnovení JWT
                 axios.get("http://localhost:8080/api/refresh", {
 
                     headers: {
-                        "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                        Authorization: "Bearer " + Cookies.getJSON("jwt").token
                     }
 
                 }).then(({data: { token, expireTime }}) => {
@@ -84,8 +85,9 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
                     // vytvoření nového cookies
                     Cookies.set("jwt", jwt, {expires: new Date(expireTime), secure: true});
 
-                    // Nastavení času vypršení nového JWT
-                    this.setJwtExpireTime();
+                    this.setState({
+                        jwtExpireTime: new Date(expireTime)
+                    })
 
                 }).catch((error) => console.log(error))
             }
@@ -117,22 +119,6 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
         this.setState({
             secondsLeft: this.props.timeInterval
         });
-    }
-
-
-    /**
-     * Nastavení času vypršení JWT
-     */
-    setJwtExpireTime = () => {
-
-        let jwtExpireTime: Date = new Date(Cookies.getJSON("jwt").expireTime);
-
-        // Odečtení 1 minuty, od vypršení JWT
-        jwtExpireTime.setTime(jwtExpireTime.getTime() - (1 * 60 * 1000));
-
-        this.setState({
-            jwtExpireTime
-        })
     }
 
 
@@ -179,7 +165,7 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
                 {/* Návrat na přehled */}
                 <Link className={styles.back} to="/prehled">
 
-                    <img className={`${styles.backLogo} ${(this.props.backLabel === undefined ? styles.hide : "")}`} src={back} alt="Back" /> 
+                    <img className={`${styles.backLogo} ${(this.props.backLabel === undefined ? styles.hide : "")}`} src={backLogo} alt="Back" /> 
 
                     <div>{this.props.backLabel}</div>
 
@@ -188,7 +174,7 @@ class NavigationPanel extends Component <NavigationPanelProps, NavigationPanelSt
                 {/* Odhlášení */}
                 <Link className={styles.logout} to="/prihlaseni" onClick={this.logout}>
 
-                    <img className={styles.logoutLogo} src={logout} alt="Logout" />
+                    <img className={styles.logoutLogo} src={logoutLogo} alt="Logout" />
 
                     <div>Odhlášení za {minutes}:{zero}{seconds}</div>
 

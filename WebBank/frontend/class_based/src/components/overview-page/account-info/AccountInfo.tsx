@@ -1,5 +1,5 @@
 /* eslint-disable default-case */
-import React, {Component} from "react";
+import React, { Component } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { connect } from "react-redux";
@@ -9,8 +9,8 @@ import { State } from "redux/rootReducer";
 import { Currency } from "redux/currency/currency";
 
 import styles from "components/overview-page/account-info/account-info.module.css";
-import safe from "images/safe.png";
-import numberFormatter from "modules/numberFormatter";
+import safeLogo from "images/safe.png";
+import { numberFormatter } from "modules/numberFormatter";
 
 interface AccountInfoProps {
     userID: number,
@@ -100,7 +100,7 @@ class AccountInfo extends Component <AccountInfoProps, AccountInfoState> {
         axios.get(`http://localhost:8080/api/userInfo/userID=${this.props.userID}`, {
 
             headers: {
-                "Authorization": "Bearer " + Cookies.getJSON("jwt").token
+                Authorization: "Bearer " + Cookies.getJSON("jwt").token
             }
 
         }).then(({ data }) => this.setState({
@@ -170,7 +170,7 @@ class AccountInfo extends Component <AccountInfoProps, AccountInfoState> {
             <div className={styles.account}>
 
                 {/* Obrázek */}
-                <img className={styles.previewImage} src={safe} alt="Safe" />
+                <img className={styles.previewImage} src={safeLogo} alt="Safe" />
 
                 {/* Jméno uživatele */}
                 <div className={styles.user}>

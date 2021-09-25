@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "web_bank",
+    "slug": "web_bank",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/icon.png",
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/icon.png",
+        "backgroundColor": "#3E332D"
+      }
+    },
+    "web": {
+      "favicon": "./src/assets/icon.png"
+    }
+  }
+}

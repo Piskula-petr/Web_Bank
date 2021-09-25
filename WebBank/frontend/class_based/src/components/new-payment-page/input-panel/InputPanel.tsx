@@ -1,14 +1,13 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 import styles from "components/new-payment-page/new-payment.module.css";
 
 interface InputPanelProps {
     name: string,
     label: string,
-    placeholder?: string,
     pattern: string,
     value: string,
-    error: string,
+    error?: string,
     onChange: (event: any) => void
 }
 
@@ -20,7 +19,7 @@ class InputPanel extends Component <InputPanelProps> {
      */
     render(): JSX.Element {
 
-        const { name, label, placeholder, pattern, value,  error, onChange } = this.props;
+        const { name, label, pattern, value,  error, onChange } = this.props;
 
         return(
             <div className={styles.inputContainer}>
@@ -33,7 +32,6 @@ class InputPanel extends Component <InputPanelProps> {
                     <input 
                         id={name} 
                         className={styles.input}
-                        placeholder={placeholder} 
                         pattern={pattern}
                         value={value}
                         name={name}
